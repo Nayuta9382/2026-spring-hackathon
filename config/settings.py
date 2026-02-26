@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -126,3 +127,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']    # 静的ファイルのディレクトリの場所
+
+
+AUTH_USER_MODEL =  "accounts.User" 
+
+# ログイン後のリダイレクト先
+LOGIN_REDIRECT_URL = 'accounts:index'
