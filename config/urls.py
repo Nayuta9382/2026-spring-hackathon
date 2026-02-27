@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('tournaments/', include('tournaments.urls')),
+    path('pages/', include('pages.urls')), # 開発中htmlを表示するようのアプリ
 ]
 
 

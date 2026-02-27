@@ -1,12 +1,7 @@
+{% extends 'layouts/base.html' %}
+{% block title %}index{% endblock title %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{% block content %}
   <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_div }}
@@ -29,8 +24,7 @@
             </div>
 
         </div>
-        <button type="submit" class="btn btn-primary">保存</button>
+        <button type="submit">保存</button>
     </form>
 <script src="{% static 'js/tournament/create.js' %}"></script>
-</body>
-</html>
+{% endblock content %}

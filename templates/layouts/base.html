@@ -1,0 +1,25 @@
+<!-- {% load django_bootstrap5 %}  -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}デフォルトタイトル{% endblock title %}</title>
+    {% bootstrap_css %}
+
+</head>
+<body>
+    <header>
+        ヘッダー
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock content %}
+    </main>
+
+    <footer>
+    </footer>
+    {% bootstrap_javascript %}
+</body>
+</html>

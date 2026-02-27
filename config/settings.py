@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_bootstrap5',
     'accounts',
     'tournaments',
     'events',
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
     'schedules',
     'event_results',
     'stats',
+    'pages',
 ]
 
 MIDDLEWARE = [
