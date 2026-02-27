@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <div>
+            <h3>クラスチーム</h3>
+            <div id="teams-container">
+                <div class="input-row">
+                    <input type="text" name="teams" placeholder="クラスチーム名を入力">
+                </div>
+            </div>
+            <button type="button" onclick="teamAddInput()">クラスチームを追加</button>
+        </div>
+        <div>
+            <h3>ランクポイント</h3>
+            <div id="rank-container">
+                <div class="input-row">
+                    <label>1位: </label>
+                    <input type="number" name="rank_points" placeholder="1位のポイント" value="0">
+                </div>
+            </div>
+
+        </div>
+        <button type="submit" class="btn btn-primary">保存</button>
+    </form>
+<script src="{% static 'js/tournament/create.js' %}"></script>
+</body>
+</html>

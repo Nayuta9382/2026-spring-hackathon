@@ -139,3 +139,10 @@ AUTH_USER_MODEL =  "accounts.User"
 
 # ログイン後のリダイレクト先
 LOGIN_REDIRECT_URL = 'accounts:index'
+
+
+# 実際にファイルが保存されるサーバー上の絶対パス
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# ブラウザからアクセスする際のURLの入り口
+MEDIA_URL = '/media/'
