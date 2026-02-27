@@ -6,7 +6,7 @@ class Event(models.Model):
     name = models.CharField(max_length=255) # 競技名
     category = models.PositiveIntegerField(default=0) # 競技区分
     team_group = models.ForeignKey('teams.TeamGroup', on_delete=models.CASCADE, related_name='team_events') # チームグループID
-    detail = models.TextField(max_length=2000) # 競技詳細
+    detail = models.TextField(max_length=2000, default='') # 競技詳細
     tournament_img_path = models.CharField(max_length=255) #トーナメント画像
     event_img_path = models.CharField(max_length=255) 
     created_at = models.DateTimeField(auto_now_add=True)

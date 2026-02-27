@@ -1,16 +1,16 @@
 from django.db import models
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import FileExtensionValidator
 import uuid
 
 # 大会
 class Tournament(models.Model):
     name = models.CharField(max_length=255)
     url_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    img_path = models.CharField(max_length=255)
+    img_path = models.ImageField(upload_to='uploads/tournament-img/', validators=[FileExtensionValidator(['png','jpg'])],null=True,blank=True)
     password = models.CharField(max_length=255)
     status = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
-    pdf_img_path = models.CharField(max_length=255)
+    pdf_img_path = models.FileField(upload_to='uploads/tournament-pdf/', validators=[FileExtensionValidator(['pdf'])],null=True,blank=True)
 
     class Meta:
         # 大会を作成日時が新しい順（降順）に並べる

@@ -6,6 +6,7 @@ class EventResult(models.Model):
     team = models.ForeignKey('teams.Team', on_delete=models.CASCADE)
     rank = models.PositiveIntegerField() # その競技での順位
     point = models.IntegerField(null=True, blank=True) # スコア（点数やタイムなど）
+    detail = models.TextField(max_length=2000,default='') # 詳細
     created_at = models.DateTimeField(auto_now_add=True)
 
 
