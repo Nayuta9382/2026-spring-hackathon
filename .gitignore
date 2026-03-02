@@ -15,3 +15,5 @@ ENV/
 # OSが作成するゴミファイル
 .DS_Store
 Thumbs.db
+
+sample.sql
