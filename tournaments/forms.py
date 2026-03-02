@@ -5,7 +5,7 @@ from .models import Tournament
 class CreateForm(forms.ModelForm):
     class Meta:
         model = Tournament
-        fields = ['name', 'img_path', 'password', 'pdf_img_path'] 
+        fields = ['name', 'img_path', 'password', 'pdf_img_path']
 
     # 順位とポイントのバリデーション
     def clean(self):
@@ -31,7 +31,7 @@ class CreateForm(forms.ModelForm):
         # 検証ロジック
         if not teams:
             raise forms.ValidationError("チーム名を1つ以上入力してください。")
-        
+
         if len(teams) != len(points_str):
             raise forms.ValidationError(f"チーム数({len(teams)})とポイント数({len(points_str)})が一致しません。")
 
@@ -44,3 +44,21 @@ class CreateForm(forms.ModelForm):
         cleaned_data['team_names'] = teams
         cleaned_data['points'] = points
         return cleaned_data
+
+#大会ステータスpulldwon
+class UpdateStatusForm(forms.ModelForm):
+    STATUS_CHOICES = [
+        (0, '開催前'),
+        (1, '開催中'),
+        (2, '終了'),
+    ]
+
+    status = forms.ChoiceField(
+        choices=STATUS_CHOICES,
+        widget=forms.Select,
+        label="大会ステータス"
+    )
+
+    class Meta:
+        model = Tournament
+        fields = ['status']

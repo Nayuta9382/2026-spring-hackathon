@@ -12,7 +12,7 @@
 
     <div>
         <h2>大会基本情報</h2>
-        
+
         {% if tournament.img_path %}
             <div>
                 <p><strong>大会画像:</strong></p>
@@ -24,15 +24,21 @@
             <li><strong>大会名:</strong> {{ tournament.name }}</li>
             <li><strong>URL識別子 (UUID):</strong> {{ tournament.url_uuid }}</li>
             <li>
-                <strong>ステータス:</strong> 
-                {% if tournament.status == 0 %}
-                    開催前
-                {% elif tournament.status == 1 %}
-                    開催中
-                {% else %}
-                    終了
-                {% endif %}
+                <strong>現在のステータス:</strong>
+                {% if tournament.status == 0 %}開催前{% elif tournament.status == 1 %}開催中{% else %}終了{% endif %}
             </li>
+
+            <li>
+                <strong>ステータス変更:</strong>
+                {% comment %} 大会ステータス変更 {% endcomment %}
+                <form action="{% url 'api_update_status' tournament.pk %}" method="POST" style="display: inline;">
+                    {% csrf_token %}
+                    {{ status_form.status }}
+                    <button type="submit">更新保存</button>
+                </form>
+                <span id="status-msg"></span>
+            </li>
+
             <li><strong>作成日時:</strong> {{ tournament.created_at|date:"Y/m/d H:i" }}</li>
             <li><strong>パスワード:</strong> {{ tournament.password }}</li>
         </ul>
@@ -55,10 +61,7 @@
         {% if tournament.points.all %}
             <ul>
                 {% for p in tournament.points.all %}
-                    <li>
-                        <strong>第 {{ p.rank }} 位:</strong> {{ p.point }} pt 
-                        <small>(登録日: {{ p.created_at|date:"Y/m/d" }})</small>
-                    </li>
+                    <li><strong>第 {{ p.rank }} 位:</strong> {{ p.point }} pt</li>
                 {% endfor %}
             </ul>
         {% else %}
@@ -71,15 +74,12 @@
     <h2>総合ランキング</h2>
     <ul>
         {% for team in rankings %}
-            <li>
-                <strong>{{ team.rank }}位</strong>: {{ team.name }} 
-                （{{ team.total_point|default:0 }} pt）
-            </li>
+            <li><strong>{{ team.rank }}位</strong>: {{ team.name }}（{{ team.total_point|default:0 }} pt）</li>
         {% empty %}
             <li>現在、集計データはありません。</li>
         {% endfor %}
     </ul>
-
-  
 </div>
+
+<script></script>
 {% endblock %}

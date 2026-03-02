@@ -4,6 +4,9 @@ from .forms import CreateForm
 from .services import create_tournament_with_teams, get_tournament_rannkings,get_tournament_detail
 from django.shortcuts import redirect
 
+from django.views import View
+from django.shortcuts import redirect, get_object_or_404
+
 
 
 # 大会を一覧表示する
@@ -20,10 +23,10 @@ class TournamentCreateView(CreateView):
 
     def form_valid(self, form):
         data = form.cleaned_data
-        
+
         # Serviceを呼び出しデータベースへ保存
         create_tournament_with_teams(form.cleaned_data)
-        
+
         return redirect(self.success_url)
 
 # 管理者の大会詳細情報を取得する
@@ -35,7 +38,7 @@ class TournamentDetailView(DetailView):
     def get_context_data(self, **kwargs):
         # 1. まず親クラスの標準的なコンテキスト（tournament等）を取得
         context = super().get_context_data(**kwargs)
-        
+
         # 2. URLからpkを取得（self.object でも取得可能です）
         pk = self.kwargs.get('pk')
 
@@ -43,5 +46,27 @@ class TournamentDetailView(DetailView):
         # これでテンプレート側で {{ rankings }} が使えるようになります
         context['rankings'] = get_tournament_rannkings(pk)
 
+        from .forms import UpdateStatusForm
+        context['status_form'] = UpdateStatusForm(instance=self.object)
+
         return context
+
+    # 大会ステータスのpulldown
+class UpdateStatusView(View):
+    def post(self, request, pk):
+        try:
+            new_status = request.POST.get('status')
+
+            # 対象の大会を取得
+            tournament = get_object_or_404(Tournament, pk=pk)
+
+            # ステータスを更新して保存
+            if new_status is not None:
+                tournament.status = int(new_status)
+                tournament.save()
+
+            return redirect('tournament_detail', pk=pk)
+
+        except Exception as e:
+            return redirect('tournament_detail', pk=pk)
 
