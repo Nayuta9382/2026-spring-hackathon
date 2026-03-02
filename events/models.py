@@ -7,8 +7,8 @@ class Event(models.Model):
     category = models.PositiveIntegerField(default=0) # 競技区分
     team_group = models.ForeignKey('teams.TeamGroup', on_delete=models.CASCADE, related_name='team_events') # チームグループID
     detail = models.TextField(max_length=2000, default='') # 競技詳細
-    tournament_img_path = models.CharField(max_length=255) #トーナメント画像
-    event_img_path = models.CharField(max_length=255) 
+    tournament_img = models.ImageField(upload_to='tournaments/', null=True, blank=True) #トーナメント画像
+    event_img = models.ImageField(upload_to='events/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

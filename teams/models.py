@@ -12,7 +12,7 @@ class TeamGroup(models.Model):
 # チーム
 class Team(models.Model):
     name = models.CharField(max_length=255)
-    team_group = models.ForeignKey(TeamGroup, on_delete=models.CASCADE, related_name='team')
+    team_group = models.ForeignKey(TeamGroup, on_delete=models.CASCADE, related_name='teams')
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.name
