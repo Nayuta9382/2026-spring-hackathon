@@ -16,8 +16,6 @@ class Tournament(models.Model):
         # 大会を作成日時が新しい順（降順）に並べる
         ordering = ['-created_at']
 
-
-
     def __str__(self):
         return self.name
 

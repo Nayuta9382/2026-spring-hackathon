@@ -1,9 +1,85 @@
 {% extends 'layouts/admin-layout.html' %}
-
-{% block title %}index{% endblock title %}
+{% load django_bootstrap5 %}
 
 {% block content %}
 <div>
-    <h1>管理者大会詳細</h1>
+    <div>
+        <h1>{{ tournament.name }} <small>(管理者用)</small></h1>
+        <p><a href="{% url 'tournament_list' %}">← 大会一覧に戻る</a></p>
+    </div>
+
+    <hr>
+
+    <div>
+        <h2>大会基本情報</h2>
+        
+        {% if tournament.img_path %}
+            <div>
+                <p><strong>大会画像:</strong></p>
+                <img src="{{ tournament.img_path.url }}" alt="大会画像" width="300">
+            </div>
+        {% endif %}
+
+        <ul>
+            <li><strong>大会名:</strong> {{ tournament.name }}</li>
+            <li><strong>URL識別子 (UUID):</strong> {{ tournament.url_uuid }}</li>
+            <li>
+                <strong>ステータス:</strong> 
+                {% if tournament.status == 0 %}
+                    開催前
+                {% elif tournament.status == 1 %}
+                    開催中
+                {% else %}
+                    終了
+                {% endif %}
+            </li>
+            <li><strong>作成日時:</strong> {{ tournament.created_at|date:"Y/m/d H:i" }}</li>
+            <li><strong>パスワード:</strong> {{ tournament.password }}</li>
+        </ul>
+    </div>
+
+    <br>
+
+    {% if tournament.pdf_img_path %}
+    <div>
+        <h2>大会規約 (PDF)</h2>
+        <p><a href="{{ tournament.pdf_img_path.url }}" target="_blank">別タブでPDFを開く</a></p>
+        <embed src="{{ tournament.pdf_img_path.url }}" type="application/pdf" width="100%" height="500px">
+    </div>
+    {% endif %}
+
+    <br>
+
+    <div>
+        <h2>順位別ポイント設定</h2>
+        {% if tournament.points.all %}
+            <ul>
+                {% for p in tournament.points.all %}
+                    <li>
+                        <strong>第 {{ p.rank }} 位:</strong> {{ p.point }} pt 
+                        <small>(登録日: {{ p.created_at|date:"Y/m/d" }})</small>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>ポイント設定が登録されていません。</p>
+        {% endif %}
+    </div>
+
+    <hr>
+
+    <h2>総合ランキング</h2>
+    <ul>
+        {% for team in rankings %}
+            <li>
+                <strong>{{ team.rank }}位</strong>: {{ team.name }} 
+                （{{ team.total_point|default:0 }} pt）
+            </li>
+        {% empty %}
+            <li>現在、集計データはありません。</li>
+        {% endfor %}
+    </ul>
+
+  
 </div>
-{% endblock content %}
+{% endblock %}
