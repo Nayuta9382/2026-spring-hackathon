@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'event_results',
     'stats',
     'pages',
+    'db_seeder',
 ]
 
 MIDDLEWARE = [
