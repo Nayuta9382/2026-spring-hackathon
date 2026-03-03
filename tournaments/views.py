@@ -3,7 +3,7 @@ from .models import Tournament
 from .forms import CreateForm
 from .services import create_tournament_with_teams, get_tournament_rannkings,get_tournament_detail
 from django.shortcuts import redirect
-
+from django.urls import reverse
 from django.views import View
 from django.shortcuts import redirect, get_object_or_404
 
@@ -19,15 +19,16 @@ class TournamentCreateView(CreateView):
     model = Tournament
     form_class = CreateForm
     template_name = "tournament/create.html"
-    success_url = "/"  # 成功時にリダイレクトするURL
-
     def form_valid(self, form):
-        data = form.cleaned_data
-
         # Serviceを呼び出しデータベースへ保存
-        create_tournament_with_teams(form.cleaned_data)
+        new_tournament =  create_tournament_with_teams(form.cleaned_data)
+        self.object = new_tournament
 
-        return redirect(self.success_url)
+        return redirect(self.get_success_url())
+    
+    # 大会詳細にリダイレクト
+    def get_success_url(self):
+        return reverse('tournament_detail', kwargs={'pk': self.object.pk})
 
 # 管理者の大会詳細情報を取得する
 class TournamentDetailView(DetailView):
