@@ -54,6 +54,7 @@ def get_tournament_rannkings(tournament_id):
             ON e.id = er.event_id
         WHERE 
             tg.tournament_id = %s
+        AND tg.category = 1
         GROUP BY 
             t.id, t.name
         ORDER BY 
