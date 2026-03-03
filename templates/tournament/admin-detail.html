@@ -42,6 +42,7 @@
             <li><strong>作成日時:</strong> {{ tournament.created_at|date:"Y/m/d H:i" }}</li>
             <li><strong>パスワード:</strong> {{ tournament.password }}</li>
         </ul>
+        <a href="{% url 'tournament_update' tournament.pk %}">編集</a>
     </div>
 
     <br>
