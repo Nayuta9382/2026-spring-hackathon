@@ -2,6 +2,8 @@ from django.db import transaction,connection
 from .models import Tournament, TournamentPoint
 from teams.models import TeamGroup, Team
 from django.shortcuts import get_object_or_404
+from teams.service import delete_team_group,create_team_group,bulk_create_teams
+
 
 # 大会作成機能のサービス関数
 def create_tournament_with_teams(tournament_data):
@@ -24,12 +26,21 @@ def create_tournament_with_teams(tournament_data):
         ])
 
         # 4. ポイント一括作成
-        TournamentPoint.objects.bulk_create([
-            TournamentPoint(tournament=tournament, rank=i, point=p)
-            for i, p in enumerate(tournament_data.get('points', []), 1)
-        ])
-    
+        create_tournament_point(tournament,tournament_data.get('points', []))
+       
     return tournament
+
+# ポイントを一括作成する
+def create_tournament_point(tournament,points):
+     TournamentPoint.objects.bulk_create([
+            TournamentPoint(tournament=tournament, rank=i, point=p)
+            for i, p in enumerate(points, 1)
+        ])
+     
+# 大会に紐づいている基本ポイントを削除する
+def delete_tournament_point(tournament):
+    tournament.points.all().delete()
+
 
 # 大会idから詳細情報を取得する
 def get_tournament_detail(id):
@@ -69,3 +80,16 @@ def get_tournament_rannkings(tournament_id):
         rankings = [dict(zip(columns, row)) for row in cursor.fetchall()]
 
     return rankings
+
+# 大会編集後にクラスチームと基礎ポイントを更新(削除->新規登録)する
+def update_tournament_after(tournament,teams,rank_points):
+    with transaction.atomic():
+        # クラスチームを更新する
+        delete_team_group(tournament)
+        new_group = create_team_group(tournament,category=1)
+        bulk_create_teams(new_group,teams)
+
+        # 基本順位ポイントを更新する
+        delete_tournament_point(tournament)
+        create_tournament_point(tournament,rank_points)
+

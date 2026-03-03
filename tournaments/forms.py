@@ -9,15 +9,6 @@ class CreateForm(forms.ModelForm):
 
     # 順位とポイントのバリデーション
     def clean(self):
-        print(f"DEBUG: self.files = {self.files}")
-        # --- ここからデバッグ ---
-        print("--- Form Clean Debug Start ---")
-        print(f"DEBUG: self.data (POST) = {self.data}")
-        print(f"DEBUG: self.files (FILES) = {self.files}")
-        print(f"DEBUG: cleaned_data = {self.cleaned_data}") # super().clean()後のデータ
-        print("--- Form Clean Debug End ---")
-        # --- ここまでデバッグ ---
-
         cleaned_data = super().clean()
         raw_teams = self.data.getlist('teams')
         raw_points = self.data.getlist('rank_points')

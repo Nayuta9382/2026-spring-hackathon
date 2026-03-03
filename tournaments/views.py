@@ -1,11 +1,13 @@
 from django.views.generic import CreateView, UpdateView,ListView,DetailView
-from .models import Tournament
+from .models import Tournament,TournamentPoint
 from .forms import CreateForm
-from .services import create_tournament_with_teams, get_tournament_rannkings,get_tournament_detail
+from .services import create_tournament_with_teams, get_tournament_rannkings,update_tournament_after
+from teams.service import get_team_group_by_category,get_teams_by_teamGroup
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views import View
 from django.shortcuts import redirect, get_object_or_404
+from django.db import transaction
 
 
 
@@ -51,6 +53,52 @@ class TournamentDetailView(DetailView):
         context['status_form'] = UpdateStatusForm(instance=self.object)
 
         return context
+
+# 大会を編集する
+class TournamentUpdateView(UpdateView):
+    model = Tournament
+    form_class = CreateForm # 作成用と同じフォームが使えます
+    template_name = "tournament/edit.html" # 編集用のHTML
+
+    # templateファイルに渡す値を取得
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # 登録されているクラスチームの一覧を取得する
+
+        # チームグループの取得
+        team_group =  get_team_group_by_category(tournament = self.object,category=1)
+        # チームの取得
+        teams = get_teams_by_teamGroup(team_group)
+
+        # 基本順位ポイントの取得
+        tournament_points = TournamentPoint.objects.filter(tournament = self.object).order_by('rank')
+
+        # contextに保存
+        context['teams'] = teams
+        context['rank_points'] = tournament_points
+
+        return context
+
+    def form_valid(self, form):
+        with transaction.atomic():
+            # 2. メインの Tournament を保存（self.object が更新される）
+            response = super().form_valid(form)
+            tournament = self.object
+
+            teams = form.cleaned_data['team_names']
+            rank_points = form.cleaned_data['points']
+            
+            # チームと基本順位ポイントを更新する
+            update_tournament_after(tournament = tournament,teams = teams, rank_points = rank_points)
+          
+
+        return redirect(self.get_success_url())
+
+
+    def get_success_url(self):
+        # 編集が終わったら、また詳細画面に戻る
+        return reverse('tournament_detail', kwargs={'pk': self.object.pk})
 
     # 大会ステータスのpulldown
 class UpdateStatusView(View):
