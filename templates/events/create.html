@@ -1,9 +1,53 @@
 {% extends 'layouts/admin-layout.html' %}
-
-{% block title %}{% endblock title %}
-
+{% block title %}競技登録 - {{ tournament.name }}{% endblock title %}
+{% load static %}
 {% block content %}
-<div>
+<div class="container">
     <h1>競技追加 | 編集</h1>
+    <hr>
+    <div class="card" style="padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; font-weight: bold; margin-bottom: 5px;">{{ field.label }}</label>
+                    {% if field.field.widget.input_type == 'file' %}
+                        {# 画像フィールド（ImageField）の場合の表示 #}
+                        {% if field.value %}
+                            <div style="margin-bottom: 10px;">
+                                <p style="font-size: 0.8em; color: #666;">現在の画像:</p>
+                                <img src="/media/{{ field.value }}" alt="preview" style="max-width: 200px; height: auto; border: 1px solid #ddd; border-radius: 4px;">
+                            </div>
+                        {% endif %}
+                        <div style="background: #f8f9fa; padding: 10px; border: 1px dashed #ccc;">
+                            {{ field }}
+                        </div>
+                    {% else %}
+                        {# それ以外のフィールド（テキストなど） #}
+                        {{ field }}
+                    {% endif %}
+                    {% if field.help_text %}<small style="display: block; color: gray;">{{ field.help_text }}</small>{% endif %}
+                    {% for error in field.errors %}<p style="color: red; font-size: 0.8em; margin: 5px 0 0 0;">{{ error }}</p>{% endfor %}
+                </div>
+            {% endfor %}
+            <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+                <button type="submit" style="background-color: #007bff; color: white; padding: 10px 25px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">保存する</button>
+                <a href="{% url 'tournament_detail' pk=view.kwargs.tournament_pk %}" style="margin-left: 15px; text-decoration: none; color: #666; font-size: 0.9em;">キャンセル</a>
+            </div>
+
+            <div>
+                <h3>チーム</h3>
+                <div id="teams-container">
+                    <div class="input-row">
+                        <input type="text" name="teams" placeholder="チーム名を入力">
+                    </div>
+                </div>
+                <button type="button" onclick="teamAddInput()">チームを追加</button>
+            </div>
+        </form>
+    </div>
+    
 </div>
+<script src="{% static 'js/events/create.js' %}"></script>
+
 {% endblock content %}
