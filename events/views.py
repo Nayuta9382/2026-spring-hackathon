@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from .models import Event
-from teams.service import create_team_group,bulk_create_teams,get_team_group_by_category,get_teams_by_event
+from teams.service import create_team_group,bulk_create_teams,get_team_group_by_category,get_teams_group_by_event
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 from tournaments.models import Tournament
@@ -49,7 +49,7 @@ class EventCreateView(CreateView):
                 event = self.object
                 
                 # 競技に参加するチームの一覧を取得する
-                teams = get_teams_by_event(event)
+                teams = get_teams_group_by_event(event)
 
                 # 競技結果のテーブルの作成
                 create_event_results(event=event,teams=teams)

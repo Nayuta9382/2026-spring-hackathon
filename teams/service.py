@@ -28,12 +28,17 @@ def get_team_group_by_category(tournament, category=1):
         category=category
     ).first()
 
+# 競技からチームの一覧を取得する
+def get_teams_by_event(event):
+    team_group =  get_teams_group_by_event(event)
+    return get_teams_by_teamGroup(team_group)
+
 # チームグループからチームの一覧を取得する
 def get_teams_by_teamGroup(teamGroup):
     return Team.objects.filter(team_group=teamGroup).order_by('id')
 
 # 競技(event)から紐付いているグループを取得する
-def get_teams_by_event(event):
+def get_teams_group_by_event(event):
     if event.team_group:
         return event.team_group.teams.all()
     
