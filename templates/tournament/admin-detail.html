@@ -56,6 +56,17 @@
     {% endif %}
 
     <br>
+    <div>
+        <h2>クラスチーム一覧</h2>
+         <ul>
+        {% for team in teams %}
+            <li>{{ team }}</li>
+        {% empty %}
+            <li>クラスチームが登録されていません</li>
+        {% endfor %}
+    </ul>
+    </div>
+    <br>
 
     <div>
         <h2>順位別ポイント設定</h2>

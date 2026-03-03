@@ -52,6 +52,11 @@ class TournamentDetailView(DetailView):
         from .forms import UpdateStatusForm
         context['status_form'] = UpdateStatusForm(instance=self.object)
 
+        # クラスチームの一覧を取得する
+        team_group = get_team_group_by_category(tournament=self.object,category=1)
+        teams = get_teams_by_teamGroup(team_group)
+        context['teams'] = teams
+
         return context
 
 # 大会を編集する
