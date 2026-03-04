@@ -1,9 +1,70 @@
 {% extends 'layouts/admin-layout.html' %}
-
-{% block title %}{% endblock title %}
+{% load static %}
 
 {% block content %}
-<div>
-    <h1>競技詳細(admin)</h1>
-</div>
+<h1>競技詳細編集(admin)</h1>
+
+{# 画像ファイルを扱うため enctype="multipart/form-data" を指定 #}
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {# 1. 競技名 #}
+    <div>
+        <label>競技名</label>
+        <input type="text" name="name" value="{{ event.name }}">
+    </div>
+
+    {# 2. 競技区分 (Category) #}
+    <div>
+        <label>競技カテゴリー (数値)</label>
+        <input type="number" name="category" value="{{ event.category }}">
+    </div>
+
+    {# 3. チームグループ選択 (ForeignKey) #}
+    <div>
+        <label>対象チームグループ</label>
+        <select name="team_group">
+            {% for group in team_groups %}
+                <option value="{{ group.id }}" {% if event.team_group.id == group.id %}selected{% endif %}>
+                    ID:{{ group.id }} - カテゴリー:{{ group.category }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    {# 4. 競技詳細 (TextField) #}
+    <div>
+        <label>競技詳細・ルール</label>
+        <textarea name="detail" rows="5">{{ event.detail }}</textarea>
+    </div>
+
+    <hr>
+
+    {# 5. トーナメント画像 (ImageField) #}
+    <div>
+        <label>トーナメント画像</label>
+        {% if event.tournament_img %}
+            <p>現在: <img src="{{ event.tournament_img.url }}" width="150"></p>
+        {% endif %}
+        <input type="file" name="tournament_img">
+    </div>
+
+    {# 6. 競技画像 (ImageField) #}
+    <div>
+        <label>競技イメージ画像</label>
+        {% if event.event_img %}
+            <p>現在: <img src="{{ event.event_img.url }}" width="150"></p>
+        {% endif %}
+        <input type="file" name="event_img">
+    </div>
+
+    <hr>
+
+    {# 送信ボタン #}
+    <div>
+        <button type="submit">更新保存</button>
+        <a href="{% url 'event_detail_admin' event.tournament.id event.id %}">戻る</a>
+    </div>
+</form>
+
 {% endblock content %}

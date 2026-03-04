@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.generic.edit import CreateView
+from django.views.generic import DetailView
 from django.urls import reverse_lazy
 from .models import Event
 from teams.service import create_team_group,bulk_create_teams,get_team_group_by_category,get_teams_group_by_event
@@ -59,3 +60,9 @@ class EventCreateView(CreateView):
     def get_success_url(self):
         # 保存成功後の遷移先（大会詳細ページなど）
         return reverse_lazy('tournament_detail', kwargs={'pk': self.object.tournament.id})
+
+# 管理者の詳細表示
+class EventAdminDetailView(DetailView):
+    model = Event
+    template_name = 'events/admin-detail.html'
+    context_object_name = 'event'
