@@ -11,7 +11,7 @@ urlpatterns = [
     # 管理者大会詳細
     path('<int:pk>/admin', TournamentDetailView.as_view(), name='tournament_detail_admin'),
     # 管理者大会編集
-    path('<int:pk>/update', TournamentUpdateView.as_view(), name='tournament_update'),
+    path('<int:pk>/edit', TournamentUpdateView.as_view(), name='tournament_update'),
     # 大会ステータスのpulldwon
     path('<int:pk>/api/update-status/', UpdateStatusView.as_view(), name='api_update_status'),
     # 大会削除
