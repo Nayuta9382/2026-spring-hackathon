@@ -3,134 +3,120 @@
 
 {% block content %}
 <div>
-    <h1><input type="text" name="name" value="{{ tournament.name }}"> <small>(管理者用)</small></h1>
+    <h1>{{ tournament.name }} <small>(管理者パネル)</small></h1>
     <p><a href="{% url 'tournament_list' %}">← 大会一覧に戻る</a></p>
 
     <hr>
 
-    <form action="{% url 'tournament_update' tournament.pk %}" method="POST" enctype="multipart/form-data">
+    <div>
         {% csrf_token %}
 
-        <div>
+        <section>
             <h2>大会基本情報</h2>
-
-            {% if tournament.img_path %}
-                <div>
-                    <p><strong>大会画像:</strong></p>
+            
+            <div>
+                <p>大会画像:</p>
+                {% if tournament.img_path %}
                     <img src="{{ tournament.img_path.url }}" alt="大会画像" width="300">
-                    <br>
-                    <input type="file" name="img_path">
-                </div>
-            {% endif %}
+                {% else %}
+                    <p>画像が設定されていません</p>
+                {% endif %}
+                <br>
+            </div>
 
             <ul>
-                <li>
-                    <strong>大会名:</strong>
-                    <input type="text" name="name" value="{{ tournament.name }}">
-                </li>
-                <li>
-                    <strong>URL識別子 (UUID):</strong>
-                    <input type="text" value="{{ tournament.url_uuid }}" readonly>
-                    <small>※変更不可</small>
-                </li>
-                <li>
-                    <strong>パスワード:</strong>
-                    <input type="text" name="password" value="{{ tournament.password }}">
-                </li>
+                <li>大会名: {{ tournament.name }}</li>
+                <li>URL識別子 (UUID): {{ tournament.url_uuid }} (変更不可)</li>
+                <li>パスワード: {{ tournament.password }}</li>
             </ul>
-        </div>
+        </section>
 
-        <br>
-
-        {% if tournament.pdf_img_path %}
-        <div>
+        <section>
             <h2>大会規約 (PDF)</h2>
-            <p><a href="{{ tournament.pdf_img_path.url }}" target="_blank">別タブでPDFを開く</a></p>
-            <input type="file" name="pdf_img_path" accept="application/pdf">
-        </div>
-        {% endif %}
+            {% if tournament.pdf_img_path %}
+                <p><a href="{{ tournament.pdf_img_path.url }}" target="_blank">現在の規約PDFを開く</a></p>
+            {% else %}
+                <p>規約PDFは登録されていません。</p>
+            {% endif %}
+        </section>
 
-        <br>
-        <hr>
-        
-<h3>競技一覧</h3>
-<ul>
-    {% for event in events %}
-        <li>
-            {# tournament_pk と pk を渡してリンクを作成 #}
-            {# <a href="{% url 'event_detail_admin' tournament_pk=event.tournament.id pk=event.id %}"> #}
-                <a href="#">
-                {{ event.name }} 
-                {% if event.category == 1 %}(クラス対抗){% else %}(一般){% endif %}
-            </a>
-        </li>
-    {% empty %}
-        <li>登録されている競技はありません。</li>
-    {% endfor %}
-</ul>
         <hr>
 
-        <div>
+        <section>
+            <h2>競技一覧</h2>
+            <ul>
+                {% for event in events %}
+                    <li>
+                        {# <a href="{% url 'event_detail_admin' tournament_pk=tournament.pk pk=event.pk %}"> #}
+                        <a href="http://">
+                            {{ event.name }} 
+                            {% if event.category == 1 %}(クラス対抗){% else %}(一般){% endif %}
+                        </a>
+                    </li>
+                {% empty %}
+                    <li>登録されている競技はありません。</li>
+                {% endfor %}
+            </ul>
+          
+        </section>
+
+        <hr>
+
+        <section>
             <h2>クラスチーム一覧</h2>
             <ul>
                 {% for team in teams %}
-                    <li><input type="text" name="teams" value="{{ team.name }}"></li>
+                    <li>{{ team.name }}</li>
                 {% empty %}
                     <li>クラスチームが登録されていません</li>
                 {% endfor %}
             </ul>
-        </div>
+        </section>
 
-        <br>
-
-        <div>
+        <section>
             <h2>順位別ポイント設定</h2>
             {% if tournament.points.all %}
                 <ul>
                     {% for p in tournament.points.all %}
                         <li>
-                            <strong>第 {{ p.rank }} 位:</strong>
-                            <input type="number" name="rank_points" value="{{ p.point }}"> pt
+                            第 {{ p.rank }} 位: {{ p.point }} pt
                         </li>
                     {% endfor %}
                 </ul>
             {% else %}
                 <p>ポイント設定が登録されていません。</p>
             {% endif %}
-        </div>
+        </section>
 
         <hr>
 
-        <button type="submit">この内容で一括保存</button>
     </form>
 
     <hr>
 
-    <div>
+    <section>
+        <h2>総合ランキング</h2>
+        <ol>
+            {% for team in rankings %}
+                <li>{{ team.rank }}位: {{ team.name }}（{{ team.total_point|default:0 }} pt）</li>
+            {% empty %}
+                <li>現在、集計データはありません。</li>
+            {% endfor %}
+        </ol>
+    </section>
 
-    <h2>大会削除</h2>
-    <!-- 大会削除用フォーム（POST） -->
-    <form action="{% url 'tournament_delete' tournament.pk %}" method="POST">
-        {% csrf_token %}
+    <hr>
 
-        <input type="hidden" name="tournament_id" value="{{ tournament.pk }}">
-
-        <button
-            type="submit"
-            value="{{ tournament.pk }}"
-            onclick="return confirm('本当にこの大会を削除しますか？');">
-            この大会を削除する
-        </button>
-    </form>
-</div>
-
-    <h2>総合ランキング</h2>
-    <ul>
-        {% for team in rankings %}
-            <li><strong>{{ team.rank }}位</strong>: {{ team.name }}（{{ team.total_point|default:0 }} pt）</li>
-        {% empty %}
-            <li>現在、集計データはありません。</li>
-        {% endfor %}
-    </ul>
+    <section>
+        <h2>大会の削除</h2>
+        <p>大会を削除すると、紐付いている全てのデータが消去されます。</p>
+        <form action="{% url 'tournament_delete' tournament.pk %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="tournament_id" value="{{ tournament.pk }}">
+            <button type="submit" onclick="return confirm('本当にこの大会を削除しますか？');">
+                大会を削除する
+            </button>
+        </form>
+    </section>
 </div>
 {% endblock %}
