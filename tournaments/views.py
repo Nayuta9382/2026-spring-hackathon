@@ -3,6 +3,7 @@ from .models import Tournament,TournamentPoint
 from .forms import CreateForm
 from .services import create_tournament_with_teams, get_tournament_rannkings,update_tournament_after
 from teams.service import get_team_group_by_category,get_teams_by_teamGroup
+from events.service import get_events_by_tournament
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views import View
@@ -43,6 +44,7 @@ class TournamentDetailView(DetailView):
     def get_context_data(self, **kwargs):
         # 1. まず親クラスの標準的なコンテキスト（tournament等）を取得
         context = super().get_context_data(**kwargs)
+        tournament = self.object
 
         # 2. URLからpkを取得（self.object でも取得可能です）
         pk = self.kwargs.get('pk')
@@ -52,12 +54,16 @@ class TournamentDetailView(DetailView):
         context['rankings'] = get_tournament_rannkings(pk)
 
         from .forms import UpdateStatusForm
-        context['status_form'] = UpdateStatusForm(instance=self.object)
+        context['status_form'] = UpdateStatusForm(instance=tournament)
 
         # クラスチームの一覧を取得する
         team_group = get_team_group_by_category(tournament=self.object,category=1)
         teams = get_teams_by_teamGroup(team_group)
         context['teams'] = teams
+
+        # 競技の一覧を取得する
+        events = get_events_by_tournament(tournament=tournament)
+        context['events'] = events
 
         return context
 

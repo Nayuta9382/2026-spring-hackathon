@@ -51,6 +51,24 @@
         {% endif %}
 
         <br>
+        <hr>
+        
+<h3>競技一覧</h3>
+<ul>
+    {% for event in events %}
+        <li>
+            {# tournament_pk と pk を渡してリンクを作成 #}
+            {# <a href="{% url 'event_detail_admin' tournament_pk=event.tournament.id pk=event.id %}"> #}
+                <a href="#">
+                {{ event.name }} 
+                {% if event.category == 1 %}(クラス対抗){% else %}(一般){% endif %}
+            </a>
+        </li>
+    {% empty %}
+        <li>登録されている競技はありません。</li>
+    {% endfor %}
+</ul>
+        <hr>
 
         <div>
             <h2>クラスチーム一覧</h2>
