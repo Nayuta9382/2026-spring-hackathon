@@ -8,6 +8,8 @@ from django.urls import reverse
 from django.views import View
 from django.shortcuts import redirect, get_object_or_404
 from django.db import transaction
+from django.views.generic import DeleteView
+from django.urls import reverse_lazy
 
 
 
@@ -27,7 +29,7 @@ class TournamentCreateView(CreateView):
         self.object = new_tournament
 
         return redirect(self.get_success_url())
-    
+
     # 大会詳細にリダイレクト
     def get_success_url(self):
         return reverse('tournament_detail_admin', kwargs={'pk': self.object.pk})
@@ -93,10 +95,10 @@ class TournamentUpdateView(UpdateView):
 
             teams = form.cleaned_data['team_names']
             rank_points = form.cleaned_data['points']
-            
+
             # チームと基本順位ポイントを更新する
             update_tournament_after(tournament = tournament,teams = teams, rank_points = rank_points)
-          
+
 
         return redirect(self.get_success_url())
 
@@ -123,4 +125,11 @@ class UpdateStatusView(View):
 
         except Exception as e:
             return redirect('tournament_detail_admin', pk=pk)
+
+     # 大会を削除する
+class TournamentDeleteView(DeleteView):
+    model = Tournament
+    template_name = 'tournament/delete.html'
+    #削除後は大会一覧へリダイレクト
+    success_url = reverse_lazy('tournament_list')
 
