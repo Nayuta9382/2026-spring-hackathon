@@ -4,15 +4,14 @@ from teams.models import TeamGroup, Team
 from django.shortcuts import get_object_or_404
 from teams.service import delete_team_group,create_team_group,bulk_create_teams
 
-
 # 大会作成機能のサービス関数
 def create_tournament_with_teams(tournament_data):
     with transaction.atomic():
         # 1. 大会作成
         tournament = Tournament.objects.create(
-           name=tournament_data.get('name'), 
-            password=tournament_data.get('password'), 
-            img_path=tournament_data.get('img_path'),         
+           name=tournament_data.get('name'),
+            password=tournament_data.get('password'),
+            img_path=tournament_data.get('img_path'),
             pdf_img_path=tournament_data.get('pdf_img_path')
         )
 
@@ -27,7 +26,7 @@ def create_tournament_with_teams(tournament_data):
 
         # 4. ポイント一括作成
         create_tournament_point(tournament,tournament_data.get('points', []))
-       
+
     return tournament
 
 # ポイントを一括作成する
@@ -36,7 +35,7 @@ def create_tournament_point(tournament,points):
             TournamentPoint(tournament=tournament, rank=i, point=p)
             for i, p in enumerate(points, 1)
         ])
-     
+
 # 大会に紐づいている基本ポイントを削除する
 def delete_tournament_point(tournament):
     tournament.points.all().delete()
@@ -52,29 +51,29 @@ def get_tournament_detail_admin(id):
 # 大会idからその大会のクラスの総合順位を取得する
 def get_tournament_rannkings(tournament_id):
     query = """
-        SELECT 
+        SELECT
             t.name AS name,
             SUM(er.point) AS total_point,
             RANK() OVER (ORDER BY SUM(er.point) DESC) AS rank
         FROM teams_teamgroup tg
-        INNER JOIN teams_team t 
+        INNER JOIN teams_team t
             ON tg.id = t.team_group_id
-        INNER JOIN events_event e 
+        INNER JOIN events_event e
             ON tg.id = e.team_group_id
-        INNER JOIN event_results_eventresult er 
+        INNER JOIN event_results_eventresult er
             ON e.id = er.event_id
-        WHERE 
+        WHERE
             tg.tournament_id = %s
         AND tg.category = 1
-        GROUP BY 
+        GROUP BY
             t.id, t.name
-        ORDER BY 
+        ORDER BY
             rank;
     """
 
     with connection.cursor() as cursor:
         cursor.execute(query, [tournament_id])
-        
+
         # 全行取得して辞書のリストにする
         columns = [col[0] for col in cursor.description]
         rankings = [dict(zip(columns, row)) for row in cursor.fetchall()]
@@ -92,4 +91,10 @@ def update_tournament_after(tournament,teams,rank_points):
         # 基本順位ポイントを更新する
         delete_tournament_point(tournament)
         create_tournament_point(tournament,rank_points)
+
+# 大会を削除
+def delete_tournament(pk):
+    with transaction.atomic():
+        tournament = get_object_or_404(Tournament, pk=pk)
+        tournament.delete()
 
