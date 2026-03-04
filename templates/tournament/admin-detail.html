@@ -3,83 +3,88 @@
 
 {% block content %}
 <div>
-    <div>
-        <h1>{{ tournament.name }} <small>(管理者用)</small></h1>
-        <p><a href="{% url 'tournament_list' %}">← 大会一覧に戻る</a></p>
-    </div>
+    <h1><input type="text" name="name" value="{{ tournament.name }}"> <small>(管理者用)</small></h1>
+    <p><a href="{% url 'tournament_list' %}">← 大会一覧に戻る</a></p>
 
     <hr>
 
-    <div>
-        <h2>大会基本情報</h2>
+    <form action="{% url 'tournament_update' tournament.pk %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
 
-        {% if tournament.img_path %}
-            <div>
-                <p><strong>大会画像:</strong></p>
-                <img src="{{ tournament.img_path.url }}" alt="大会画像" width="300">
-            </div>
+        <div>
+            <h2>大会基本情報</h2>
+
+            {% if tournament.img_path %}
+                <div>
+                    <p><strong>大会画像:</strong></p>
+                    <img src="{{ tournament.img_path.url }}" alt="大会画像" width="300">
+                    <br>
+                    <input type="file" name="img_path">
+                </div>
+            {% endif %}
+
+            <ul>
+                <li>
+                    <strong>大会名:</strong> 
+                    <input type="text" name="name" value="{{ tournament.name }}">
+                </li>
+                <li>
+                    <strong>URL識別子 (UUID):</strong> 
+                    <input type="text" value="{{ tournament.url_uuid }}" readonly> 
+                    <small>※変更不可</small>
+                </li>
+                <li>
+                    <strong>パスワード:</strong> 
+                    <input type="text" name="password" value="{{ tournament.password }}">
+                </li>
+            </ul>
+        </div>
+
+        <br>
+
+        {% if tournament.pdf_img_path %}
+        <div>
+            <h2>大会規約 (PDF)</h2>
+            <p><a href="{{ tournament.pdf_img_path.url }}" target="_blank">別タブでPDFを開く</a></p>
+            <input type="file" name="pdf_img_path" accept="application/pdf">
+        </div>
         {% endif %}
 
-        <ul>
-            <li><strong>大会名:</strong> {{ tournament.name }}</li>
-            <li><strong>URL識別子 (UUID):</strong> {{ tournament.url_uuid }}</li>
-            <li>
-                <strong>現在のステータス:</strong>
-                {% if tournament.status == 0 %}開催前{% elif tournament.status == 1 %}開催中{% else %}終了{% endif %}
-            </li>
+        <br>
 
-            <li>
-                <strong>ステータス変更:</strong>
-                {% comment %} 大会ステータス変更 {% endcomment %}
-                <form action="{% url 'api_update_status' tournament.pk %}" method="POST" style="display: inline;">
-                    {% csrf_token %}
-                    {{ status_form.status }}
-                    <button type="submit">更新保存</button>
-                </form>
-                <span id="status-msg"></span>
-            </li>
-
-            <li><strong>作成日時:</strong> {{ tournament.created_at|date:"Y/m/d H:i" }}</li>
-            <li><strong>パスワード:</strong> {{ tournament.password }}</li>
-        </ul>
-        <a href="{% url 'tournament_update' tournament.pk %}">編集</a>
-    </div>
-
-    <br>
-
-    {% if tournament.pdf_img_path %}
-    <div>
-        <h2>大会規約 (PDF)</h2>
-        <p><a href="{{ tournament.pdf_img_path.url }}" target="_blank">別タブでPDFを開く</a></p>
-        <embed src="{{ tournament.pdf_img_path.url }}" type="application/pdf" width="100%" height="500px">
-    </div>
-    {% endif %}
-
-    <br>
-    <div>
-        <h2>クラスチーム一覧</h2>
-         <ul>
-        {% for team in teams %}
-            <li>{{ team }}</li>
-        {% empty %}
-            <li>クラスチームが登録されていません</li>
-        {% endfor %}
-    </ul>
-    </div>
-    <br>
-
-    <div>
-        <h2>順位別ポイント設定</h2>
-        {% if tournament.points.all %}
+        <div>
+            <h2>クラスチーム一覧</h2>
             <ul>
-                {% for p in tournament.points.all %}
-                    <li><strong>第 {{ p.rank }} 位:</strong> {{ p.point }} pt</li>
+                {% for team in teams %}
+                    <li><input type="text" name="teams" value="{{ team.name }}"></li>
+                {% empty %}
+                    <li>クラスチームが登録されていません</li>
                 {% endfor %}
             </ul>
-        {% else %}
-            <p>ポイント設定が登録されていません。</p>
-        {% endif %}
-    </div>
+        </div>
+
+        <br>
+
+        <div>
+            <h2>順位別ポイント設定</h2>
+            {% if tournament.points.all %}
+                <ul>
+                    {% for p in tournament.points.all %}
+                        <li>
+                            <strong>第 {{ p.rank }} 位:</strong> 
+                            <input type="number" name="rank_points" value="{{ p.point }}"> pt
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>ポイント設定が登録されていません。</p>
+            {% endif %}
+        </div>
+
+        <hr>
+
+        <button type="submit">この内容で一括保存</button>
+    </form>
 
     <hr>
 
@@ -92,6 +97,4 @@
         {% endfor %}
     </ul>
 </div>
-
-<script></script>
 {% endblock %}

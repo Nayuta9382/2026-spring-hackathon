@@ -43,7 +43,7 @@ def delete_tournament_point(tournament):
 
 
 # 大会idから詳細情報を取得する
-def get_tournament_detail(id):
+def get_tournament_detail_admin(id):
     tournament = get_object_or_404(Tournament, pk=id)
 
     return tournament
