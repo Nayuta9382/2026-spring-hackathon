@@ -1,0 +1,111 @@
+{% extends 'layouts/admin-layout.html' %}
+{% load static %}
+
+{% block content %}
+<h1>競技編集</h1>
+
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {# 1. 競技名 #}
+    <div>
+        <label>競技名</label>
+        <input type="text" name="name" value="{{ event.name }}">
+    </div>
+
+    {# 2. 競技区分 #}
+    <div>
+        <label>競技カテゴリー</label>
+        <select name="category" id="id_category" onchange="toggleTeamsDisplay()">
+            <option value="0" {% if event.category == 0 %}selected{% endif %}>一般 (独自チーム)</option>
+            <option value="1" {% if event.category == 1 %}selected{% endif %}>クラス対抗</option>
+        </select>
+    </div>
+
+    {# 4. 競技詳細 #}
+    <div>
+        <label>競技詳細・ルール</label>
+        <textarea name="detail" rows="5">{{ event.detail }}</textarea>
+    </div>
+
+    <hr>
+
+    {# 5. 画像類 #}
+    <div>
+        <label>トーナメント画像</label>
+        {% if event.tournament_img %}
+            <p>現在: <img src="{{ event.tournament_img.url }}" width="150"></p>
+        {% endif %}
+        <input type="file" name="tournament_img">
+    </div>
+
+    <div>
+        <label>競技イメージ画像</label>
+        {% if event.event_img %}
+            <p>現在: <img src="{{ event.event_img.url }}" width="150"></p>
+        {% endif %}
+        <input type="file" name="event_img">
+    </div>
+
+    <hr>
+
+    {# チーム設定エリア #}
+    <div id="teams-section">
+        <h3>チーム設定</h3>
+
+        {# 一般(0)の時：入力欄を表示 #}
+        <div id="custom-teams-area">
+            <div id="teams-container">
+                {% for team in teams %}
+                    <div class="input-row">
+                        <input type="text" name="teams" value="{{ team.name }}" placeholder="チーム名を入力">
+                        {% if not forloop.first %}
+                            <input type="button" value="x" onclick="removeBtnEvent(this)">
+                        {% endif %}
+                    </div>
+                {% empty %}
+                    <div class="input-row">
+                        <input type="text" name="teams" placeholder="チーム名を入力">
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="button" onclick="teamAddInput()">チームを追加</button>
+        </div>
+
+        {# クラス対抗(1)の時：メッセージを表示 #}
+        <div id="class-teams-msg" style="display: none;">
+            <p><strong>クラス対抗モード適用中:</strong> 大会共通のクラスチーム設定が適用されます。</p>
+        </div>
+    </div>
+
+    <hr>
+
+    {# 送信・戻る #}
+    <div>
+        <button type="submit">更新保存</button>
+    </div>
+</form>
+
+<script>
+    function toggleTeamsDisplay() {
+        const categorySelect = document.getElementById('id_category');
+        const customArea = document.getElementById('custom-teams-area');
+        const classMsg = document.getElementById('class-teams-msg');
+        
+        if (categorySelect.value === "0") {
+            customArea.style.display = 'block';
+            classMsg.style.display = 'none';
+        } else {
+            customArea.style.display = 'none';
+            classMsg.style.display = 'block';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        toggleTeamsDisplay();
+    });
+</script>
+
+<script src="{% static 'js/events/edit.js' %}"></script>
+
+{% endblock content %}
