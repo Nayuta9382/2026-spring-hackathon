@@ -30,7 +30,7 @@ class TournamentCreateView(CreateView):
     
     # 大会詳細にリダイレクト
     def get_success_url(self):
-        return reverse('tournament_detail', kwargs={'pk': self.object.pk})
+        return reverse('tournament_detail_admin', kwargs={'pk': self.object.pk})
 
 # 管理者の大会詳細情報を取得する
 class TournamentDetailView(DetailView):
@@ -103,7 +103,7 @@ class TournamentUpdateView(UpdateView):
 
     def get_success_url(self):
         # 編集が終わったら、また詳細画面に戻る
-        return reverse('tournament_detail', kwargs={'pk': self.object.pk})
+        return reverse('tournament_detail_admin', kwargs={'pk': self.object.pk})
 
     # 大会ステータスのpulldown
 class UpdateStatusView(View):
@@ -119,8 +119,8 @@ class UpdateStatusView(View):
                 tournament.status = int(new_status)
                 tournament.save()
 
-            return redirect('tournament_detail', pk=pk)
+            return redirect('tournament_detail_admin', pk=pk)
 
         except Exception as e:
-            return redirect('tournament_detail', pk=pk)
+            return redirect('tournament_detail_admin', pk=pk)
 

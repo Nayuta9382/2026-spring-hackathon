@@ -59,7 +59,7 @@ class EventCreateView(CreateView):
 
     def get_success_url(self):
         # 保存成功後の遷移先（大会詳細ページなど）
-        return reverse_lazy('tournament_detail', kwargs={'pk': self.object.tournament.id})
+        return reverse_lazy('tournament_detail_admin', kwargs={'pk': self.object.tournament.id})
 
 # 管理者の詳細表示
 class EventAdminDetailView(DetailView):

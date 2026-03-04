@@ -8,7 +8,7 @@ urlpatterns = [
     # 大会作成
     path('add', TournamentCreateView.as_view(), name='tournament_create'),
     # 管理者大会詳細
-    path('<int:pk>/admin', TournamentDetailView.as_view(), name='tournament_detail'),
+    path('<int:pk>/admin', TournamentDetailView.as_view(), name='tournament_detail_admin'),
     # 管理者大会編集
     path('<int:pk>/update', TournamentUpdateView.as_view(), name='tournament_update'),
     # 大会ステータスのpulldwon

@@ -32,7 +32,7 @@
             {% endfor %}
             <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
                 <button type="submit" style="background-color: #007bff; color: white; padding: 10px 25px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">保存する</button>
-                <a href="{% url 'tournament_detail' pk=view.kwargs.tournament_pk %}" style="margin-left: 15px; text-decoration: none; color: #666; font-size: 0.9em;">キャンセル</a>
+                <a href="{% url 'tournament_detail_admin' pk=view.kwargs.tournament_pk %}" style="margin-left: 15px; text-decoration: none; color: #666; font-size: 0.9em;">キャンセル</a>
             </div>
 
             <div>
