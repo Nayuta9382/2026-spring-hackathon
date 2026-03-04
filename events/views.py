@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.views.generic.edit import CreateView
-from django.views.generic import DetailView
+from django.views.generic import DetailView,UpdateView
 from django.urls import reverse_lazy
 from .models import Event
-from teams.service import create_team_group,bulk_create_teams,get_team_group_by_category,get_teams_group_by_event
+from teams.service import create_team_group,bulk_create_teams,get_team_group_by_category,get_teams_group_by_event,get_teams_by_event,delete_teams_by_group
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 from tournaments.models import Tournament
@@ -62,7 +62,56 @@ class EventCreateView(CreateView):
         return reverse_lazy('tournament_detail_admin', kwargs={'pk': self.object.tournament.id})
 
 # 管理者の詳細表示
-class EventAdminDetailView(DetailView):
+class EventAdminDetailView(UpdateView):
     model = Event
-    template_name = 'events/admin-detail.html'
+    template_name = 'events/edit.html'
     context_object_name = 'event'
+    form_class = CreateForm
+
+     # templateファイルに渡す値を取得
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # 登録されているクラスチームの一覧を取得する
+        event = self.get_object()
+        teams = get_teams_by_event(event)
+        if event.category == 1:
+            teams = []
+        # contextに保存
+        context['teams'] = teams
+
+        return context
+    
+    def form_valid(self, form):
+        
+        # 2. データの取り出し
+        event = form.instance
+        tournament = event.tournament
+        teams = form.cleaned_data.get('teams')
+        with transaction.atomic():
+            # クラス競技かどうか
+            if form.instance.category == 1:
+                # クラスグループを利用
+                class_team_group = get_team_group_by_category(tournament, category=1)
+                event.team_group = class_team_group
+            else:
+                # ガチチームを作成する
+                # 既存のチームの削除等は時間があれば
+                # チームグループを作成する
+                new_group = create_team_group(tournament,category = 0)
+                event.team_group = new_group
+                # # チームを保存する
+                bulk_create_teams(new_group, teams)
+
+
+            # 競技を保存する
+            response = super().form_valid(form)
+
+            return response
+    
+    def get_success_url(self):
+        # self.object は Event インスタンス
+        return reverse_lazy('event_edit', kwargs={
+            'tournament_pk': self.object.tournament.id, # 親のトーナメントID
+            'pk': self.object.id                        # このイベント自身のID
+        })
