@@ -1,11 +1,124 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <!-- リセットcss -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+    <style>
+        /* ヘッダーレイアウト */
+        .bg_deader {
+            /* ヘッダーを固定する */
+            position: fixed;
+            /* 画面の上部に固定 */
+            top: 0;
+            /* 画面の幅いっぱいに広げる */
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            height: 100px;
+        }
+
+        /* クリッピングマスク */
+        img.image-circle2 {
+            width: 4rem;
+            height: 4rem;
+            object-fit: none;
+            border-radius: 50%;
+        }
+
+        form {
+            border: none;
+        }
+
+        /* プルダウン関係 */
+        .pulldown {
+            outline: none;
+            /* background: white; */
+            /* align-items: center; */
+        }
+
+        /* ボタン */
+        button {
+            text-decoration: none;
+            width: 135px;
+            margin: auto;
+            padding: 0.5rem;
+            font-weight: bold;
+            color: #fff;
+            /* 角丸 */
+            border-radius: 1rem;
+            transition: 0.5s;
+            /* ドロップジャドウ */
+            box-shadow: 0px 0px 5px 5px rgba(255, 255, 255, 0.3);
+        }
+
+        button.gazou {
+            border: 3px solid #77FF00;
+            background: #52BC77;
+        }
+
+        button.gazou:hover {
+            color: #27acd9;
+            background: #fff;
+        }
+
+        /* このクラスは、ダミー（ヘッダーに隠れるため、上部、左右に余白を追加） */
+        .dummy {
+            margin-top: 150px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+    </style>
 </head>
+
 <body>
-    hirose
+    <header>
+        <div class="bg_deader">
+            <img src="ダミー.png" alt="大会の画像" class="image-circle2">
+            <h1 style="color: white; padding-left: 1rem;">大会名</h1>
+        </div>
+    </header>
+
+    <main style="background: #50014A;">
+        <form action="#" class="dummy pulldown">
+            <div>
+                <!-- プルダウン + ラベル -->
+                <label for="prefecture" style="font-weight: bold;">順位</label><br>
+                <select id="prefecture" name="prefecture">
+                    <option value="">選択</option>
+                    <option value="1">1位</option>
+                    <option value="2">2位</option>
+                    <option value="3">3位</option>
+                    <option value="4">4位</option>
+                </select>
+            </div>
+
+            <!-- テキストボックス -->
+            <div>
+                <label for="comment">コメント</label><br>
+                <input type="text" id="comment" name="comment">
+            </div>
+
+            <!-- テキストエリア -->
+            <div>
+                <label for="">競技説明</label><br>
+                <textarea name="comment" id="comment" cols="150" rows="8"></textarea>
+            </div>
+
+            <!-- ボタン -->
+            <div style="margin-top: 20px;">
+                <button type="submit" class="gazou">画像選択</button>
+            </div>
+            <div style="margin-top: 50px;">
+                <button type="submit">送信</button>
+            </div>
+        </form>
+    </main>
 </body>
+
 </html>
