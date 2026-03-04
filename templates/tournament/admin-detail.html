@@ -25,16 +25,16 @@
 
             <ul>
                 <li>
-                    <strong>大会名:</strong> 
+                    <strong>大会名:</strong>
                     <input type="text" name="name" value="{{ tournament.name }}">
                 </li>
                 <li>
-                    <strong>URL識別子 (UUID):</strong> 
-                    <input type="text" value="{{ tournament.url_uuid }}" readonly> 
+                    <strong>URL識別子 (UUID):</strong>
+                    <input type="text" value="{{ tournament.url_uuid }}" readonly>
                     <small>※変更不可</small>
                 </li>
                 <li>
-                    <strong>パスワード:</strong> 
+                    <strong>パスワード:</strong>
                     <input type="text" name="password" value="{{ tournament.password }}">
                 </li>
             </ul>
@@ -71,7 +71,7 @@
                 <ul>
                     {% for p in tournament.points.all %}
                         <li>
-                            <strong>第 {{ p.rank }} 位:</strong> 
+                            <strong>第 {{ p.rank }} 位:</strong>
                             <input type="number" name="rank_points" value="{{ p.point }}"> pt
                         </li>
                     {% endfor %}
@@ -87,6 +87,24 @@
     </form>
 
     <hr>
+
+    <div>
+
+    <h2>大会削除</h2>
+    <!-- 大会削除用フォーム（POST） -->
+    <form action="{% url 'tournament_delete' tournament.pk %}" method="POST">
+        {% csrf_token %}
+
+        <input type="hidden" name="tournament_id" value="{{ tournament.pk }}">
+
+        <button
+            type="submit"
+            value="{{ tournament.pk }}"
+            onclick="return confirm('本当にこの大会を削除しますか？');">
+            この大会を削除する
+        </button>
+    </form>
+</div>
 
     <h2>総合ランキング</h2>
     <ul>
