@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-<h1>競技作成</h1>
+<h1>競技編集</h1>
 
 <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
@@ -13,7 +13,7 @@
         <input type="text" name="name" value="{{ event.name }}">
     </div>
 
-    {# 2. 競技カテゴリー (セレクトボックス) #}
+    {# 2. 競技区分 #}
     <div>
         <label>競技カテゴリー</label>
         <select name="category" id="id_category" onchange="toggleTeamsDisplay()">
@@ -22,7 +22,7 @@
         </select>
     </div>
 
-    {# 3. 競技詳細 #}
+    {# 4. 競技詳細 #}
     <div>
         <label>競技詳細・ルール</label>
         <textarea name="detail" rows="5">{{ event.detail }}</textarea>
@@ -30,7 +30,7 @@
 
     <hr>
 
-    {# 4. トーナメント画像 #}
+    {# 5. 画像類 #}
     <div>
         <label>トーナメント画像</label>
         {% if event.tournament_img %}
@@ -39,7 +39,6 @@
         <input type="file" name="tournament_img">
     </div>
 
-    {# 5. 競技イメージ画像 #}
     <div>
         <label>競技イメージ画像</label>
         {% if event.event_img %}
@@ -50,23 +49,21 @@
 
     <hr>
 
-    {# 6. チーム設定エリア #}
+    {# チーム設定エリア #}
     <div id="teams-section">
         <h3>チーム設定</h3>
 
-        {# カテゴリーが「一般(0)」の時に表示する入力エリア #}
+        {# 一般(0)の時：入力欄を表示 #}
         <div id="custom-teams-area">
             <div id="teams-container">
                 {% for team in teams %}
                     <div class="input-row">
                         <input type="text" name="teams" value="{{ team.name }}" placeholder="チーム名を入力">
-                        {# 最初の行以外には削除ボタンを表示 #}
                         {% if not forloop.first %}
                             <input type="button" value="x" onclick="removeBtnEvent(this)">
                         {% endif %}
                     </div>
                 {% empty %}
-                    {# チームが存在しない場合の初期行 #}
                     <div class="input-row">
                         <input type="text" name="teams" placeholder="チーム名を入力">
                     </div>
@@ -75,7 +72,7 @@
             <button type="button" onclick="teamAddInput()">チームを追加</button>
         </div>
 
-        {# カテゴリーが「クラス対抗(1)」の時に表示するメッセージ #}
+        {# クラス対抗(1)の時：メッセージを表示 #}
         <div id="class-teams-msg" style="display: none;">
             <p><strong>クラス対抗モード適用中:</strong> 大会共通のクラスチーム設定が適用されます。</p>
         </div>
@@ -83,39 +80,32 @@
 
     <hr>
 
-    {# 7. アクションボタン #}
+    {# 送信・戻る #}
     <div>
         <button type="submit">更新保存</button>
     </div>
 </form>
 
 <script>
-    /**
-     * セレクトボックスの値によってチーム入力欄の表示/非表示を切り替える
-     */
     function toggleTeamsDisplay() {
         const categorySelect = document.getElementById('id_category');
         const customArea = document.getElementById('custom-teams-area');
         const classMsg = document.getElementById('class-teams-msg');
         
         if (categorySelect.value === "0") {
-            // 一般(0)の場合は入力欄を表示、メッセージを隠す
             customArea.style.display = 'block';
             classMsg.style.display = 'none';
         } else {
-            // クラス対抗(1)の場合は入力欄を隠し、メッセージを表示
             customArea.style.display = 'none';
             classMsg.style.display = 'block';
         }
     }
 
-    // ページ読み込み時に実行して現在の設定を反映
     document.addEventListener('DOMContentLoaded', function() {
         toggleTeamsDisplay();
     });
 </script>
 
-{# チーム追加・削除の関数が含まれる外部JS #}
 <script src="{% static 'js/events/edit.js' %}"></script>
 
 {% endblock content %}
