@@ -24,50 +24,135 @@
         }
 
         /* クリッピングマスク */
-        img.image-circle2 {
+        .image_circle2 {
             width: 4rem;
             height: 4rem;
             object-fit: none;
             border-radius: 50%;
         }
 
-        form {
+        .form {
             border: none;
+        }
+
+        .form_label {
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .text_input {
+            width: 100%;
         }
 
         /* プルダウン関係 */
         .pulldown {
             outline: none;
-            /* background: white; */
-            /* align-items: center; */
         }
 
-        /* ボタン */
-        button {
+        /* ボタン関係 */
+        .btn {
             text-decoration: none;
-            width: 135px;
+            width: max-content;
             margin: auto;
             padding: 0.5rem;
             font-weight: bold;
             color: #fff;
             /* 角丸 */
-            border-radius: 1rem;
+            border-radius: 10px;
             transition: 0.5s;
             /* ドロップジャドウ */
-            box-shadow: 0px 0px 5px 5px rgba(255, 255, 255, 0.3);
+            box-shadow: 0px 0px 3px 3px rgba(255, 255, 255, 0.3);
         }
 
-        button.gazou {
+        .gazou {
             border: 3px solid #77FF00;
             background: #52BC77;
         }
 
-        button.gazou:hover {
-            color: #27acd9;
+        .gazou:hover {
+            color: #52BC77;
             background: #fff;
         }
 
+        .delete {
+            border: 3px solid #FF0000;
+            background: #AC0000;
+        }
+
+        .delete:hover {
+            color: #AC0000;
+            background: #fff;
+        }
+
+        .update {
+            width: 100%;
+
+        }
+
+        .return {
+            border: 3px solid #FF00ED;
+            background: #B53DAD;
+        }
+
+        .return:hover {
+            color: #B53DAD;
+            background: #fff;
+        }
+
+        /* メニュー */
+        .menu_link {
+            /* 中身を揃える */
+            display: block;
+            text-align: center;
+            /* 上下の中央揃え */
+            align-content: center;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .menu {
+            display: flex;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .item {
+            /* width: 145px; */
+            /* height: 105px; */
+            width: 100%;
+            height: 90%;
+            background: #8B0482;
+            margin: 15px;
+        }
+
+        /* 画像の写真フレーム化 */
+        .frame {
+            object-fit: contain;
+            width: 100%;
+            height: 55px;
+        }
+
+        /* 画像UI */
+        .image_center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image_item {
+            /* 中身のセンタリング */
+            display: block;
+            /* 上下の中央揃え */
+            align-content: center;
+            justify-items: center;
+            width: 100%;
+            height: auto;
+            margin: 1rem;
+            background: #D9D9D9;
+        }
+
         /* このクラスは、ダミー（ヘッダーに隠れるため、上部、左右に余白を追加） */
+        /* 削除クラス */
         .dummy {
             margin-top: 150px;
             margin-left: 20px;
@@ -79,16 +164,18 @@
 <body>
     <header>
         <div class="bg_deader">
-            <img src="ダミー.png" alt="大会の画像" class="image-circle2">
+            <img src="img/icon/ダミー.png" alt="大会の画像" class="image_circle2">
             <h1 style="color: white; padding-left: 1rem;">大会名</h1>
         </div>
     </header>
 
+    <!-- ドロップシャドウ等を見やすくするため、仮背景を配置 -->
+    <!-- mainのstyleを削除する -->
     <main style="background: #50014A;">
-        <form action="#" class="dummy pulldown">
+        <form action="#" class="dummy pulldown form">
             <div>
                 <!-- プルダウン + ラベル -->
-                <label for="prefecture" style="font-weight: bold;">順位</label><br>
+                <label for="prefecture" style="font-weight: bold;" class="form_label">順位</label><br>
                 <select id="prefecture" name="prefecture">
                     <option value="">選択</option>
                     <option value="1">1位</option>
@@ -100,24 +187,59 @@
 
             <!-- テキストボックス -->
             <div>
-                <label for="comment">コメント</label><br>
-                <input type="text" id="comment" name="comment">
+                <label for="comment" class="form_label">コメント</label><br>
+                <input type="text" class="text_input" id="comment" name="comment">
             </div>
 
             <!-- テキストエリア -->
             <div>
-                <label for="">競技説明</label><br>
-                <textarea name="comment" id="comment" cols="150" rows="8"></textarea>
+                <label for="description" class="form_label">競技説明</label><br>
+                <textarea class="text_input" name="description" id="description" cols="150" rows="8"></textarea>
             </div>
 
-            <!-- ボタン -->
-            <div style="margin-top: 20px;">
-                <button type="submit" class="gazou">画像選択</button>
+            <!-- ボタン各種 -->
+            <!-- 画像選択 -->
+            <div>
+                <button type="submit" class="gazou btn">画像選択</button>
             </div>
-            <div style="margin-top: 50px;">
-                <button type="submit">送信</button>
+            <!-- 削除 -->
+            <div>
+                <button type="submit" class="delete btn">削除</button>
+            </div>
+            <!-- 更新 -->
+            <div>
+                <button type="submit" class="update gazou btn">更新</button>
+            </div>
+            <div>
+                <button type="button" class="update return btn">戻る</button>
             </div>
         </form>
+
+        <!-- メニュー -->
+        <div class="menu">
+            <!-- home -->
+            <a href="../templates/index.html" class="menu item">
+                <span class="menu_link">
+                    <img src="img/icon/Home.webp" alt="home" class="frame">
+                    home
+                </span>
+            </a>
+            <!-- schedule -->
+            <a href="../templates/index.html" class="menu item">
+                <span class="menu_link">
+                    <img src="img/icon/Calendar.webp" alt="home" class="frame">
+                    schedule
+                </span>
+            </a>
+        </div>
+
+        <!-- 画像UI -->
+        <div class="image_center">
+            <div class="image_item">
+                <img src="img/icon/イメージファイルアイコン.webp" alt="イメージ">
+            </div>
+        </div>
+
     </main>
 </body>
 

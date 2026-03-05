@@ -81,6 +81,32 @@
     </ul>
 </section>
 
+<section>
+    <h2>チーム一覧</h2>
+
+    <ul>
+        {% for team in teams %}
+            <li>{{ team }}</li>
+        {% empty %}
+            <li>登録されているチームはありません。</li>
+        {% endfor %}
+    </ul>
+    
+</section>
+
+<section>
+    <h2>順位</h2>
+
+    <ul>
+        {% for event_result in event_results %}
+            <li>{{ event_result.team.name }}:{{ event_result.rank }}位:{{ event_result.point }}</li>
+        {% empty %}
+            <li>順位が登録されていません。</li>
+        {% endfor %}
+    </ul>
+    
+</section>
+
 <hr>
 
 {# スケジュール表示エリア #}

@@ -7,7 +7,7 @@ from teams.service import create_team_group,bulk_create_teams,get_team_group_by_
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 from tournaments.models import Tournament
-from event_results.services import create_event_results
+from event_results.services import create_event_results,get_event_results_by_event
 from .forms import CreateForm
 
 
@@ -66,6 +66,40 @@ class EventAdminDetailView(DetailView):
     model = Event
     template_name = 'events/admin-detail.html'
     context_object_name = 'event'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # 登録されているクラスチームの一覧を取得する
+        event = self.object
+        teams = get_teams_by_event(event)
+      
+        # contextに保存
+        context['teams'] = teams
+
+        # 競技結果を取得する
+        event_results = get_event_results_by_event(event=event)
+        context['event_results'] = event_results
+        
+        return context
+
+# 競技の詳細(一般)
+class EventUserDetailView(DetailView):
+    model = Event
+    template_name = 'events/user-detail.html'
+    context_object_name = 'event'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        event = self.object
+      
+        # 競技結果を取得する
+        event_results = get_event_results_by_event(event=event)
+        context['event_results'] = event_results
+        
+        return context
+
+
+
 
 
     def get_context_data(self, **kwargs):
@@ -127,7 +161,7 @@ class EventEditView(UpdateView):
 
     def get_success_url(self):
         # self.object は Event インスタンス
-        return reverse_lazy('event_edit', kwargs={
+        return reverse_lazy('event_detail_admin', kwargs={
             'tournament_pk': self.object.tournament.id, # 親のトーナメントID
             'pk': self.object.id                        # このイベント自身のID
         })
