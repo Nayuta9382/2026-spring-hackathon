@@ -24,18 +24,18 @@
         }
 
         /* クリッピングマスク */
-        img.image-circle2 {
+        .image_circle2 {
             width: 4rem;
             height: 4rem;
             object-fit: none;
             border-radius: 50%;
         }
 
-        form {
+        .form {
             border: none;
         }
 
-        label {
+        .form_label {
             font-weight: bold;
             color: #fff;
         }
@@ -97,29 +97,58 @@
         }
 
         /* メニュー */
-        a {
+        .menu_link {
+            /* 中身を揃える */
             display: block;
+            text-align: center;
+            /* 上下の中央揃え */
+            align-content: center;
             color: #fff;
-            text-decoration: none;
             font-weight: bold;
         }
 
         .menu {
             display: flex;
             justify-content: center;
-            align-items: center;
+            text-decoration: none;
+            /* align-items: center; */
             /* padding: 15px; */
         }
 
-        .menu .item {
+        .item {
             width: 145px;
             height: 105px;
             background: #8B0482;
-            width: calc(50% - 13px);
-            margin-right: 20px;
+            margin: 15px;
+        }
+
+        /* 画像の写真フレーム化 */
+        .frame {
+            object-fit: contain;
+            width: 100%;
+            height: 55px;
+        }
+
+        /* 画像UI */
+        .image_center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image_item {
+            /* 中身のセンタリング */
+            display: block;
+            /* 上下の中央揃え */
+            align-content: center;
+            justify-items: center;
+            width: 325px;
+            height: 285px;
+            background: #D9D9D9;
         }
 
         /* このクラスは、ダミー（ヘッダーに隠れるため、上部、左右に余白を追加） */
+        /* 削除クラス */
         .dummy {
             margin-top: 150px;
             margin-left: 20px;
@@ -131,7 +160,7 @@
 <body>
     <header>
         <div class="bg_deader">
-            <img src="ダミー.png" alt="大会の画像" class="image-circle2">
+            <img src="img/icon/ダミー.png" alt="大会の画像" class="image_circle2">
             <h1 style="color: white; padding-left: 1rem;">大会名</h1>
         </div>
     </header>
@@ -139,10 +168,10 @@
     <!-- ドロップシャドウ等を見やすくするため、仮背景を配置 -->
     <!-- mainのstyleを削除する -->
     <main style="background: #50014A;">
-        <form action="#" class="dummy pulldown">
+        <form action="#" class="dummy pulldown form">
             <div>
                 <!-- プルダウン + ラベル -->
-                <label for="prefecture" style="font-weight: bold;">順位</label><br>
+                <label for="prefecture" style="font-weight: bold;" class="form_label">順位</label><br>
                 <select id="prefecture" name="prefecture">
                     <option value="">選択</option>
                     <option value="1">1位</option>
@@ -154,14 +183,14 @@
 
             <!-- テキストボックス -->
             <div>
-                <label for="comment">コメント</label><br>
+                <label for="comment" class="form_label">コメント</label><br>
                 <input type="text" id="comment" name="comment">
             </div>
 
             <!-- テキストエリア -->
             <div>
-                <label for="">競技説明</label><br>
-                <textarea name="comment" id="comment" cols="150" rows="8"></textarea>
+                <label for="description" class="form_label">競技説明</label><br>
+                <textarea name="description" id="description" cols="150" rows="8"></textarea>
             </div>
 
             <!-- ボタン各種 -->
@@ -185,15 +214,35 @@
         <!-- メニュー -->
         <div class="menu">
             <!-- home -->
-            <div class="item">
-                <a href="../templates/index.html"><img src="img_icon/Home.webp" alt="home">home</a>
-            </div>
+            <a href="../templates/index.html" class="menu item">
+                <span class="menu_link">
+                    <img src="img/icon/Home.webp" alt="home" class="frame">
+                    home
+                </span>
+            </a>
             <!-- schedule -->
-            <div class="item">
-                <a href="../templates/index.html"><img src="img_icon/Calendar.webp" alt="home">schedule</a>
+            <a href="../templates/index.html" class="menu item">
+                <span class="menu_link">
+                    <img src="img/icon/Calendar.webp" alt="home" class="frame">
+                    schedule
+                </span>
+            </a>
+        </div>
+
+        <!-- 画像UI -->
+        <div class="image_center">
+            <div class="image_item">
+                <img src="img/icon/イメージファイルアイコン.webp" alt="イメージ">
             </div>
         </div>
+
     </main>
 </body>
+<!-- <a href="">
+    <span>
+        <img src="" alt="">
+        <p></p>
+    </span>
+</a> -->
 
 </html>
