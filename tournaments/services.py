@@ -61,7 +61,7 @@ def get_tournament_rannkings(tournament_id):
         INNER JOIN events_event e
             ON tg.id = e.team_group_id
         INNER JOIN event_results_eventresult er
-            ON e.id = er.event_id
+            ON e.id = er.event_id AND t.id = er.team_id
         WHERE
             tg.tournament_id = %s
         AND tg.category = 1
