@@ -61,8 +61,28 @@ class EventCreateView(CreateView):
         # 保存成功後の遷移先（大会詳細ページなど）
         return reverse_lazy('tournament_detail_admin', kwargs={'pk': self.object.tournament.id})
 
-# 管理者の詳細表示
-class EventAdminDetailView(UpdateView):
+# 競技の詳細(管理者)
+class EventAdminDetailView(DetailView):
+    model = Event
+    template_name = 'events/admin-detail.html'
+    context_object_name = 'event'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # 登録されているクラスチームの一覧を取得する
+        event = self.object
+        teams = get_teams_by_event(event)
+      
+        # contextに保存
+        context['teams'] = teams
+        print(teams)
+
+        return context
+
+
+
+# 競技の編集
+class EventEditView(UpdateView):
     model = Event
     template_name = 'events/edit.html'
     context_object_name = 'event'
@@ -111,7 +131,7 @@ class EventAdminDetailView(UpdateView):
     
     def get_success_url(self):
         # self.object は Event インスタンス
-        return reverse_lazy('event_edit', kwargs={
+        return reverse_lazy('event_detail_admin', kwargs={
             'tournament_pk': self.object.tournament.id, # 親のトーナメントID
             'pk': self.object.id                        # このイベント自身のID
         })
