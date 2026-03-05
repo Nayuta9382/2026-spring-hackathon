@@ -19,13 +19,14 @@
         /* 共通のスクリーン設定 */
         .user_screen,
         .admin_screen {
-            height: 50vh;
+            height: 100vh;
             /* 画面の半分の高さ */
             overflow-y: auto;
             /* 中身が多い時だけスクロール */
             position: relative;
             /* 画像の配置基準にする */
             width: 100%;
+
         }
 
         .user_screen {
@@ -52,55 +53,42 @@
         }
 
 
-        .text_accent,
-        .text_label,
-        .text_description {
-            font-size: 3.5rem;
+        .h1,
+        .h2,
+        .p {
             font-weight: bold;
             color: #ffccff;
             /* 背景が暗い想定の明るい色 */
             margin-bottom: 20px;
         }
 
-        /*見出し・順位・ボタンなど*/
-        .text_accent {
-            font-family: 'Quantico';
+        /*見出しなど*/
+        .h1 {
+            font-size: 32px;
         }
 
-        /*項目・ラベル */
-        .text_label {
-            font-family: 'Inter';
+        /*項目 */
+        .h2 {
+            font-size: 20px;
         }
 
-        /*説明・詳細 */
-        .text_description {
-            font-family: 'Noto Sans JP';
+        /*説明・詳細など */
+        .p {
+            font-size: 16px;
         }
     </style>
 </head>
 
-<body>
-    <div class="user_screen">
-        <img src="/static/texture.png" class="bg_overlay_image">
-        <div>aa</div>
+<body class="user_screen">
+    <!-- <body class="admin_screen"> -->
+    <img src="/static/texture.png" class="bg_overlay_image">
+    <div class="">
         <div class="content_container">
-            <div class="text_description">Noto Sans JP</div>
-            <div class="text_accent">Quantico</div>
-            <div class="text_label">Inter</div>
+            <h1 class="h1">タイトル</h1>
+            <h2 class="h2">項目</h2>
+            <p class="p">テキスト</p>
         </div>
     </div>
-
-
-    <div class="admin_screen">
-        <img src="/static/texture.png" class="bg_overlay_image">
-        <div>aa</div>
-        <div class="content_container">
-            <div class="text_description">Noto Sans JP</div>
-            <div class="text_accent">Quantico</div>
-            <div class="text_label">Inter</div>
-        </div>
-    </div>
-
 
 
 
