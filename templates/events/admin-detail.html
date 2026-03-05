@@ -94,6 +94,19 @@
     
 </section>
 
+<section>
+    <h2>順位</h2>
+
+    <ul>
+        {% for event_result in event_results %}
+            <li>{{ event_result.team.name }}:{{ event_result.rank }}位:{{ event_result.point }}</li>
+        {% empty %}
+            <li>順位が登録されていません。</li>
+        {% endfor %}
+    </ul>
+    
+</section>
+
 <hr>
 
 <div>
