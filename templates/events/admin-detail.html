@@ -81,6 +81,19 @@
     </ul>
 </section>
 
+<section>
+    <h2>チーム一覧</h2>
+
+    <ul>
+        {% for team in teams %}
+            <li>{{ team }}</li>
+        {% empty %}
+            <li>登録されているチームはありません。</li>
+        {% endfor %}
+    </ul>
+    
+</section>
+
 <hr>
 
 <div>
