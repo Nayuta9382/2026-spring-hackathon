@@ -5,6 +5,7 @@
 {% block content %}
 <div>
     <h1>大会一覧</h1>
+    <a href="{% url 'tournament_create'%}">大会作成</a>
     {% for item in object_list %}
         <li><a href="{% url 'tournament_detail_admin' item.id %}">{{ item.name }}</a></li>
     {% endfor %}
