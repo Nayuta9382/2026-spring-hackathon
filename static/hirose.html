@@ -35,26 +35,30 @@
             border: none;
         }
 
+        label {
+            font-weight: bold;
+            color: #fff;
+        }
+
         /* プルダウン関係 */
         .pulldown {
             outline: none;
-            /* background: white; */
-            /* align-items: center; */
         }
 
-        /* ボタン */
+        /* ボタン関係 */
         button {
             text-decoration: none;
             width: 135px;
+            height: 45px;
             margin: auto;
-            padding: 0.5rem;
+            /* padding: 0.5rem; */
             font-weight: bold;
             color: #fff;
             /* 角丸 */
-            border-radius: 1rem;
+            border-radius: 10px;
             transition: 0.5s;
             /* ドロップジャドウ */
-            box-shadow: 0px 0px 5px 5px rgba(255, 255, 255, 0.3);
+            box-shadow: 0px 0px 3px 3px rgba(255, 255, 255, 0.3);
         }
 
         button.gazou {
@@ -63,8 +67,56 @@
         }
 
         button.gazou:hover {
-            color: #27acd9;
+            color: #52BC77;
             background: #fff;
+        }
+
+        button.delete {
+            width: 90px;
+            border: 3px solid #FF0000;
+            background: #AC0000;
+        }
+
+        button.delete:hover {
+            color: #AC0000;
+            background: #fff;
+        }
+
+        button.update {
+            width: 330px;
+        }
+
+        button.return {
+            border: 3px solid #FF00ED;
+            background: #B53DAD;
+        }
+
+        button.return:hover {
+            color: #B53DAD;
+            background: #fff;
+        }
+
+        /* メニュー */
+        a {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .menu {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* padding: 15px; */
+        }
+
+        .menu .item {
+            width: 145px;
+            height: 105px;
+            background: #8B0482;
+            width: calc(50% - 13px);
+            margin-right: 20px;
         }
 
         /* このクラスは、ダミー（ヘッダーに隠れるため、上部、左右に余白を追加） */
@@ -84,6 +136,8 @@
         </div>
     </header>
 
+    <!-- ドロップシャドウ等を見やすくするため、仮背景を配置 -->
+    <!-- mainのstyleを削除する -->
     <main style="background: #50014A;">
         <form action="#" class="dummy pulldown">
             <div>
@@ -110,14 +164,35 @@
                 <textarea name="comment" id="comment" cols="150" rows="8"></textarea>
             </div>
 
-            <!-- ボタン -->
-            <div style="margin-top: 20px;">
+            <!-- ボタン各種 -->
+            <!-- 画像選択 -->
+            <div>
                 <button type="submit" class="gazou">画像選択</button>
             </div>
-            <div style="margin-top: 50px;">
-                <button type="submit">送信</button>
+            <!-- 削除 -->
+            <div>
+                <button type="submit" class="delete">削除</button>
+            </div>
+            <!-- 更新 -->
+            <div>
+                <button type="submit" class="update gazou">更新</button>
+            </div>
+            <div>
+                <button type="button" class="update return">戻る</button>
             </div>
         </form>
+
+        <!-- メニュー -->
+        <div class="menu">
+            <!-- home -->
+            <div class="item">
+                <a href="../templates/index.html"><img src="img_icon/Home.webp" alt="home">home</a>
+            </div>
+            <!-- schedule -->
+            <div class="item">
+                <a href="../templates/index.html"><img src="img_icon/Calendar.webp" alt="home">schedule</a>
+            </div>
+        </div>
     </main>
 </body>
 
