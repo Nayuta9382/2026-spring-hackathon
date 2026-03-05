@@ -1,57 +1,38 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.views import View
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views import generic
+from django.urls import reverse
+from django.db import transaction
 from events.models import Event
 from .models import Schedule
 
-
-# =========================================
-# ヘルパー関数
-# =========================================
-
-def get_event(event_pk):
-    """イベントをpkで取得する"""
-    return get_object_or_404(Event, pk=event_pk)
-
-
-def get_schedules(event):
-    """イベントに紐づくスケジュール一覧を取得する"""
-    return event.schedules.all()
-
-
-def get_schedules_by_status(event):
-    """スケジュールをstatus別に分けて返す"""
-    schedules = get_schedules(event)
-    return {
-        'next_schedules': schedules.filter(status=0),
-        'now_schedules': schedules.filter(status=1),
-        'previous_schedules': schedules.filter(status=2),
-    }
-
-
-def build_success_url(event_pk):
-    """成功時のリダイレクトURL（schedule_editに戻る）"""
-    from django.urls import reverse
-    return reverse('schedule_edit', kwargs={'pk': event_pk})
-
-
-def delete_schedules(request, event):
-    """チェックされたスケジュールを削除する"""
+def update_event_schedules_after(request, event):
+    """
+    イベントに紐づくスケジュールの一括更新・削除・新規作成を行う
+    """
+    # 1. 削除処理
     delete_ids = request.POST.getlist('delete_ids')
-    get_schedules(event).filter(pk__in=delete_ids).delete()
+    if delete_ids:
+        event.schedules.filter(pk__in=delete_ids).delete()
 
+    # 2. 既存スケジュールの更新処理
+    schedules = list(event.schedules.all())
+    for s in schedules:
+        Schedule.objects.filter(pk=s.pk).update(order=s.order + 10000)
 
-def save_existing_schedules(request, event):
-    """既存スケジュールを更新する"""
-    for schedule in get_schedules(event):
-        schedule.detail = request.POST.get(f'detail_{schedule.pk}', schedule.detail)
-        schedule.result = request.POST.get(f'result_{schedule.pk}', schedule.result)
-        schedule.status = int(request.POST.get(f'status_{schedule.pk}', schedule.status))
-        schedule.order = int(request.POST.get(f'order_{schedule.pk}', schedule.order))
-        schedule.save()
+    for s in schedules:
+        new_detail = request.POST.get(f'detail_{s.pk}', s.detail)
+        new_result = request.POST.get(f'result_{s.pk}', s.result)
+        new_status = int(request.POST.get(f'status_{s.pk}', s.status))
+        new_order = int(request.POST.get(f'order_{s.pk}', s.order))
 
+        Schedule.objects.filter(pk=s.pk).update(
+            detail=new_detail,
+            result=new_result,
+            status=new_status,
+            order=new_order,
+        )
 
-def create_new_schedules(request, event):
-    """新規スケジュールを作成する"""
+    # 3. 新規スケジュールの作成処理
     new_details = request.POST.getlist('new_detail')
     new_results = request.POST.getlist('new_result')
     new_statuses = request.POST.getlist('new_status')
@@ -64,39 +45,60 @@ def create_new_schedules(request, event):
                 detail=detail,
                 result=result,
                 status=int(status) if status else 0,
-                order=int(order) if order else 0,
+                order=int(order) if order else 1,
             )
 
-
-# =========================================
-# ビュー
-# =========================================
-
-class ScheduleListView(View):
-    """スケジュールをnext/now/previousで分けて一覧表示するビュー"""
+# スケジュールを一覧表示する
+class ScheduleListView(generic.DetailView):
+    model = Event
     template_name = 'schedules/edit.html'
+    context_object_name = 'event'
 
-    def get(self, request, pk):
-        event = get_event(pk)
-        context = get_schedules_by_status(event)
-        context['event'] = event
-        return render(request, self.template_name, context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        event = self.object
+
+        schedules = event.schedules.all().order_by('order')
+        # 数値定義に合わせてフィルタリング (now=0, next=1, previous=2)
+        context['now_schedules'] = schedules.filter(status=0)
+        context['next_schedules'] = schedules.filter(status=1)
+        context['previous_schedules'] = schedules.filter(status=2)
+
+        return context
 
 
-class ScheduleUpdateView(View):
-    """スケジュールの一覧表示・追加・更新・削除を担当するビュー"""
+# スケジュールを一括編集する
+class ScheduleUpdateView(generic.UpdateView):
+    model = Event
     template_name = 'schedules/edit.html'
+    fields = []
 
-    def get(self, request, pk):
-        event = get_event(pk)
-        context = get_schedules_by_status(event)
-        context['event'] = event
-        context['schedules'] = get_schedules(event)
-        return render(request, self.template_name, context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        event = self.object
 
-    def post(self, request, pk):
-        event = get_event(pk)
-        delete_schedules(request, event)
-        save_existing_schedules(request, event)
-        create_new_schedules(request, event)
-        return redirect(build_success_url(pk))
+        schedules = event.schedules.all().order_by('order')
+        # 数値定義に合わせてフィルタリング (now=0, next=1, previous=2)
+        context['now_schedules'] = schedules.filter(status=0)
+        context['next_schedules'] = schedules.filter(status=1)
+        context['previous_schedules'] = schedules.filter(status=2)
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        event = self.object
+        try:
+            with transaction.atomic():
+                update_event_schedules_after(request, event)
+            return redirect(self.get_success_url())
+        except Exception as e:
+            context = self.get_context_data()
+            context['error'] = f'保存中にエラーが発生しました: {e}'
+            return render(request, self.template_name, context)
+
+    def get_success_url(self):
+        return reverse('event_detail_admin', kwargs={
+            'tournament_pk': self.object.tournament.url_uuid,
+            'pk': self.object.pk,
+        })
