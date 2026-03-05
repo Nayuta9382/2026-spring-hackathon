@@ -4,7 +4,6 @@
 {% block content %}
 <div>
     <h1>{{ tournament.name }} <small>(管理者パネル)</small></h1>
-    <p><a href="{% url 'tournament_list' %}">← 大会一覧に戻る</a></p>
 
     <hr>
 
@@ -46,8 +45,7 @@
             <ul>
                 {% for event in events %}
                     <li>
-                        {# <a href="{% url 'event_detail_admin' tournament_pk=tournament.pk pk=event.pk %}"> #}
-                        <a href="http://">
+                        <a href="{% url 'event_detail_admin' tournament_pk=tournament.pk pk=event.pk %}">
                             {{ event.name }} 
                             {% if event.category == 1 %}(クラス対抗){% else %}(一般){% endif %}
                         </a>

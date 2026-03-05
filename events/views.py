@@ -61,8 +61,14 @@ class EventCreateView(CreateView):
         # 保存成功後の遷移先（大会詳細ページなど）
         return reverse_lazy('tournament_detail_admin', kwargs={'pk': self.object.tournament.id})
 
-# 管理者の詳細表示
-class EventAdminDetailView(UpdateView):
+# 競技の詳細(管理者)
+class EventAdminDetailView(DetailView):
+    model = Event
+    template_name = 'events/admin-detail.html'
+    context_object_name = 'event'
+
+# 競技の編集
+class EventEditView(UpdateView):
     model = Event
     template_name = 'events/edit.html'
     context_object_name = 'event'
