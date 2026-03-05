@@ -9,7 +9,6 @@
     <hr>
 
     <div>
-        {% csrf_token %}
 
         <section>
             <h2>大会基本情報</h2>
@@ -58,6 +57,10 @@
                 {% endfor %}
             </ul>
           
+        </section>
+
+        <section>
+            <a href="{% url 'tournament_update' tournament.id %}">編集する</a>
         </section>
 
         <hr>
