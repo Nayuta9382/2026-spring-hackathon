@@ -21,16 +21,29 @@
 </head>
 <style>
     .container {
-        width: 90%;
+        width: 80%;
         margin: 0 auto;
     }
     body {
         background-color: black;
     }
+
+    /* 戻るボタン */
+    .return_bg{
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 2px;
+    }
+    .return{
+        display: inline-block;
+    }
 </style>
 
 <body>
     <div class="container">
+        <!-- 戻る -->
+        <a href="#" class="return">
+            <img class="return_bg" src="./return.png" alt="戻る">
+        </a>
         <!-- ランキング -->
         <ul class="ranking_user">
             <li class="ranking_one">
