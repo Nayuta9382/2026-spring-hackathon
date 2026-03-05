@@ -7,7 +7,7 @@ from teams.service import create_team_group,bulk_create_teams,get_team_group_by_
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 from tournaments.models import Tournament
-from event_results.services import create_event_results
+from event_results.services import create_event_results,get_event_results_by_event
 from .forms import CreateForm
 
 
@@ -75,8 +75,11 @@ class EventAdminDetailView(DetailView):
       
         # contextに保存
         context['teams'] = teams
-        print(teams)
 
+        # 競技結果を取得する
+        event_results = get_event_results_by_event(event=event)
+        context['event_results'] = event_results
+        
         return context
 
 
