@@ -4,6 +4,33 @@
 
 {% block content %}
 <div>
-    <h1>スケージュール編集</h1>
+    <h1>スケジュール編集</h1>
+    <p>{{ event.name }}</p>
+
+    <h2>next</h2>
+    {% for schedule in next_schedules %}
+        <p>{{ schedule.detail }}</p>
+    {% empty %}
+        <p>なし</p>
+    {% endfor %}
+
+    <h2>now</h2>
+    {% for schedule in now_schedules %}
+        <p>{{ schedule.detail }}</p>
+    {% empty %}
+        <p>なし</p>
+    {% endfor %}
+
+    <h2>previous</h2>
+    {% for schedule in previous_schedules %}
+        <p>{{ schedule.detail }}</p>
+        {% if schedule.result %}
+            <p>{{ schedule.result }}</p>
+        {% endif %}
+    {% empty %}
+        <p>なし</p>
+    {% endfor %}
+
+    <a href="{% url 'schedule_edit' event.pk %}">編集</a>
 </div>
 {% endblock content %}
