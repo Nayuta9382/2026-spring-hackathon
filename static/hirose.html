@@ -46,7 +46,7 @@
         }
 
         /* ボタン関係 */
-        button {
+        .btn {
             text-decoration: none;
             width: 135px;
             height: 45px;
@@ -61,37 +61,37 @@
             box-shadow: 0px 0px 3px 3px rgba(255, 255, 255, 0.3);
         }
 
-        button.gazou {
+        .gazou {
             border: 3px solid #77FF00;
             background: #52BC77;
         }
 
-        button.gazou:hover {
+        .gazou:hover {
             color: #52BC77;
             background: #fff;
         }
 
-        button.delete {
+        .delete {
             width: 90px;
             border: 3px solid #FF0000;
             background: #AC0000;
         }
 
-        button.delete:hover {
+        .delete:hover {
             color: #AC0000;
             background: #fff;
         }
 
-        button.update {
+        .update {
             width: 330px;
         }
 
-        button.return {
+        .return {
             border: 3px solid #FF00ED;
             background: #B53DAD;
         }
 
-        button.return:hover {
+        .return:hover {
             color: #B53DAD;
             background: #fff;
         }
@@ -111,8 +111,6 @@
             display: flex;
             justify-content: center;
             text-decoration: none;
-            /* align-items: center; */
-            /* padding: 15px; */
         }
 
         .item {
@@ -196,18 +194,18 @@
             <!-- ボタン各種 -->
             <!-- 画像選択 -->
             <div>
-                <button type="submit" class="gazou">画像選択</button>
+                <button type="submit" class="gazou btn">画像選択</button>
             </div>
             <!-- 削除 -->
             <div>
-                <button type="submit" class="delete">削除</button>
+                <button type="submit" class="delete btn">削除</button>
             </div>
             <!-- 更新 -->
             <div>
-                <button type="submit" class="update gazou">更新</button>
+                <button type="submit" class="update gazou btn">更新</button>
             </div>
             <div>
-                <button type="button" class="update return">戻る</button>
+                <button type="button" class="update return btn">戻る</button>
             </div>
         </form>
 
@@ -238,11 +236,5 @@
 
     </main>
 </body>
-<!-- <a href="">
-    <span>
-        <img src="" alt="">
-        <p></p>
-    </span>
-</a> -->
 
 </html>
