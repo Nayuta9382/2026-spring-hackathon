@@ -82,6 +82,23 @@ class EventAdminDetailView(DetailView):
         
         return context
 
+# 競技の詳細(一般)
+class EventUserDetailView(DetailView):
+    model = Event
+    template_name = 'events/user-detail.html'
+    context_object_name = 'event'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        event = self.object
+      
+        # 競技結果を取得する
+        event_results = get_event_results_by_event(event=event)
+        context['event_results'] = event_results
+        
+        return context
+
+
 
 
 # 競技の編集
