@@ -1,33 +1,96 @@
 {% extends 'layouts/admin-layout.html' %}
 {% block title %}index{% endblock title %}
 {% load static %}
+{% comment %} 自作css読み込み {% endcomment %}
+{% block extra_css %} 
+    <link rel="stylesheet" href="{% static 'css/tournament-create.css' %}">
+    <style> .special-button { background-color: gold; } </style>
+{% endblock extra_css %}
+
 {% block content %}
 
-    <a class="update return btn block" style="display: block;" href="{% url 'tournament_list' %}">← 大会一覧に戻る</a>
+    <a class="update return btn display_block top" href="{% url 'tournament_list' %}">大会一覧に戻る</a>
 
-    <form action="" method="POST" enctype="multipart/form-data">
+    <form action="" method="POST" enctype="multipart/form-data" class="top">
         {% csrf_token %}
-        {{ form.as_div }}
-        <div>
-            <h3>クラスチーム</h3>
-            <div id="teams-container">
-                <div class="input-row">
-                    <input type="text" name="teams" placeholder="クラスチーム名を入力">
+        {% comment %} {{ form.as_div }} {% endcomment %}
+        <div class="form_container">
+            <div class="img_name_container">
+                <div class="form">
+                    <h2 class="h2">大会画像</h2>
+                    <div class="preview_img">
+                        <img id="preview" src="" alt="">
+                        <label class="gazou btn">
+                            画像選択
+                            {{ form.img_path }}
+                        </label>
+                    </div>
+                </div>
+                <div class="form name">
+                    <h2 class="h2">大会名</h2>
+                    {{ form.name }}
+                </div>
+        
+            </div>
+            
+            <div class="form">
+                <h2 class="h2">しおり</h2>
+                <div class="preview_pdf">
+                    <div id="preview_pdf">
+                        <p class="p">選択されていません</p>
+                    </div>
+                    <label class="gazou btn">
+                        PDF選択
+                        {{ form.pdf_img_path }}
+                    </label>
                 </div>
             </div>
-            <button type="button" onclick="teamAddInput()">クラスチームを追加</button>
-        </div>
-        <div>
-            <h3>ランクポイント</h3>
-            <div id="rank-container">
-                <div class="input-row">
-                    <label>1位: </label>
-                    <input type="number" name="rank_points" placeholder="1位のポイント" value="0">
-                </div>
+            
+            <div class="form">
+                <h2 class="h2">大会パスワード</h2>
+                {{ form.password }}
             </div>
 
+            <div class="form">
+                <h2 class="h2">クラスチーム</h2>
+                <div id="teams-container">
+                    <div class="input-row form">
+                        <input type="text" name="teams" placeholder="クラスチーム名を入力">
+                    </div>
+                </div>
+                <button type="button" onclick="teamAddInput()" class="gazou btn">クラスチームを追加</button>
+            </div>
+            <div class="form">
+                <h2 class="h2">ランクポイント</h2>
+                <div id="rank-container">
+                    <div class="input-row form">
+                        <label>1位: </label>
+                        <input type="number" name="rank_points" placeholder="1位のポイント" value="0">
+                    </div>
+                </div>
+
+            </div>
+            <button type="submit" class="gazou btn">保存</button>
         </div>
-        <button type="submit">保存</button>
     </form>
 <script src="{% static 'js/tournament/create.js' %}"></script>
+{% comment %} プレビュー {% endcomment %}
+<script>
+    const input = document.querySelector('input[type="file"]');
+    const preview = document.getElementById("preview");
+
+    input.addEventListener("change", function () {
+    const file = this.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+        preview.src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    }
+    });
+</script>
 {% endblock content %}
