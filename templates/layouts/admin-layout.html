@@ -28,7 +28,21 @@
         {% endblock content %}
     </main>
 
-    <footer>
+    <footer class="menu">
+        <!-- home -->
+        <a href="#" class="menu item item_admin">
+            <span class="menu_link">
+                <img src="{% static 'img/icon/Home.webp' %}" alt="home" class="frame">
+                home
+            </span>
+        </a>
+        <!-- schedule -->
+        <a href="#" class="menu item item_admin">
+            <span class="menu_link">
+                <img src="{% static 'img/icon/Calendar.webp' %}" alt="home" class="frame">
+                schedule
+            </span>
+        </a>
     </footer>
     {% bootstrap_javascript %}
 </body>
