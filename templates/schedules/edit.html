@@ -9,7 +9,6 @@
     <p style="color:red;">{{ error }}</p>
 {% endif %}
 
-{# バリデーション用のonsubmitを追加 #}
 <form method="POST" action="{% if event.pk %}{% url 'schedule_edit' event.pk %}{% endif %}" onsubmit="return validateNowCount()">
     {% csrf_token %}
 
@@ -17,7 +16,6 @@
 
     <hr>
 
-    {# 1. now カテゴリ (status: 0) #}
     <div>
         <h3>now</h3>
         <div id="container-0">
@@ -51,7 +49,6 @@
 
     <hr>
 
-    {# 2. next カテゴリ (status: 1) - 2番目に配置 #}
     <div>
         <h3>next</h3>
         <div id="container-1">
@@ -85,7 +82,6 @@
 
     <hr>
 
-    {# 3. previous カテゴリ (status: 2) #}
     <div>
         <h3>previous</h3>
         <div id="container-2">
@@ -125,20 +121,6 @@
 </form>
 
 <script>
-    /**
-     * nowカテゴリ(container-0)の件数チェック
-     */
-    function validateNowCount() {
-        const nowContainer = document.getElementById('container-0');
-        const nowItems = nowContainer.querySelectorAll('.schedule-item, .new-item');
-
-        if (nowItems.length >= 2) {
-            alert('nowが二つ以上あります');
-            return false;
-        }
-        return true;
-    }
-
     function refreshAll() {
         [0, 1, 2].forEach(status => {
             const container = document.getElementById(`container-${status}`);
