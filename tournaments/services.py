@@ -98,3 +98,20 @@ def delete_tournament(pk):
         tournament = get_object_or_404(Tournament, pk=pk)
         tournament.delete()
 
+# 競技から大会を取得する
+def get_tournament_from_event(event):
+    return Tournament.objects.get(pk=event.tournament_id)
+
+# 競技idとrankからランクポイントを取得する
+def get_rank_point_by_event(event, rank):
+    # 大会を取得
+    tournament = get_tournament_from_event(event=event)
+
+    # 指定された大会(tournament)と順位(rank)で1件取得
+    tp = TournamentPoint.objects.filter(
+        tournament=tournament,
+        rank=rank
+    ).first()
+    
+    # 設定が存在すればそのポイントを、なければ 0 を返す
+    return tp.point if tp else 0

@@ -4,7 +4,7 @@ from .models import Event
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     # 一覧画面で見たいフィールドを指定
-    list_display = ('id', 'name', 'tournament', 'category', 'created_at')
+    list_display = ('id', 'name', 'tournament', 'category', 'created_at','is_class_point')
     
     # フィルタ機能（右側にフィルタメニューが出る）
     list_filter = ('tournament', 'category')

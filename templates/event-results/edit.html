@@ -10,16 +10,19 @@
         {% csrf_token %}
         {{ formset.management_form }}
 
+        {% if team_group.category == 1 %}
         <div style="margin-bottom: 20px;">
-            <label>クラスチーム使用の有無:</label>
+            <label>クラス順位ポイント使用の有無:</label>
             <select name="class-team-flg">
-                <option value="1">Yes (有効)</option>
-                <option value="0">No (無効)</option>
+                <option {% if event.is_class_point == True %}selected{% endif %} value="1">Yes (有効)</option>
+                <option {% if event.is_class_point == False %}selected{% endif %} value="0">No (無効)</option>
             </select>
         </div>
+        {% endif %}
 
         <ul>
             {% for form in formset %}
+
             <li>
                 <div>
                     <strong>チーム: {{ form.instance.team.name }}</strong>
@@ -38,12 +41,15 @@
                 </div>
 
                 {# スコア入力 #}
-                <div>
+                <div class="point-area">
                     <label for="id_{{ form.prefix }}-point">点 :</label>
                     <input type="number" 
                            name="{{ form.prefix }}-point" 
                            id="id_{{ form.prefix }}-point" 
+                           class="point-input"
                            value="{{ form.point.value|default:'' }}">
+                    <span class="point-display">{{ form.point.value|default:'0' }}</span>
+
                 </div>
 
                 {# 詳細入力 #}
@@ -54,9 +60,6 @@
                            id="id_{{ form.prefix }}-detail" 
                            value="{{ form.detail.value|default:'' }}">
                 </div>
-
-               
-                
                 <hr> 
             </li>
             {% endfor %}
@@ -67,4 +70,5 @@
         </div>
     </form>
 </div>
+<script src="/static/js/event-result/event-result.js"></script>
 {% endblock content %}
