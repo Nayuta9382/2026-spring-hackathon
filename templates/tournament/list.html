@@ -1,13 +1,74 @@
 {% extends 'layouts/admin-layout.html' %}
 
 {% block title %}大会一覧{% endblock title %}
-
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/tournament_list.css' %}">
+{% endblock extra_css %}
 {% block content %}
+
 <div>
     <h1>大会一覧</h1>
     <a href="{% url 'tournament_create'%}">大会作成</a>
     {% for item in object_list %}
-        <li><a href="{% url 'tournament_detail_admin' item.id %}">{{ item.name }}</a></li>
+    <li><a href="{% url 'tournament_detail_superuser' item.id %}">{{ item.name }}</a></li>
     {% endfor %}
+</div>
+
+<div class="container">
+    <div>
+        <button type="button" class="return">戻る</button>
+    </div>
+
+    <h1 class="h1">大会一覧</h1>
+
+    <div class="list_admin">
+
+        <div class="list-item">
+            <img src="/static/img.png" alt="" srcset="" class="tournament_img">
+            <h2 class="h2">あそび大全(トイボクシング)</h2>
+            <div class="btn-container">
+                <button type="submit" class="gazou btn">編集</button>
+                <button type="submit" class="delete btn">削除</button>
+            </div>
+        </div>
+
+        <div class="list-item">
+            <img src="/static/img.png" alt="" srcset="" class="tournament_img">
+            <h2 class="h2">あそび大全(トイボクシング)</h2>
+            <div class="btn-container">
+                <button type="submit" class="gazou btn">編集</button>
+                <button type="submit" class="delete btn">削除</button>
+            </div>
+        </div>
+
+        <div class="list-item">
+            <img src="/static/img.png" alt="" srcset="" class="tournament_img">
+            <h2 class="h2">あそび大全(トイボクシング)</h2>
+            <div class="btn-container">
+                <button type="submit" class="gazou btn">編集</button>
+                <button type="submit" class="delete btn">削除</button>
+            </div>
+        </div>
+
+        <div class="list-item">
+            <img src="/static/img.png" alt="" srcset="" class="tournament_img">
+            <h2 class="h2">あそび大全(トイボクシング)</h2>
+            <div class="btn-container">
+                <button type="submit" class="gazou btn">編集</button>
+                <button type="submit" class="delete btn">削除</button>
+            </div>
+        </div>
+
+        <div class="list-item">
+            <img src="/static/img.png" alt="" srcset="" class="tournament_img">
+            <h2 class="h2">あそび大全(トイボクシング)</h2>
+            <div class="btn-container">
+                <button type="submit" class="gazou btn">編集</button>
+                <button type="submit" class="delete btn">削除</button>
+            </div>
+        </div>
+
+    </div>
 </div>
 {% endblock content %}

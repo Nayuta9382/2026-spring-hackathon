@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+.text_center {
+    text-align: center;
+}
+
+.pos_left {
+    /* 横並び */
+    /* display: flex; */
+    /* ナビメニューを右寄せ */
+    /* justify-content: flex-end; */
+    margin-right: auto;
+}

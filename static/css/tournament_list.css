@@ -1,0 +1,30 @@
+.tournament_img {
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+
+.list-item {
+    background-color: #fff 30%;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+}
+
+.list-item>h2 {
+    flex: 1;
+}
+
+.btn-container {
+    display: flex;
+    gap: 10px;
+}
+
+.container {
+    padding: 20px;
+    /* 戻るボタンが隠れないように上部に余白を確保 */
+    margin-top: 20px;
+    
+}
