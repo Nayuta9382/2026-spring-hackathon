@@ -1,7 +1,232 @@
 {% extends 'layouts/admin-layout.html' %}
-
-{% block title %}{% endblock title %}
+{% load static %}
 
 {% block content %}
+<h1>スケジュール編集</h1>
+<p>{{ event.name }}</p>
 
+{% if error %}
+    <p style="color:red;">{{ error }}</p>
+{% endif %}
+
+{# バリデーション用のonsubmitを追加 #}
+<form method="POST" action="{% if event.pk %}{% url 'schedule_edit' event.pk %}{% endif %}" onsubmit="return validateNowCount()">
+    {% csrf_token %}
+
+    <div id="deleted-ids-container"></div>
+
+    <hr>
+
+    {# 1. now カテゴリ (status: 0) #}
+    <div>
+        <h3>now</h3>
+        <div id="container-0">
+            {% for item in now_schedules %}
+            <div class="schedule-item" data-pk="{{ item.pk }}">
+                <div>
+                    <label>コメント1</label>
+                    <input type="text" name="detail_{{ item.pk }}" value="{{ item.detail }}">
+                </div>
+                <div>
+                    <label>コメント2</label>
+                    <input type="text" name="result_{{ item.pk }}" value="{{ item.result }}">
+                </div>
+                <div>
+                    <label>順序</label>
+                    <select name="order_{{ item.pk }}" class="order-select" onchange="onOrderChange(this)"></select>
+                    <label>進捗</label>
+                    <select name="status_{{ item.pk }}" onchange="onStatusChange(this)">
+                        <option value="0" selected>now</option>
+                        <option value="1">next</option>
+                        <option value="2">previous</option>
+                    </select>
+                    <input type="button" value="削除" onclick="deleteItem(this, '{{ item.pk }}')">
+                </div>
+                <hr>
+            </div>
+            {% endfor %}
+        </div>
+        <button type="button" onclick="addSchedule(0)">nowにスケジュールを追加</button>
+    </div>
+
+    <hr>
+
+    {# 2. next カテゴリ (status: 1) - 2番目に配置 #}
+    <div>
+        <h3>next</h3>
+        <div id="container-1">
+            {% for item in next_schedules %}
+            <div class="schedule-item" data-pk="{{ item.pk }}">
+                <div>
+                    <label>コメント1</label>
+                    <input type="text" name="detail_{{ item.pk }}" value="{{ item.detail }}">
+                </div>
+                <div>
+                    <label>コメント2</label>
+                    <input type="text" name="result_{{ item.pk }}" value="{{ item.result }}">
+                </div>
+                <div>
+                    <label>順序</label>
+                    <select name="order_{{ item.pk }}" class="order-select" onchange="onOrderChange(this)"></select>
+                    <label>進捗</label>
+                    <select name="status_{{ item.pk }}" onchange="onStatusChange(this)">
+                        <option value="0">now</option>
+                        <option value="1" selected>next</option>
+                        <option value="2">previous</option>
+                    </select>
+                    <input type="button" value="削除" onclick="deleteItem(this, '{{ item.pk }}')">
+                </div>
+                <hr>
+            </div>
+            {% endfor %}
+        </div>
+        <button type="button" onclick="addSchedule(1)">nextにスケジュールを追加</button>
+    </div>
+
+    <hr>
+
+    {# 3. previous カテゴリ (status: 2) #}
+    <div>
+        <h3>previous</h3>
+        <div id="container-2">
+            {% for item in previous_schedules %}
+            <div class="schedule-item" data-pk="{{ item.pk }}">
+                <div>
+                    <label>コメント1</label>
+                    <input type="text" name="detail_{{ item.pk }}" value="{{ item.detail }}">
+                </div>
+                <div>
+                    <label>コメント2</label>
+                    <input type="text" name="result_{{ item.pk }}" value="{{ item.result }}">
+                </div>
+                <div>
+                    <label>順序</label>
+                    <select name="order_{{ item.pk }}" class="order-select" onchange="onOrderChange(this)"></select>
+                    <label>進捗</label>
+                    <select name="status_{{ item.pk }}" onchange="onStatusChange(this)">
+                        <option value="0">now</option>
+                        <option value="1">next</option>
+                        <option value="2" selected>previous</option>
+                    </select>
+                    <input type="button" value="削除" onclick="deleteItem(this, '{{ item.pk }}')">
+                </div>
+                <hr>
+            </div>
+            {% endfor %}
+        </div>
+        <button type="button" onclick="addSchedule(2)">previousにスケジュールを追加</button>
+    </div>
+
+    <hr>
+
+    <div>
+        <button type="submit">更新保存</button>
+    </div>
+</form>
+
+<script>
+    /**
+     * nowカテゴリ(container-0)の件数チェック
+     */
+    function validateNowCount() {
+        const nowContainer = document.getElementById('container-0');
+        const nowItems = nowContainer.querySelectorAll('.schedule-item, .new-item');
+
+        if (nowItems.length >= 2) {
+            alert('nowが二つ以上あります');
+            return false;
+        }
+        return true;
+    }
+
+    function refreshAll() {
+        [0, 1, 2].forEach(status => {
+            const container = document.getElementById(`container-${status}`);
+            const items = Array.from(container.children);
+            const total = items.length;
+
+            items.forEach((item, index) => {
+                const select = item.querySelector('.order-select');
+                if (select) {
+                    select.innerHTML = '';
+                    for (let i = 1; i <= total; i++) {
+                        const opt = document.createElement('option');
+                        opt.value = i;
+                        opt.textContent = i;
+                        if (i === (index + 1)) opt.selected = true;
+                        select.appendChild(opt);
+                    }
+                }
+            });
+        });
+    }
+
+    function onOrderChange(select) {
+        const item = select.closest('.schedule-item, .new-item');
+        const container = item.parentElement;
+        const items = Array.from(container.children);
+        const newIdx = parseInt(select.value) - 1;
+        const oldIdx = items.indexOf(item);
+
+        if (newIdx > oldIdx) {
+            container.insertBefore(item, items[newIdx].nextSibling);
+        } else {
+            container.insertBefore(item, items[newIdx]);
+        }
+        refreshAll();
+    }
+
+    function onStatusChange(select) {
+        const item = select.closest('.schedule-item, .new-item');
+        const target = document.getElementById(`container-${select.value}`);
+        target.appendChild(item);
+        refreshAll();
+    }
+
+    function deleteItem(btn, pk) {
+        if (pk) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'delete_ids';
+            input.value = pk;
+            document.getElementById('deleted-ids-container').appendChild(input);
+        }
+        btn.closest('.schedule-item, .new-item').remove();
+        refreshAll();
+    }
+
+    function addSchedule(status) {
+        const container = document.getElementById(`container-${status}`);
+        const div = document.createElement('div');
+        div.className = 'new-item';
+        div.innerHTML = `
+            <div>
+                <label>コメント1</label>
+                <input type="text" name="new_detail" required>
+            </div>
+            <div>
+                <label>コメント2</label>
+                <input type="text" name="new_result">
+            </div>
+            <div>
+                <label>順序</label>
+                <select name="new_order" class="order-select" onchange="onOrderChange(this)"></select>
+                <label>進捗</label>
+                <select name="new_status" onchange="onStatusChange(this)">
+                    <option value="0" ${status === 0 ? 'selected' : ''}>now</option>
+                    <option value="1" ${status === 1 ? 'selected' : ''}>next</option>
+                    <option value="2" ${status === 2 ? 'selected' : ''}>previous</option>
+                </select>
+                <input type="button" value="取消" onclick="deleteItem(this)">
+            </div>
+            <hr>
+        `;
+        container.appendChild(div);
+        refreshAll();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        refreshAll();
+    });
+</script>
 {% endblock content %}

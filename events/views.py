@@ -19,7 +19,7 @@ class EventCreateView(CreateView):
     model = Event
     template_name = 'events/create.html'
     form_class = CreateForm
-    
+
     def form_valid(self, form):
             with transaction.atomic():
                 # 大会の取得
@@ -48,7 +48,7 @@ class EventCreateView(CreateView):
                 # 競技を保存する
                 response = super().form_valid(form)
                 event = self.object
-                
+
                 # 競技に参加するチームの一覧を取得する
                 teams = get_teams_group_by_event(event)
 
@@ -101,6 +101,16 @@ class EventUserDetailView(DetailView):
 
 
 
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        event = self.get_object()
+        schedules = event.schedules.all()
+        context['next_schedules'] = schedules.filter(status=0)
+        context['now_schedules'] = schedules.filter(status=1)
+        context['previous_schedules'] = schedules.filter(status=2)
+        return context
+
 # 競技の編集
 class EventEditView(UpdateView):
     model = Event
@@ -121,9 +131,9 @@ class EventEditView(UpdateView):
         context['teams'] = teams
 
         return context
-    
+
     def form_valid(self, form):
-        
+
         # 2. データの取り出し
         event = form.instance
         tournament = event.tournament
@@ -148,10 +158,11 @@ class EventEditView(UpdateView):
             response = super().form_valid(form)
 
             return response
-    
+
     def get_success_url(self):
         # self.object は Event インスタンス
         return reverse_lazy('event_detail_admin', kwargs={
             'tournament_pk': self.object.tournament.id, # 親のトーナメントID
             'pk': self.object.id                        # このイベント自身のID
         })
+

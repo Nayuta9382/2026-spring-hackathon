@@ -109,24 +109,38 @@
 
 <hr>
 
+{# スケジュール表示エリア #}
 <div>
-    <h1>スケジュール編集</h1>
+    <h1>スケジュール一覧</h1>
     <p>{{ event.name }}</p>
 
-    <h2>next</h2>
-    {% for schedule in next_schedules %}
-        <p>{{ schedule.detail }}</p>
-    {% empty %}
-        <p>なし</p>
-    {% endfor %}
-
+    {# 1. now (status: 0) #}
     <h2>now</h2>
     {% for schedule in now_schedules %}
         <p>{{ schedule.detail }}</p>
+        {% if schedule.result %}
+            <p>{{ schedule.result }}</p>
+        {% endif %}
     {% empty %}
         <p>なし</p>
     {% endfor %}
 
+    <hr>
+
+    {# 2. next (status: 1) #}
+    <h2>next</h2>
+    {% for schedule in next_schedules %}
+        <p>{{ schedule.detail }}</p>
+        {% if schedule.result %}
+            <p>{{ schedule.result }}</p>
+        {% endif %}
+    {% empty %}
+        <p>なし</p>
+    {% endfor %}
+
+    <hr>
+
+    {# 3. previous (status: 2) #}
     <h2>previous</h2>
     {% for schedule in previous_schedules %}
         <p>{{ schedule.detail }}</p>
@@ -137,7 +151,8 @@
         <p>なし</p>
     {% endfor %}
 
-    <a href="{% url 'schedule_edit' event.pk %}">編集</a>
+    <br>
+    <a href="{% url 'schedule_edit' event.pk %}">スケジュールを編集する</a>
 </div>
 {% endblock content %}
 

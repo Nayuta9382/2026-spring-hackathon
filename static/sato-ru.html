@@ -4,100 +4,91 @@
 <head>
     <meta charset="UTF-8">
     <title>Final Simple Gradient</title>
-    <link href="https://fonts.googleapis.com/css2?family=Quantico:wght@700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@700&family=Noto+Sans+JP:wght@700&family=Quantico:wght@700&display=swap"
+        rel="stylesheet">
     <style>
         body,
         html {
             margin: 0;
             padding: 0;
+            height: 100%;
+            overflow: hidden;
         }
 
-        /* 1. 【背景】スクロールと一緒に普通に動く長いグラデーション */
-        body {
-            /* 上が #FF00EE、下が #3C0038 の大きな板を作る */
+        /* 共通のスクリーン設定 */
+        .user_screen,
+        .admin_screen {
+            height: 100vh;
+            /* 画面の半分の高さ */
+            overflow-y: auto;
+            /* 中身が多い時だけスクロール */
+            position: relative;
+            /* 画像の配置基準にする */
+            width: 100%;
+
+        }
+
+        .user_screen {
+            background: linear-gradient(to bottom, #4800CF 0%, #000000 100%);
+        }
+
+        .admin_screen {
             background: linear-gradient(to bottom, #FF00EE 0%, #3C0038 100%);
-            overflow-y: scroll;
-            background-attachment: fixed;
         }
 
         /* 3. 【文字】背景の上に置く */
-        .content-container {
+        .content_container {
             width: 100%;
         }
 
-        .section {
-            height: 100vh;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding-top: 10vh;
-            box-sizing: border-box;
-            color: white;
-            font-family: sans-serif;
-            font-size: 2.5rem;
-            font-weight: bold;
-            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-        }
-
-        img {
+        /*背景の画像*/
+        .bg_overlay_image {
             width: 640px;
             height: 640px;
             opacity: 0.13;
-            position: fixed;
+            position: absolute;
             top: 0px;
             left: 0px;
         }
 
-        /*日本語メイン*/
-        .NotoSansJP {
-            font-family: 'Noto Sans JP';
-            font-size: 3.5rem;
+
+        .h1,
+        .h2,
+        .p {
             font-weight: bold;
-            /* 少し大きく */
             color: #ffccff;
-            /* 少し色味を変える */
+            /* 背景が暗い想定の明るい色 */
+            margin-bottom: 20px;
         }
 
-        /*見出し・順位・ボタンなど*/
-        .Main {
-            font-family: 'Quantico';
-            font-size: 3.5rem;
-            font-weight: bold;
-            /* 少し大きく */
-            color: #ffccff;
-            /* 少し色味を変える */
+        /*見出しなど*/
+        .h1 {
+            font-size: 32px;
         }
 
         /*項目 */
-        .Item {
-            font-family: 'Inter';
-            font-size: 3.5rem;
-            font-weight: bold;
-            /* 少し大きく */
-            color: #ffccff;
-            /* 少し色味を変える */
+        .h2 {
+            font-size: 20px;
         }
 
-        /*説明・詳細 */
-        .details {
-            font-family: 'Noto Sans JP';
-            font-size: 3.5rem;
-            font-weight: bold;
-            /* 少し大きく */
-            color: #ffccff;
-            /* 少し色味を変える */
+        /*説明・詳細など */
+        .p {
+            font-size: 16px;
         }
     </style>
 </head>
 
-<body>
-    <img src="/static/texture.png">
-    <div class="content-container">
-        <div class="details">Noto Sans JP</div>
-        <div class="Main">Quantico</div>
-        <div class="Item">Inter</div>
+<body class="user_screen">
+    <!-- <body class="admin_screen"> -->
+    <img src="/static/texture.png" class="bg_overlay_image">
+    <div class="">
+        <div class="content_container">
+            <h1 class="h1">タイトル</h1>
+            <h2 class="h2">項目</h2>
+            <p class="p">テキスト</p>
+        </div>
     </div>
-
 
 
 
