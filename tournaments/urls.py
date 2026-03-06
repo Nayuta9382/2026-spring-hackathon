@@ -15,7 +15,7 @@ urlpatterns = [
     # 管理者大会詳細
     path('<t_url:pk>/admin', TournamentDetailAdminView.as_view(), name='tournament_detail_admin'),
     # 一般大会詳細
-    path('<t_url:pk>/user', TournamentDetailUserView.as_view(), name='tournament_detail_admin'),
+    path('<t_url:pk>/user', TournamentDetailUserView.as_view(), name='tournament_detail_user'),
 
     # 大会編集
     path('<int:pk>/edit', TournamentUpdateView.as_view(), name='tournament_update'),
