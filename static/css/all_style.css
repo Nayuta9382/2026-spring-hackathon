@@ -398,8 +398,7 @@
 
     /*背景の画像*/
     .bg_overlay_image {
-        width: 640px;
-        height: 640px;
+        width: 100%;
         opacity: 0.13;
         position: fixed;
         top: 0px;
