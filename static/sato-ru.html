@@ -7,6 +7,9 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@700&family=Noto+Sans+JP:wght@700&family=Quantico:wght@700&display=swap"
         rel="stylesheet">
+
+    <!-- 自作css -->
+    <link rel="stylesheet" href="./css/all_style.css">
     <style>
         body,
         html {
@@ -16,67 +19,9 @@
             overflow: hidden;
         }
 
-        /* 共通のスクリーン設定 */
-        .user_screen,
-        .admin_screen {
-            height: 100vh;
-            /* 画面の半分の高さ */
-            overflow-y: auto;
-            /* 中身が多い時だけスクロール */
-            position: relative;
-            /* 画像の配置基準にする */
-            width: 100%;
-
-        }
-
-        .user_screen {
-            background: linear-gradient(to bottom, #4800CF 0%, #000000 100%);
-        }
-
-        .admin_screen {
-            background: linear-gradient(to bottom, #FF00EE 0%, #3C0038 100%);
-        }
-
-        /* 3. 【文字】背景の上に置く */
-        .content_container {
-            width: 100%;
-        }
-
-        /*背景の画像*/
-        .bg_overlay_image {
-            width: 640px;
-            height: 640px;
-            opacity: 0.13;
-            position: absolute;
-            top: 0px;
-            left: 0px;
-        }
-
-
-        .h1,
-        .h2,
-        .p {
-            font-weight: bold;
-            color: #ffccff;
-            /* 背景が暗い想定の明るい色 */
-            margin-bottom: 20px;
-        }
-
-        /*見出しなど*/
-        .h1 {
-            font-size: 32px;
-        }
-
-        /*項目 */
-        .h2 {
-            font-size: 20px;
-        }
-
-        /*説明・詳細など */
-        .p {
-            font-size: 16px;
-        }
+        
     </style>
+
 </head>
 
 <body class="user_screen">
