@@ -11,18 +11,6 @@ from event_results.services import create_event_results,get_event_results_by_eve
 from .forms import CreateForm
 from django.views.generic.edit import DeleteView
 
-# 競技削除
-class EventDeleteView(DeleteView):
-    model = Event
-
-    def get_success_url(self):
-        # 削除後は大会管理者詳細へ
-        return reverse_lazy(
-            'tournament_detail_admin',
-            kwargs={'pk': self.object.tournament.url_uuid}
-        )
-
-
 # Create your views here.
 
 
