@@ -1,6 +1,21 @@
 @charset "utf-8";
 
 /* リスト表示のコンポーネントcss */
+         html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        body{
+            padding: 0 20px;
+            height: 100vh;
+        }
+
+        @media screen and (min-width: 640px) {
+            body{
+                padding: 0 40px;
+            }
+        }
 
     /* googleFont */
     .quantico-regular {
@@ -381,9 +396,10 @@
         width: 640px;
         height: 640px;
         opacity: 0.13;
-        position: absolute;
+        position: fixed;
         top: 0px;
         left: 0px;
+        pointer-events: none;
     }
 
 

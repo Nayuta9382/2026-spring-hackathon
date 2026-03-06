@@ -1,14 +1,22 @@
 <!-- {% load django_bootstrap5 %}  -->
+ {% load static %}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}デフォルトタイトル{% endblock title %}</title>
-    {% bootstrap_css %}
-
+     <!-- リセットcss -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+    <!-- 自作css -->
+    <link rel="stylesheet" href="{% static 'css/all_style.css' %}">
+    <!-- googleFont -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quantico:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="admin_screen">
+    <img src="/static/texture.png" class="bg_overlay_image">
     <header>
         管理者ヘッダー
     </header>
