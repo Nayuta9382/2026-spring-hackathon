@@ -1,54 +1,18 @@
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
 from django.views import generic
 from django.urls import reverse
 from django.db import transaction
 from events.models import Event
-from .models import Schedule
-
-
-def update_event_schedules_after(request, event):
-    """
-    イベントに紐づくスケジュールの一括更新・削除・新規作成を行う
-    """
-    # 1. 削除処理
-    delete_ids = request.POST.getlist('delete_ids')
-    if delete_ids:
-        event.schedules.filter(pk__in=delete_ids).delete()
-
-    # 2. 既存スケジュールの更新処理
-    # pkベースの一時orderで絶対に重複しない値にしてから正式な値に更新する
-    schedules = list(event.schedules.all())
-    for s in schedules:
-        Schedule.objects.filter(pk=s.pk).update(order=s.pk + 100000)
-
-    for s in schedules:
-        new_detail = request.POST.get(f'detail_{s.pk}', s.detail)
-        new_result = request.POST.get(f'result_{s.pk}', s.result)
-        new_status = int(request.POST.get(f'status_{s.pk}', s.status))
-        new_order = int(request.POST.get(f'order_{s.pk}', s.order))
-
-        Schedule.objects.filter(pk=s.pk).update(
-            detail=new_detail,
-            result=new_result,
-            status=new_status,
-            order=new_order,
-        )
-
-    # 3. 新規スケジュールの作成処理
-    new_details = request.POST.getlist('new_detail')
-    new_results = request.POST.getlist('new_result')
-    new_statuses = request.POST.getlist('new_status')
-    new_orders = request.POST.getlist('new_order')
-
-    for detail, result, status, order in zip(new_details, new_results, new_statuses, new_orders):
-        if detail:
-            Schedule.objects.create(
-                event=event,
-                detail=detail,
-                result=result,
-                status=int(status) if status else 0,
-                order=int(order) if order else 1,
-            )
+from .services import (
+    get_schedules_by_event,
+    get_now_schedules_by_event,
+    get_next_schedules_by_event,
+    get_previous_schedules_by_event,
+    delete_schedules_by_ids,
+    update_schedules_by_event,
+    create_schedules_by_post,
+    validate_now_count,
+)
 
 
 # スケジュールを一覧表示する
@@ -60,13 +24,10 @@ class ScheduleListView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         event = self.object
-
-        schedules = event.schedules.all().order_by('order')
-        context['next_schedules'] = schedules.filter(status=0)
-        context['now_schedules'] = schedules.filter(status=1)
-        context['previous_schedules'] = schedules.filter(status=2)
-        context['schedules'] = schedules
-
+        context['schedules'] = get_schedules_by_event(event)
+        context['now_schedules'] = get_now_schedules_by_event(event)
+        context['next_schedules'] = get_next_schedules_by_event(event)
+        context['previous_schedules'] = get_previous_schedules_by_event(event)
         return context
 
 
@@ -79,21 +40,27 @@ class ScheduleUpdateView(generic.UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         event = self.object
-
-        schedules = event.schedules.all().order_by('order')
-        context['next_schedules'] = schedules.filter(status=0)
-        context['now_schedules'] = schedules.filter(status=1)
-        context['previous_schedules'] = schedules.filter(status=2)
-        context['schedules'] = schedules
-
+        context['schedules'] = get_schedules_by_event(event)
+        context['now_schedules'] = get_now_schedules_by_event(event)
+        context['next_schedules'] = get_next_schedules_by_event(event)
+        context['previous_schedules'] = get_previous_schedules_by_event(event)
         return context
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         event = self.object
+
+        # nowが2個以上ないかチェック
+        if not validate_now_count(event, request.POST):
+            context = self.get_context_data()
+            context['error'] = 'nowが2個以上あります。nowは1つだけ設定してください。'
+            return render(request, self.template_name, context)
+
         try:
             with transaction.atomic():
-                update_event_schedules_after(request, event)
+                delete_schedules_by_ids(event, request.POST.getlist('delete_ids'))
+                update_schedules_by_event(event, request.POST)
+                create_schedules_by_post(event, request.POST)
             return redirect(self.get_success_url())
         except Exception as e:
             context = self.get_context_data()
