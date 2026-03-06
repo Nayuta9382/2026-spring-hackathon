@@ -1,13 +1,60 @@
 @charset "utf-8";
 
 .text_center {
-    text-align: center;
+  text-align: center;
 }
 
-.pos_left {
-    /* 横並び */
-    /* display: flex; */
-    /* ナビメニューを右寄せ */
-    /* justify-content: flex-end; */
-    margin-right: auto;
+.pos_right {
+  text-align: right;
+}
+
+.search-container {
+  display: flex;
+  /* 親要素の幅いっぱい */
+  width: 100%;
+  /* 要素間の隙間 */
+  gap: 1rem;
+  /* box-sizing: border-box; */
+  /* paddingを含めた幅計算 */
+}
+
+.input_text {
+  flex-grow: 1;
+  /* 残りの幅をすべて埋める */
+  /* padding: 10px; */
+  border: 1px solid #ccc;
+}
+
+.btn_margin {
+  padding-left: 3rem;
+  padding-right: 3rem;
+  text-align: right;
+}
+
+.space {
+  display: grid;
+  row-gap: 2rem;
+}
+
+.min_space {
+  margin-bottom: 1rem;
+}
+
+.block_btn {
+  width: 100%;
+  /* ボタンをブロック要素化して幅を有効にする */
+  display: block;
+}
+
+.side_by_side {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 1rem;
+  width: 100%;
+  /* 親コンテナ自体も横いっぱいに */
+}
+
+/* ボタンを包むdivを均等に（50%ずつ）広げる */
+.side_by_side>div {
+  flex: 1;
 }
