@@ -220,6 +220,7 @@
     }
 
     .menu {
+        margin: 1rem 0;
         display: flex;
         gap: 2rem;
         justify-content: center;
@@ -228,8 +229,14 @@
 
     .item {
         width: 100%;
-        background: #8B0482;
         padding: 1rem;
+    }
+
+    .item_user{
+        background: #16006C;
+    }
+    .item_admin {
+        background: #8B0482;
     }
 
     /* 画像の写真フレーム化 */
@@ -251,13 +258,18 @@
     }
 
 /* ヘッダーレイアウト */
+    body{
+        padding-top: 100px;
+    }
     .bg_deader {
         /* ヘッダーを固定する */
         position: fixed;
         /* 画面の上部に固定 */
         top: 0;
+        left: 0;
+        right: 0;
         /* 画面の幅いっぱいに広げる */
-        width: 100%;
+        /* width: 100%; */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -265,7 +277,7 @@
         height: 100px;
     }
 
-    /* クリッピングマスク */
+/* クリッピングマスク */
     .image_circle2 {
         width: 4rem;
         height: 4rem;
@@ -370,26 +382,27 @@
     }
 
 /* 共通のスクリーン設定 */
-    .user_screen,
-    .admin_screen {
-        height: 100vh;
-        /* 画面の半分の高さ */
-        overflow-y: auto;
-        /* 中身が多い時だけスクロール */
-        position: relative;
-        /* 画像の配置基準にする */
-        width: 100%;
+.user_screen::after,
+.admin_screen::after{
+            height: 100vh;
+            z-index: -2;
+            width: 100vw;
+            position: fixed;
+            top: 0;
+            left: 0;
+            content: "";
 
-    }
+        }
 
-    .user_screen {
+ 
+
+    .user_screen::after{
         background: linear-gradient(to bottom, #4800CF 0%, #000000 100%);
     }
 
-    .admin_screen {
+    .admin_screen::after{
         background: linear-gradient(to bottom, #FF00EE 0%, #3C0038 100%);
     }
-
     /* 3. 【文字】背景の上に置く */
     .content_container {
         width: 100%;
@@ -397,13 +410,13 @@
 
     /*背景の画像*/
     .bg_overlay_image {
-        width: 640px;
-        height: 640px;
+        width: 100%;
         opacity: 0.13;
         position: fixed;
         top: 0px;
         left: 0px;
         pointer-events: none;
+        z-index: -1;
     }
 
 

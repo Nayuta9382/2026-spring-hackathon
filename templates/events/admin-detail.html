@@ -91,7 +91,7 @@
             <li>登録されているチームはありません。</li>
         {% endfor %}
     </ul>
-    
+
 </section>
 
 <section>
@@ -104,13 +104,13 @@
             <li>順位が登録されていません。</li>
         {% endfor %}
     </ul>
-    
+
 </section>
 
 <hr>
 
 {# スケジュール表示エリア #}
-<div>
+<section>
     <h1>スケジュール一覧</h1>
     <p>{{ event.name }}</p>
 
@@ -153,6 +153,20 @@
 
     <br>
     <a href="{% url 'schedule_edit' event.pk %}">スケジュールを編集する</a>
-</div>
-{% endblock content %}
+</section>
 
+<hr>
+
+<section>
+    <h2>競技削除</h2>
+
+    <form method="post"
+          action="{% url 'event_delete' tournament_pk=event.tournament.url_uuid pk=event.id %}"
+          onsubmit="return confirm('この競技を削除します。本当によろしいですか？');">
+
+        {% csrf_token %}
+        <button type="submit">この競技を削除する</button>
+    </form>
+
+</section>
+{% endblock content %}

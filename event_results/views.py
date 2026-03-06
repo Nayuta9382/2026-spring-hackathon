@@ -7,7 +7,9 @@ from .services import get_event_results_by_event_id
 from .forms import EventResultForm
 from .models import EventResult
 from django.forms import modelformset_factory
-from events.service import get_event_by_id
+from events.service import get_event_by_id,get_event_by_id
+from teams.service import get_team_group_by_event
+from tournaments.services import get_rank_point_by_event
 
 # Formsetを定義
 EventResultFormSet = modelformset_factory(EventResult, form=EventResultForm, extra=0)
@@ -21,11 +23,18 @@ class EventResultEditView(View):
     def get(self, request, **kwargs):
         # 競技idを取得
         event_id = self.kwargs['event_pk']
+        # 競技のオブジェクトを取得
+        event = get_event_by_id(event_id=event_id)
+
         # 競技結果の一覧を取得し渡す
         event_results = get_event_results_by_event_id(event_id=event_id)
         queryset = get_event_results_by_event_id(event_id=event_id)
         formset = EventResultFormSet(queryset=queryset)
-        return render(request, self.template_name, {'formset': formset})
+
+        # チームグループオブジェクトを取得する
+        team_group = get_team_group_by_event(event_id)
+        return render(request, self.template_name, {'formset': formset,'team_group' : team_group,'event' : event})
+        
         
     # 競技結果を一件ずつ保存していく
     def post(self, request, **kwargs):
@@ -33,25 +42,48 @@ class EventResultEditView(View):
         event_id = self.kwargs['event_pk']
         queryset = get_event_results_by_event_id(event_id=event_id)
         formset = EventResultFormSet(request.POST,queryset=queryset)
+        event = get_event_by_id(event_id=event_id)
         # バリデーションエラーの場合
         if not formset.is_valid():
             return render(request, self.template_name, {'formset': formset})
 
-        class_team_flg = request.POST.get('class-team-flg')
+        # クラス順位ポイントを使用するかどうか
+        class_team_flg = "0"
+        team_group = get_team_group_by_event(event_id)
+        # クラス競技でなら使用
+        if(team_group.category == 1):
+            class_team_flg = request.POST.get('class-team-flg')
+        else:
+            class_team_flg = "0"
+            
         print(f"選択された値: {class_team_flg}") # "1" か "0" が入る
 
         # オブジェクトを受け取る
         instances = formset.save(commit=False)
+        event.is_class_point = (class_team_flg == "1")
+        event.save()
         # データの保存
-        for instance in instances:
-            # ここで instance（EventResultモデルの卵）を操作できます
-            # 例: instance.updated_by = request.user 
-            print(f"保存処理中: ID={instance.id}, 順位={instance.rank}")
+        for form in formset.forms:
+            instance = form.instance
+            print('bbbb')
+            rank_point = 0
+            # クラスポイントを使用するなら
+            if class_team_flg == "1": 
+                rank = instance.rank
+                # クラスポイントを取得する
+                rank_point = get_rank_point_by_event(event=event,rank=rank)
+                print('aaaaaaa')
+                print('rank_point')
+            else : 
+                rank_point = instance.point
+
+            # 使用するポイントを修正
+            instance.point = rank_point
             
             # 保存
             instance.save()
 
-        event = get_event_by_id(event_id=event_id)
+      
         # 今のページにリダイレクト
         return redirect('event_result_edit', 
             tournament_pk=event.tournament.id, 
