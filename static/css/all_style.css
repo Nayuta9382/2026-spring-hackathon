@@ -4,11 +4,14 @@
          html {
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            /* overflow: hidden; */
         }
         body{
             padding: 0 20px;
             height: 100vh;
+        }
+        h1,h2,h3,h4 {
+            color: #fff;
         }
 
         @media screen and (min-width: 640px) {
@@ -280,6 +283,7 @@
     }
 
     .text_input {
+        display: block;
         width: 100%;
     }
 
