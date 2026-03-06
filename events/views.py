@@ -12,7 +12,7 @@ from .forms import CreateForm
 from django.views.generic.edit import DeleteView
 from django.http import JsonResponse
 from django.views import View
-
+import json
 
 # 競技の新規作成処理
 class EventCreateView(CreateView):
@@ -184,26 +184,27 @@ class EventDeleteView(DeleteView):
             kwargs={'pk': self.object.tournament.url_uuid}
         )
 
-
-# 競技結果API
+# 競技結果表示
 class EventResultsAPIView(View):
-
     def get(self, request, tournament_pk, pk):
 
-        # 競技取得
         event = get_object_or_404(Event, pk=pk)
-
-        # 競技結果取得
         results = get_event_results_by_event(event)
 
         data = []
 
         for r in results:
+            team_name = r.team.name
+
+            try:
+                team_name = json.loads(team_name)["name"]
+            except:
+                pass
+
             data.append({
-                "team": r.team.name,
+                "team": team_name,
                 "rank": r.rank,
                 "point": r.point
             })
 
-        return JsonResponse({"results": data})
-
+        return JsonResponse({"results": data}, json_dumps_params={'ensure_ascii': False})
