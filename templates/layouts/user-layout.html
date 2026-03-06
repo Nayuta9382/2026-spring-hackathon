@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}デフォルトタイトル{% endblock title %}</title>
-     <!-- リセットcss -->
+    <!-- リセットcss -->
     <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
     <!-- 自作css -->
     <link rel="stylesheet" href="{% static 'css/all_style.css' %}">
@@ -22,8 +22,9 @@
 </head>
 <body class="user_screen">
     <img src="/static/texture.png" class="bg_overlay_image">
-    <header>
-        一般ヘッダー
+    <header class="bg_deader">
+        <img src="{% static 'img/icon/ダミー.png' %}" alt="大会の画像" class="image_circle2">
+        <h1 style="color: white; padding-left: 1rem;">大会名</h1>
     </header>
 
     <main>
@@ -31,7 +32,22 @@
         {% endblock content %}
     </main>
 
-    <footer>
+    <footer class="menu">
+        <!-- home -->
+        <a href="#" class="menu item">
+            <span class="menu_link">
+                <img src="{% static 'img/icon/Home.webp' %}" alt="home" class="frame">
+                home
+            </span>
+        </a>
+        <!-- schedule -->
+        <a href="#" class="menu item">
+            <span class="menu_link">
+                <img src="{% static 'img/icon/Calendar.webp' %}" alt="home" class="frame">
+                schedule
+            </span>
+        </a>
+
     </footer>
     {% bootstrap_javascript %}
 </body>
