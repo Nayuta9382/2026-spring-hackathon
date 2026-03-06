@@ -188,7 +188,7 @@ class EventDeleteView(DeleteView):
 # 競技結果API
 class EventResultsAPIView(View):
 
-    def get(self, request, pk):
+    def get(self, request, tournament_pk, pk):
 
         # 競技取得
         event = get_object_or_404(Event, pk=pk)
