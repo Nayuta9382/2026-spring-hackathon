@@ -5,6 +5,10 @@ from .models import Event
 def get_tournament_by_event(event):
   return event.tournament
 
+# イベントidからイベントオブジェクトを取得する
+def get_event_by_id(event_id):
+    return get_object_or_404(Event, pk=event_id)
+
 # 大会から競技の一覧を取得する
 def get_events_by_tournament(tournament):
     return Event.objects.filter(tournament=tournament)

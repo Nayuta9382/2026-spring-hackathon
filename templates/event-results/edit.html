@@ -4,6 +4,67 @@
 
 {% block content %}
 <div>
+    <h2>じかいyes no のgetじの値とそれにともなう保存処理</h2>
     <h1>競技結果編集</h1>
+   <form method="post">
+        {% csrf_token %}
+        {{ formset.management_form }}
+
+        <div style="margin-bottom: 20px;">
+            <label>クラスチーム使用の有無:</label>
+            <select name="class-team-flg">
+                <option value="1">Yes (有効)</option>
+                <option value="0">No (無効)</option>
+            </select>
+        </div>
+
+        <ul>
+            {% for form in formset %}
+            <li>
+                <div>
+                    <strong>チーム: {{ form.instance.team.name }}</strong>
+                    
+                    {# 既存データ更新用のID (hidden) #}
+                    <input type="hidden" name="{{ form.prefix }}-id" value="{{ form.instance.id }}">
+                </div>
+
+                {# 順位入力 #}
+                <div>
+                    <label for="id_{{ form.prefix }}-rank">順 :</label>
+                    <input type="number" 
+                           name="{{ form.prefix }}-rank" 
+                           id="id_{{ form.prefix }}-rank" 
+                           value="{{ form.rank.value|default:'' }}">
+                </div>
+
+                {# スコア入力 #}
+                <div>
+                    <label for="id_{{ form.prefix }}-point">点 :</label>
+                    <input type="number" 
+                           name="{{ form.prefix }}-point" 
+                           id="id_{{ form.prefix }}-point" 
+                           value="{{ form.point.value|default:'' }}">
+                </div>
+
+                {# 詳細入力 #}
+                <div>
+                    <label for="id_{{ form.prefix }}-detail">詳細:</label>
+                    <input type="text" 
+                           name="{{ form.prefix }}-detail" 
+                           id="id_{{ form.prefix }}-detail" 
+                           value="{{ form.detail.value|default:'' }}">
+                </div>
+
+               
+                
+                <hr> 
+            </li>
+            {% endfor %}
+        </ul>
+
+        <div>
+            <button type="submit">保存</button>
+        </div>
+    </form>
 </div>
 {% endblock content %}
