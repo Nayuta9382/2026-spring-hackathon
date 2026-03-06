@@ -248,13 +248,18 @@
     }
 
 /* ヘッダーレイアウト */
+    body{
+        padding-top: 100px;
+    }
     .bg_deader {
         /* ヘッダーを固定する */
         position: fixed;
         /* 画面の上部に固定 */
         top: 0;
+        left: 0;
+        right: 0;
         /* 画面の幅いっぱいに広げる */
-        width: 100%;
+        /* width: 100%; */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -262,7 +267,7 @@
         height: 100px;
     }
 
-    /* クリッピングマスク */
+/* クリッピングマスク */
     .image_circle2 {
         width: 4rem;
         height: 4rem;
