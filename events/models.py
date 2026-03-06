@@ -10,6 +10,12 @@ class Event(models.Model):
     tournament_img = models.ImageField(upload_to='tournaments/', null=True, blank=True) #トーナメント画像
     event_img = models.ImageField(upload_to='events/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    # クラスポイントを使用したかどうか
+    is_class_point = models.BooleanField(
+        default=False, 
+        verbose_name="クラスポイント対象",
+        blank=True  # フォームで必須入力にしない
+    )
     
     def __str__(self):
         return f"{self.tournament.name} - {self.name}"

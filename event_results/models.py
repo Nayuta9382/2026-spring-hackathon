@@ -8,6 +8,7 @@ class EventResult(models.Model):
     point = models.IntegerField(null=True, blank=True) # スコア（点数やタイムなど）
     detail = models.TextField(max_length=2000,default='',blank=True) # 詳細
     created_at = models.DateTimeField(auto_now_add=True)
+   
 
 
     class Meta:
