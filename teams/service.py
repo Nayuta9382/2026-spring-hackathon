@@ -2,6 +2,7 @@ from .models import TeamGroup, Team
 from django.db import transaction
 from events.models import Event
 from django.shortcuts import get_object_or_404
+from events.service import get_team_group_id
 
 
 
@@ -44,6 +45,15 @@ def get_teams_group_by_event(event):
         return event.team_group.teams.all()
     
     return [] # グループがない場合は空リストを返す
+
+
+# 競技idからクラスグループオブジェクトを取得する
+def get_team_group_by_event(event_id):
+    # チームグループidを取得する
+    target_group_id = get_team_group_id(event_id=event_id)
+    return get_object_or_404(TeamGroup, pk=target_group_id)
+
+    
 
 # チームグループを削除する(チームはCASCADEで削除)
 def delete_team_group(tournament,category=1):

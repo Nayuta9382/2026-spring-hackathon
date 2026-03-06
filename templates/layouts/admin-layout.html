@@ -1,12 +1,13 @@
 <!-- {% load django_bootstrap5 %}  -->
- {% load static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}デフォルトタイトル{% endblock title %}</title>
-     <!-- リセットcss -->
+    <!-- リセットcss -->
     <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
     <!-- 自作css -->
     <link rel="stylesheet" href="{% static 'css/all_style.css' %}">
@@ -14,21 +15,51 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     {% block extra_css %}{% endblock extra_css %}
-    <link href="https://fonts.googleapis.com/css2?family=Quantico:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quantico:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
 </head>
+
 <body class="admin_screen">
     <img src="/static/texture.png" class="bg_overlay_image">
+<<<<<<< hirose_#87
     <header>
-        管理者ヘッダー
+        <div class="bg_deader">
+            <img src="img/icon/ダミー.png" alt="大会の画像" class="image_circle2">
+            <h1 style="color: white; padding-left: 1rem;">大会名</h1>
+        </div>
+=======
+    <header class="bg_deader">
+        <img src="{% static 'img/icon/ダミー.png' %}" alt="大会の画像" class="image_circle2">
+        <h1 style="color: white; padding-left: 1rem;">大会名</h1>
+>>>>>>> main
     </header>
 
-    <main>
+    <main style="margin-top: 100px;">
         {% block content %}
         {% endblock content %}
     </main>
 
-    <footer>
+    <footer class="menu">
+        <!-- home -->
+        <a href="#" class="menu item item_admin">
+            <span class="menu_link">
+                <img src="{% static 'img/icon/Home.webp' %}" alt="home" class="frame">
+                home
+            </span>
+        </a>
+        <!-- schedule -->
+        <a href="#" class="menu item item_admin">
+            <span class="menu_link">
+                <img src="{% static 'img/icon/Calendar.webp' %}" alt="home" class="frame">
+                schedule
+            </span>
+        </a>
     </footer>
     {% bootstrap_javascript %}
 </body>
+<<<<<<< hirose_#87
+
 </html>
+=======
+</html>
+>>>>>>> main

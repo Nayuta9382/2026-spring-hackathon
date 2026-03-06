@@ -121,6 +121,17 @@
 </form>
 
 <script>
+    function validateNowCount() {
+    const nowContainer = document.getElementById('container-0');
+    const nowItems = nowContainer.querySelectorAll('.schedule-item, .new-item');
+
+    if (nowItems.length >= 2) {
+        alert('nowが二つ以上あります');
+        return false;
+    }
+    return true;
+}
+
     function refreshAll() {
         [0, 1, 2].forEach(status => {
             const container = document.getElementById(`container-${status}`);
@@ -212,3 +223,4 @@
     });
 </script>
 {% endblock content %}
+
