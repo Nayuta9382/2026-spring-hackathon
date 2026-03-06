@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import TournamentCreateView, TournamentListView, TournamentDetailAdminView,TournamentDetailUserView, TournamentUpdateView
+from .views import TournamentCreateView, TournamentListView, TournamentDetailSuperuserView,TournamentDetailUserView, TournamentUpdateView,TournamentDetailOperatorView
 from .views import UpdateStatusView
 from .views import TournamentDeleteView
 
@@ -12,8 +12,10 @@ urlpatterns = [
     path('add', TournamentCreateView.as_view(), name='tournament_create'),
 
     # <int:pk> を <t_url:pk> に書き換え
-    # 管理者大会詳細
-    path('<t_url:pk>/admin', TournamentDetailAdminView.as_view(), name='tournament_detail_admin'),
+    # 管理者(スーパユーザ)大会詳細
+    path('<t_url:pk>/admin/superuser', TournamentDetailSuperuserView.as_view(), name='tournament_detail_superuser'),
+    # 管理者(運営者)大会詳細
+    path('<t_url:pk>/admin/operator', TournamentDetailOperatorView.as_view(), name='tournament_detail_operator'),
     # 一般大会詳細
     path('<t_url:pk>/user', TournamentDetailUserView.as_view(), name='tournament_detail_user'),
 

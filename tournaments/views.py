@@ -39,10 +39,10 @@ class TournamentCreateView(CreateView):
     def get_success_url(self):
         return reverse('tournament_detail_admin', kwargs={'pk': self.object.pk})
 
-# 管理者の大会詳細情報を取得する
-class TournamentDetailAdminView(DetailView):
+# スーパユーザの大会詳細情報を取得する
+class TournamentDetailSuperuserView(DetailView):
     model = Tournament
-    template_name = 'tournament/admin-detail.html'
+    template_name = 'tournament/superuser-detail.html'
     context_object_name = 'tournament'
 
     def get_context_data(self, **kwargs):
@@ -72,7 +72,47 @@ class TournamentDetailAdminView(DetailView):
         host = settings.APP_HOST
         port = settings.APP_PORT
         protocol = settings.APP_PROTOCOL
-        admin_url = f'{protocol}://{host}:{port}/tournaments/{tournament.url_uuid}/admin'
+        admin_url = f'{protocol}://{host}:{port}/tournaments/{tournament.url_uuid}/admin/operator'
+        user_url = f'{protocol}://{host}:{port}/tournaments/{tournament.url_uuid}/user'
+        context['admin_url'] = admin_url
+        context['user_url'] = user_url
+
+
+        return context
+# 運営者の大会詳細情報を取得する(時間あればスーパユーザと関数統一する)
+class TournamentDetailOperatorView(DetailView):
+    model = Tournament
+    template_name = 'tournament/operator-detail.html'
+    context_object_name = 'tournament'
+
+    def get_context_data(self, **kwargs):
+        # 1. まず親クラスの標準的なコンテキスト（tournament等）を取得
+        context = super().get_context_data(**kwargs)
+        tournament = self.object
+
+        # 2. URLからpkを取得（self.object でも取得可能です）
+        pk = self.kwargs.get('pk')
+
+        # 3. 追加のランキング情報を取得して、context辞書に入れる
+        # これでテンプレート側で {{ rankings }} が使えるようになります
+        context['rankings'] = get_tournament_rannkings(pk)
+
+        context['status_form'] = UpdateStatusForm(instance=tournament)
+
+        # クラスチームの一覧を取得する
+        team_group = get_team_group_by_category(tournament=self.object,category=1)
+        teams = get_teams_by_teamGroup(team_group)
+        context['teams'] = teams
+
+        # 競技の一覧を取得する
+        events = get_events_by_tournament(tournament=tournament)
+        context['events'] = events
+
+        # アプリのホストを取得し、大会URLを作成
+        host = settings.APP_HOST
+        port = settings.APP_PORT
+        protocol = settings.APP_PROTOCOL
+        admin_url = f'{protocol}://{host}:{port}/tournaments/{tournament.url_uuid}/admin/operator'
         user_url = f'{protocol}://{host}:{port}/tournaments/{tournament.url_uuid}/user'
         context['admin_url'] = admin_url
         context['user_url'] = user_url
