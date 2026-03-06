@@ -217,6 +217,7 @@
     }
 
     .menu {
+        margin: 1rem 0;
         display: flex;
         gap: 2rem;
         justify-content: center;
@@ -225,8 +226,14 @@
 
     .item {
         width: 100%;
-        background: #8B0482;
         padding: 1rem;
+    }
+
+    .item_user{
+        background: #16006C;
+    }
+    .item_admin {
+        background: #8B0482;
     }
 
     /* 画像の写真フレーム化 */
