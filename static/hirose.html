@@ -7,97 +7,11 @@
     <title>Document</title>
     <!-- リセットcss -->
     <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- 自作css -->
+    <link rel="stylesheet" href="./css/all_style.css">
     <style>
-        /* ヘッダーレイアウト */
-        .bg_deader {
-            /* ヘッダーを固定する */
-            position: fixed;
-            /* 画面の上部に固定 */
-            top: 0;
-            /* 画面の幅いっぱいに広げる */
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #000;
-            height: 100px;
-        }
-
-        /* クリッピングマスク */
-        .image_circle2 {
-            width: 4rem;
-            height: 4rem;
-            object-fit: none;
-            border-radius: 50%;
-        }
-
-        .form {
-            border: none;
-        }
-
-        .form_label {
-            font-weight: bold;
-            color: #fff;
-        }
-
-        .text_input {
-            width: 100%;
-        }
-
-        /* プルダウン関係 */
-        .pulldown {
-            outline: none;
-        }
-
-        /* ボタン関係 */
-        .btn {
-            text-decoration: none;
-            width: max-content;
-            margin: auto;
-            padding: 0.5rem;
-            font-weight: bold;
-            color: #fff;
-            /* 角丸 */
-            border-radius: 10px;
-            transition: 0.5s;
-            /* ドロップジャドウ */
-            box-shadow: 0px 0px 3px 3px rgba(255, 255, 255, 0.3);
-        }
-
-        .gazou {
-            border: 3px solid #77FF00;
-            background: #52BC77;
-        }
-
-        .gazou:hover {
-            color: #52BC77;
-            background: #fff;
-        }
-
-        .delete {
-            border: 3px solid #FF0000;
-            background: #AC0000;
-        }
-
-        .delete:hover {
-            color: #AC0000;
-            background: #fff;
-        }
-
-        .update {
-            width: 100%;
-
-        }
-
-        .return {
-            border: 3px solid #FF00ED;
-            background: #B53DAD;
-        }
-
-        .return:hover {
-            color: #B53DAD;
-            background: #fff;
-        }
+        
 
         /* メニュー */
         .menu_link {
@@ -132,32 +46,7 @@
             height: 55px;
         }
 
-        /* 画像UI */
-        .image_center {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .image_item {
-            /* 中身のセンタリング */
-            display: block;
-            /* 上下の中央揃え */
-            align-content: center;
-            justify-items: center;
-            width: 100%;
-            height: auto;
-            margin: 1rem;
-            background: #D9D9D9;
-        }
-
-        /* このクラスは、ダミー（ヘッダーに隠れるため、上部、左右に余白を追加） */
-        /* 削除クラス */
-        .dummy {
-            margin-top: 150px;
-            margin-left: 20px;
-            margin-right: 20px;
-        }
+        
     </style>
 </head>
 
