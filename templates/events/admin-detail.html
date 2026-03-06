@@ -2,7 +2,8 @@
 
 {% block content %}
 <p>
-    <a href="{% url 'tournament_detail_admin' event.tournament.id %}">←  競技詳細に戻る</a>
+    <a href="{% url 'tournament_detail_superuser' event.tournament.id %}">←  スーパユーザ大会詳細に戻る</a>
+    <a href="{% url 'tournament_detail_operator' event.tournament.id %}">←  運営者大会詳細に戻る</a>
 </p>
 
 <h1>競技詳細: {{ event.name }} (管理者用)</h1>
