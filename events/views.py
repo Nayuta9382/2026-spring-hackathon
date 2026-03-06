@@ -66,20 +66,20 @@ class EventAdminDetailView(DetailView):
     model = Event
     template_name = 'events/admin-detail.html'
     context_object_name = 'event'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        # 登録されているクラスチームの一覧を取得する
         event = self.object
         teams = get_teams_by_event(event)
-      
-        # contextに保存
         context['teams'] = teams
-
-        # 競技結果を取得する
         event_results = get_event_results_by_event(event=event)
         context['event_results'] = event_results
-        
+
+        schedules = event.schedules.all().order_by('order')
+        context['next_schedules'] = schedules.filter(status=0)
+        context['now_schedules'] = schedules.filter(status=1)
+        context['previous_schedules'] = schedules.filter(status=2)
+
         return context
 
 # 競技の詳細(一般)
@@ -91,11 +91,11 @@ class EventUserDetailView(DetailView):
         context = super().get_context_data(**kwargs)
 
         event = self.object
-      
+
         # 競技結果を取得する
         event_results = get_event_results_by_event(event=event)
         context['event_results'] = event_results
-        
+
         return context
 
 

@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 # register_converter を追加
-from django.urls import path, include, register_converter 
+from django.urls import path, include, register_converter
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -31,6 +31,7 @@ urlpatterns = [
     path('tournaments/', include('tournaments.urls')),
     path('tournaments/<t_url:tournament_pk>/events/', include('events.urls')),
     path('tournaments/<t_url:tournament_pk>/events/<event_pk>/event_results/', include('event_results.urls')),
+    path('tournaments/schedules/', include('schedules.urls')),
     path('pages/', include('pages.urls')), # 開発中htmlを表示するようのアプリ
 ]
 

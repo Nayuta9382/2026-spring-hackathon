@@ -5,6 +5,7 @@ from django.db import transaction
 from events.models import Event
 from .models import Schedule
 
+
 def update_event_schedules_after(request, event):
     """
     イベントに紐づくスケジュールの一括更新・削除・新規作成を行う
@@ -15,9 +16,10 @@ def update_event_schedules_after(request, event):
         event.schedules.filter(pk__in=delete_ids).delete()
 
     # 2. 既存スケジュールの更新処理
+    # pkベースの一時orderで絶対に重複しない値にしてから正式な値に更新する
     schedules = list(event.schedules.all())
     for s in schedules:
-        Schedule.objects.filter(pk=s.pk).update(order=s.order + 10000)
+        Schedule.objects.filter(pk=s.pk).update(order=s.pk + 100000)
 
     for s in schedules:
         new_detail = request.POST.get(f'detail_{s.pk}', s.detail)
@@ -48,6 +50,7 @@ def update_event_schedules_after(request, event):
                 order=int(order) if order else 1,
             )
 
+
 # スケジュールを一覧表示する
 class ScheduleListView(generic.DetailView):
     model = Event
@@ -59,10 +62,10 @@ class ScheduleListView(generic.DetailView):
         event = self.object
 
         schedules = event.schedules.all().order_by('order')
-        # 数値定義に合わせてフィルタリング (now=0, next=1, previous=2)
-        context['now_schedules'] = schedules.filter(status=0)
-        context['next_schedules'] = schedules.filter(status=1)
+        context['next_schedules'] = schedules.filter(status=0)
+        context['now_schedules'] = schedules.filter(status=1)
         context['previous_schedules'] = schedules.filter(status=2)
+        context['schedules'] = schedules
 
         return context
 
@@ -78,10 +81,10 @@ class ScheduleUpdateView(generic.UpdateView):
         event = self.object
 
         schedules = event.schedules.all().order_by('order')
-        # 数値定義に合わせてフィルタリング (now=0, next=1, previous=2)
-        context['now_schedules'] = schedules.filter(status=0)
-        context['next_schedules'] = schedules.filter(status=1)
+        context['next_schedules'] = schedules.filter(status=0)
+        context['now_schedules'] = schedules.filter(status=1)
         context['previous_schedules'] = schedules.filter(status=2)
+        context['schedules'] = schedules
 
         return context
 
