@@ -40,7 +40,7 @@
             <ul>
                 {% for event in events %}
                     <li>
-                        <a href="{% url 'event_detail_admin' tournament_pk=tournament.pk pk=event.pk %}">
+                        <a href="{% url 'event_detail_user' tournament_pk=tournament.pk pk=event.pk %}">
                             {{ event.name }} 
                             {% if event.category == 1 %}(クラス対抗){% else %}(一般){% endif %}
                         </a>

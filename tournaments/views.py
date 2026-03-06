@@ -12,6 +12,8 @@ from django.db import transaction
 from django.views.generic import DeleteView
 from django.urls import reverse_lazy
 from .forms import UpdateStatusForm
+from django.conf import settings
+
 
 
 
@@ -65,6 +67,16 @@ class TournamentDetailAdminView(DetailView):
         # 競技の一覧を取得する
         events = get_events_by_tournament(tournament=tournament)
         context['events'] = events
+
+        # アプリのホストを取得し、大会URLを作成
+        host = settings.APP_HOST
+        port = settings.APP_PORT
+        protocol = settings.APP_PROTOCOL
+        admin_url = f'{protocol}://{host}:{port}/tournaments/{tournament.url_uuid}/admin'
+        user_url = f'{protocol}://{host}:{port}/tournaments/{tournament.url_uuid}/user'
+        context['admin_url'] = admin_url
+        context['user_url'] = user_url
+
 
         return context
     

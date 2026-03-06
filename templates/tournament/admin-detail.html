@@ -24,7 +24,8 @@
 
             <ul>
                 <li>大会名: {{ tournament.name }}</li>
-                <li>URL識別子 (UUID): {{ tournament.url_uuid }} (変更不可)</li>
+                <li>運営者URL: <a target="_blank" rel="noopener noreferrer" href="{{ admin_url }}">{{ admin_url }}</a></li>
+                <li>一般URL: <a target="_blank" rel="noopener noreferrer" href="{{ user_url }}">{{ user_url }}</a></li>
                 <li>パスワード: {{ tournament.password }}</li>
             </ul>
         </section>
