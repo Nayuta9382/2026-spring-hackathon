@@ -2,7 +2,7 @@ from django.urls import path
 from .views import TournamentCreateView, TournamentListView, TournamentDetailAdminView,TournamentDetailUserView, TournamentUpdateView
 from .views import UpdateStatusView
 from .views import TournamentDeleteView
-from schedules.views import ScheduleUpdateView, ScheduleListView
+
 
 
 urlpatterns = [
@@ -23,10 +23,6 @@ urlpatterns = [
     path('<int:pk>/api/update-status/', UpdateStatusView.as_view(), name='api_update_status'),
      # 大会削除
     path('<t_url:pk>/delete', TournamentDeleteView.as_view(), name='tournament_delete'),
-    # スケジュール一覧（next/now/previous表示）
-    path('schedules/<int:pk>/', ScheduleListView.as_view(), name='schedule_list'),
-    # スケジュール編集
-    path('schedules/<int:pk>/edit/', ScheduleUpdateView.as_view(), name='schedule_edit'),
 
 ]
 
