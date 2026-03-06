@@ -121,7 +121,7 @@
 </form>
 
 <script>
-    {% comment %} function validateNowCount() {
+    function validateNowCount() {
     const nowContainer = document.getElementById('container-0');
     const nowItems = nowContainer.querySelectorAll('.schedule-item, .new-item');
 
@@ -130,7 +130,7 @@
         return false;
     }
     return true;
-} {% endcomment %}
+}
 
     function refreshAll() {
         [0, 1, 2].forEach(status => {
