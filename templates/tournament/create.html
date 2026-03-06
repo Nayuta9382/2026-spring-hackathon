@@ -2,9 +2,10 @@
 {% block title %}index{% endblock title %}
 {% load static %}
 {% block content %}
-    <p><a href="{% url 'tournament_list' %}">← 大会一覧に戻る</a></p>
 
-  <form action="" method="POST" enctype="multipart/form-data">
+    <a class="update return btn block" style="display: block;" href="{% url 'tournament_list' %}">← 大会一覧に戻る</a>
+
+    <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_div }}
         <div>
