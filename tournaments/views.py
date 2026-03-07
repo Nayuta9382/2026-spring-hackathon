@@ -13,6 +13,10 @@ from django.views.generic import DeleteView
 from django.urls import reverse_lazy
 from .forms import UpdateStatusForm
 from django.conf import settings
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from collections import defaultdict
+from rest_framework import status
 
 
 
@@ -218,3 +222,23 @@ class TournamentDeleteView(DeleteView):
     #削除後は大会一覧へリダイレクト
     success_url = reverse_lazy('tournament_list')
 
+
+# 大会の総合順位を返すapi
+class GetTournamentRankAPIView(APIView):
+    # GETリクエストの処理
+    def get(self, request,pk, format=None):
+        pk = self.kwargs.get('pk')
+
+        # ランキングを取得
+        data = get_tournament_rannkings(pk)
+
+        # ランキングをjsonに変換
+        rankings = defaultdict(list)
+
+        for item in data:
+            rank = item['rank']
+            rankings[rank].append({
+                "name": item['name'],
+                "total_point": item['total_point']
+            })
+        return Response(rankings, status=status.HTTP_200_OK)

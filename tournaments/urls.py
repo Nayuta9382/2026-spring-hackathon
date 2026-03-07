@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import TournamentCreateView, TournamentListView, TournamentDetailSuperuserView,TournamentDetailUserView, TournamentUpdateView,TournamentDetailOperatorView
+from .views import TournamentCreateView, TournamentListView, TournamentDetailSuperuserView,TournamentDetailUserView, TournamentUpdateView,TournamentDetailOperatorView,GetTournamentRankAPIView
 from .views import UpdateStatusView
 from .views import TournamentDeleteView
 from accounts.decorators import admin_required,super_user_required,operator_required
@@ -25,6 +25,7 @@ urlpatterns = [
     path('<int:pk>/api/update-status/', super_user_required(UpdateStatusView.as_view()), name='api_update_status'),
      # 大会削除
     path('<t_url:pk>/delete', super_user_required(TournamentDeleteView.as_view()), name='tournament_delete'),
-
+    # 大会順位を取得する
+    path('<t_url:pk>/api/tournament-rank', GetTournamentRankAPIView.as_view(), name='api_tournament_rank_get'),
 ]
 

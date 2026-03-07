@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_bootstrap5',
+    'rest_framework',
     'accounts',
     'tournaments',
     'events',
@@ -155,3 +156,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # ブラウザからアクセスする際のURLの入り口
 MEDIA_URL = '/media/'
+
+
+REST_FRAMEWORK = {
+    # 誰でも閲覧できる設定（とりあえず試す用）
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+}
