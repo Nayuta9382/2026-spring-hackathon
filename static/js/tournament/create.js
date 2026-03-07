@@ -10,7 +10,7 @@ function rankAddInput() {
 
     // Labelを作成
     const label = document.createElement('label');
-    label.innerText = `${currentCount}位: `;
+    label.innerHTML = `<h2>${currentCount}位</h2>`;
 
     // 入力欄を作成
     const input = document.createElement('input');

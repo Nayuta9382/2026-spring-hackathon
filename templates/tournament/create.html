@@ -19,7 +19,7 @@
                 <div class="form">
                     <h2 class="h2">大会画像</h2>
                     <div class="preview_img">
-                        <img id="preview" src="" alt="">
+                        <img id="img_preview" src="" alt="">
                         <label class="gazou btn">
                             画像選択
                             {{ form.img_path }}
@@ -50,7 +50,7 @@
                 <h2 class="h2">大会パスワード</h2>
                 {{ form.password }}
             </div>
-
+            {% comment %} クラスチーム {% endcomment %}
             <div class="form">
                 <h2 class="h2">クラスチーム</h2>
                 <div id="teams-container">
@@ -58,26 +58,32 @@
                         <input type="text" name="teams" placeholder="クラスチーム名を入力">
                     </div>
                 </div>
-                <button type="button" onclick="teamAddInput()" class="gazou btn">クラスチームを追加</button>
+                <button type="button" onclick="teamAddInput()" class="gazou btn class_team_btn">追加</button>
             </div>
+            {% comment %} ランクポイント {% endcomment %}
             <div class="form">
                 <h2 class="h2">ランクポイント</h2>
                 <div id="rank-container">
-                    <div class="input-row form">
-                        <label>1位: </label>
+                    <div class="input-row">
+                        <label><h2>1位</h2></label>
                         <input type="number" name="rank_points" placeholder="1位のポイント" value="0">
                     </div>
                 </div>
 
             </div>
-            <button type="submit" class="gazou btn">保存</button>
+
+            <div class="button_container">
+                <a class="return btn display_block" href="{% url 'tournament_list' %}">大会一覧に戻る</a>
+                <button type="submit" class="gazou btn add_btn">保存</button>
+            </div>
         </div>
     </form>
 <script src="{% static 'js/tournament/create.js' %}"></script>
 {% comment %} プレビュー {% endcomment %}
 <script>
-    const input = document.querySelector('input[type="file"]');
-    const preview = document.getElementById("preview");
+    {% comment %} 画像プレビュー {% endcomment %}
+    const input = document.getElementById('id_img_path');
+    const preview = document.getElementById("img_preview");
 
     input.addEventListener("change", function () {
     const file = this.files[0];
@@ -90,6 +96,21 @@
         };
 
         reader.readAsDataURL(file);
+    }
+    });
+
+    {% comment %} PDFファイル名プレビュー {% endcomment %}
+
+    const fileInput = document.getElementById('id_pdf_img_path');
+
+    fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0]; // 最初のファイルを取得
+    if (file) {
+        const previewPdf = document.getElementById('preview_pdf');
+        previewPdf.innerHTML = `<p class="p">${file.name}</p>`; // ファイル名を表示
+    }else{
+        const previewPdf = document.getElementById('preview_pdf');
+        previewPdf.innerHTML = `<p class="p">選択されていません</p>`; // ファイルが選択されていない場合の表示
     }
     });
 </script>
