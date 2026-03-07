@@ -30,6 +30,7 @@ class OperatorLoginView(FormView):
     # 最初にログインしようとしていたページへリダイレクト
     def get_success_url(self):
         next_url = self.request.GET.get('next')
+        print(next_url)
         
         # nextが存在し、かつ空文字でない場合はそのURLへ
         if next_url:

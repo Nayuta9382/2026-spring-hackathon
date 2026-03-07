@@ -2,6 +2,7 @@ from django.http import HttpResponseForbidden
 from functools import wraps
 from django.shortcuts import redirect
 from .services import is_superuser_authenticated, is_operator_authenticated, is_superuser_session
+from django.utils.http import urlencode
 
 
 # スーパユーザと運営者を認証する
@@ -23,7 +24,9 @@ def admin_required(view_func):
             return redirect('/accounts/login/')
         else:
             # 運営者ログインページへ
-            return redirect('/accounts/operator-login/')
+            login_url = '/accounts/operator-login/'
+            current_path = request.get_full_path()
+            return redirect(f"{login_url}?{urlencode({'next': current_path})}")
     return _wrapped_view
 
 # スーパユーザを認証する
@@ -47,5 +50,7 @@ def operator_required(view_func):
             return view_func(request, *args, **kwargs)
         else:
             # 運営者ログインページへ
-            return redirect('/accounts/operator-login/')
+            login_url = '/accounts/operator-login/'
+            current_path = request.get_full_path()
+            return redirect(f"{login_url}?{urlencode({'next': current_path})}")
     return _wrapped_view

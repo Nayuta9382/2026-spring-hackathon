@@ -64,7 +64,7 @@ def is_superuser_authenticated(request):
         return False
 # 運営者としてログインしているかを検知する
 def is_operator_authenticated(request):
-    if is_authenticated_jwt():
+    if is_authenticated_jwt(request):
         return True
     else:
         return False
