@@ -17,6 +17,9 @@ class IndexView(TemplateView):
 class LoginView(BaseLoginView):
     form_class = LoginFrom
     template_name = "accounts/login.html"
+    def get_success_url(self):
+        # 名前空間を使わず、URLを直接文字列で返す
+        return "/tournaments/"
 
 # 運営者ログイン処理
 class OperatorLoginView(FormView):

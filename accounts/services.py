@@ -44,21 +44,35 @@ def verify_jwt(token):
     except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
         return None
 
-# cookie内のjwtを検証する（デコレータ）
-def jwt_required(view_func):
-    @wraps(view_func)
-    def _wrapped_view(request, *args, **kwargs):
-        token = request.COOKIES.get('access_token')
-        
-        if not token or not verify_jwt(token):
-            from django.urls import reverse
-            from urllib.parse import quote
-            login_url = reverse('operator_login') 
-            return redirect(f"{login_url}?next={quote(request.path)}")
-            
-        return view_func(request, *args, **kwargs)
-    return _wrapped_view
+# cookie内のjwtを検証する
+def is_authenticated_jwt(request):
+    token = request.COOKIES.get('access_token')
+    if not token:
+        return False
+    return verify_jwt(token) 
 
 # jwtをcookieから削除
 def logout_user(response):
     response.delete_cookie('access_token')
+
+
+# スーパユーザとしてログインしているかを検知する
+def is_superuser_authenticated(request):
+    if request.user.is_authenticated:
+        return True
+    else:
+        return False
+# 運営者としてログインしているかを検知する
+def is_operator_authenticated(request):
+    if is_authenticated_jwt():
+        return True
+    else:
+        return False
+
+# スーパユーザのセッションidが存在していたがどうか
+def is_superuser_session(request):
+    session_key = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
+    if session_key:
+        return True
+    else:
+        return False

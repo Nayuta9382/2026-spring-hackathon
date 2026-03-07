@@ -2,12 +2,13 @@ from django.urls import path
 from .views import TournamentCreateView, TournamentListView, TournamentDetailSuperuserView,TournamentDetailUserView, TournamentUpdateView,TournamentDetailOperatorView
 from .views import UpdateStatusView
 from .views import TournamentDeleteView
+from accounts.decorators import admin_required
 
 
 
 urlpatterns = [
     # 大会一覧
-    path('', TournamentListView.as_view(), name='tournament_list'),
+    path('', admin_required(TournamentListView.as_view()), name='tournament_list'),
     # 大会作成
     path('add', TournamentCreateView.as_view(), name='tournament_create'),
 

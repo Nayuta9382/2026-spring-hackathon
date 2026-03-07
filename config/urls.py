@@ -20,10 +20,12 @@ from django.urls import path, include, register_converter
 from django.conf import settings
 from django.conf.urls.static import static
 
+from django.urls.converters import get_converters
 from .converters import TournamentURLConverter
 
 # コンバーターの登録
-register_converter(TournamentURLConverter, 't_url')
+if 't_url' not in get_converters():
+    register_converter(TournamentURLConverter, 't_url')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
