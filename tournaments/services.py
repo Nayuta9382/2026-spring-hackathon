@@ -102,7 +102,7 @@ def delete_tournament(pk):
 def get_tournament_from_event(event):
     return Tournament.objects.get(pk=event.tournament_id)
 
-# 競技idとrankからランクポイントを取得する
+# 競技とrankからランクポイントを取得する
 def get_rank_point_by_event(event, rank):
     # 大会を取得
     tournament = get_tournament_from_event(event=event)
@@ -115,3 +115,9 @@ def get_rank_point_by_event(event, rank):
     
     # 設定が存在すればそのポイントを、なければ 0 を返す
     return tp.point if tp else 0
+
+# 競技からラインポイントの一覧を取得する
+def get_rank_points_by_event(event):
+    # 大会を取得
+    tournament = get_tournament_from_event(event=event)
+    return TournamentPoint.objects.filter(tournament=tournament).order_by('rank')

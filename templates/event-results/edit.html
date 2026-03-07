@@ -4,7 +4,6 @@
 
 {% block content %}
 <div>
-    <h2>じかいyes no のgetじの値とそれにともなう保存処理</h2>
     <h1>競技結果編集</h1>
    <form method="post">
         {% csrf_token %}
@@ -34,10 +33,16 @@
                 {# 順位入力 #}
                 <div>
                     <label for="id_{{ form.prefix }}-rank">順 :</label>
-                    <input type="number" 
-                           name="{{ form.prefix }}-rank" 
-                           id="id_{{ form.prefix }}-rank" 
-                           value="{{ form.rank.value|default:'' }}">
+                    <select name="{{ form.prefix }}-rank" 
+                        id="id_{{ form.prefix }}-rank" 
+                        class="rank-select">
+                    <option value="">-- 選択 --</option>
+                    {% for tp in tournament_points %}
+                        <option value="{{ tp.rank }}" {% if form.rank.value|stringformat:"s" == tp.rank|stringformat:"s" %}selected{% endif %}>
+                            {{ tp.rank }}位
+                        </option>
+                    {% endfor %}
+                </select>
                 </div>
 
                 {# スコア入力 #}
@@ -70,5 +75,8 @@
         </div>
     </form>
 </div>
+<script>
+    const rankPoints = JSON.parse('{{ tournament_points_json|safe }}');
+</script>
 <script src="/static/js/event-result/event-result.js"></script>
 {% endblock content %}

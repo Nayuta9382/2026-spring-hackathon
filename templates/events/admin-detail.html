@@ -97,6 +97,7 @@
 
 <section>
     <h2>順位</h2>
+    <a href="{% url 'event_result_edit' tournament_pk=event.tournament.url_uuid event_pk=event.id %}">順位を編集する</a>
 
     <ul>
         {% for event_result in event_results %}
