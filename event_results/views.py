@@ -9,7 +9,8 @@ from .models import EventResult
 from django.forms import modelformset_factory
 from events.service import get_event_by_id,get_event_by_id
 from teams.service import get_team_group_by_event
-from tournaments.services import get_rank_point_by_event
+from tournaments.services import get_rank_point_by_event,get_rank_points_by_event
+import json
 
 # Formsetを定義
 EventResultFormSet = modelformset_factory(EventResult, form=EventResultForm, extra=0)
@@ -33,7 +34,14 @@ class EventResultEditView(View):
 
         # チームグループオブジェクトを取得する
         team_group = get_team_group_by_event(event_id)
-        return render(request, self.template_name, {'formset': formset,'team_group' : team_group,'event' : event})
+
+        # 大会ポイントの一覧を取得する
+        tournament_points =  get_rank_points_by_event(event=event)
+        # jsonに変換
+        points_dict = {tp.rank: tp.point for tp in tournament_points }
+        tournament_points_json = json.dumps(points_dict)
+
+        return render(request, self.template_name, {'formset': formset,'team_group' : team_group,'event' : event, 'tournament_points' : tournament_points,'tournament_points_json' : tournament_points_json})
         
         
     # 競技結果を一件ずつ保存していく
@@ -56,7 +64,6 @@ class EventResultEditView(View):
         else:
             class_team_flg = "0"
             
-        print(f"選択された値: {class_team_flg}") # "1" か "0" が入る
 
         # オブジェクトを受け取る
         instances = formset.save(commit=False)
@@ -65,15 +72,12 @@ class EventResultEditView(View):
         # データの保存
         for form in formset.forms:
             instance = form.instance
-            print('bbbb')
             rank_point = 0
             # クラスポイントを使用するなら
             if class_team_flg == "1": 
                 rank = instance.rank
                 # クラスポイントを取得する
                 rank_point = get_rank_point_by_event(event=event,rank=rank)
-                print('aaaaaaa')
-                print('rank_point')
             else : 
                 rank_point = instance.point
 
