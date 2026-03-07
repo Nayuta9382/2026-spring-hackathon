@@ -121,3 +121,8 @@ def get_rank_points_by_event(event):
     # 大会を取得
     tournament = get_tournament_from_event(event=event)
     return TournamentPoint.objects.filter(tournament=tournament).order_by('rank')
+
+# UUIDから大会の情報を取得する
+def get_tournament_by_uuid(uuid_val):
+    tournament = get_object_or_404(Tournament, url_uuid=uuid_val)
+    return tournament
