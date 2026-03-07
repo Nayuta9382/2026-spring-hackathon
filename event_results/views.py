@@ -89,9 +89,9 @@ class EventResultEditView(View):
 
       
         # 今のページにリダイレクト
-        return redirect('event_result_edit', 
+        return redirect('event_detail_admin', 
             tournament_pk=event.tournament.id, 
-            event_pk=event.id
+            pk=event.id
         )
         
   
