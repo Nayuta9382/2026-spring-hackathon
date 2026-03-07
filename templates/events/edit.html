@@ -7,7 +7,7 @@
 {% block content %}
 <h1 class="text_center">競技編集</h1>
 
-<form action="" method="POST" enctype="multipart/form-data" class="form">
+<form action="" method="POST" enctype="multipart/form-data" class="form space">
     {% csrf_token %}
 
     {# 1. 競技名 #}
@@ -19,8 +19,7 @@
     {# 2. 競技説明 #}
     <div>
         <label for="description" class="form_label">競技説明</label>
-        <textarea class="text_input" name="description" id="description" cols="150"
-            rows="8">{{ event.detail }}</textarea>
+        <textarea class="text_input" name="description" id="detail" cols="150" rows="8">{{ event.detail }}</textarea>
     </div>
 
     <!-- {# 2. 競技区分 #}
@@ -38,8 +37,6 @@
         <textarea name="detail" rows="5">{{ event.detail }}</textarea>
     </div> -->
 
-    <hr>
-
     {# 5. 画像類 #}
     <div>
         <label class="form_label">トーナメント画像</label>
@@ -49,18 +46,23 @@
         <input type="file" name="tournament_img">
     </div>
 
-    <!-- 組み込み、お願いします -->
+    <!-- 組み込み、お願いします1 -->
     <!-- 画像UI -->
-    <div class="image_center">
-        <div class="image_item">
-            <img src="../../static/img/icon/イメージファイルアイコン.webp" alt="イメージ">
+    <div>
+        <label for="comment" class="form_label">トーナメント画像</label>
+        <div>
+            <div class="image_center">
+                <div class="image_item">
+                    <img src="../../static/img/icon/イメージファイルアイコン.webp" alt="イメージ">
+                </div>
+            </div>
+            <form action="#">
+                <div class="pos_right">
+                    <button type="submit" class="gazou btn">画像選択</button>
+                </div>
+            </form>
         </div>
     </div>
-    <form action="#">
-        <div class="pos_right">
-            <button type="submit" class="gazou btn">画像選択</button>
-        </div>
-    </form>
 
     <div>
         <label class="form_label">競技イメージ画像</label>
@@ -70,7 +72,23 @@
         <input type="file" name="event_img">
     </div>
 
-    <hr>
+    <!-- 組み込み、お願いします2 -->
+    <!-- 画像UI -->
+    <div>
+        <label for="comment" class="form_label">トーナメント画像</label>
+        <div>
+            <div class="image_center">
+                <div class="image_item">
+                    <img src="../../static/img/icon/イメージファイルアイコン.webp" alt="イメージ">
+                </div>
+            </div>
+            <form action="#">
+                <div class="pos_right">
+                    <button type="submit" class="gazou btn">画像選択</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     {# チーム設定エリア #}
     <div id="teams-section">
@@ -101,16 +119,30 @@
         </div>
     </div>
 
+    <!-- 組み込み、お願いします3 -->
     <div>
-
-
+        <div class="search-container min_space">
+            <input class="input_text" type="text" id="comment" name="comment">
+            <button type="submit" class="delete btn">削除</button>
+        </div>
+        <div class="pos_right">
+            <button type="submit" class="gazou btn btn_margin">追加</button>
+        </div>
     </div>
-
-    <hr>
 
     {# 送信・戻る #}
     <div>
         <button type="submit">更新保存</button>
+    </div>
+
+    <!-- 組み込み、お願いします4 -->
+    <div class="side_by_side">
+        <div>
+            <button type="submit" class="gazou btn block_btn">更新</button>
+        </div>
+        <div>
+            <button type="button" class="return btn block_btn">戻る</button>
+        </div>
     </div>
 </form>
 
