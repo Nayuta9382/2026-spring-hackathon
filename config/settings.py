@@ -18,12 +18,14 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = environ.Env(DEBUG=(bool, False),APP_HOST=(str, '127.0.0.1'), APP_PORT=(int, 8000),APP_PROTOCOL=(str, 'http'))
+env = environ.Env(DEBUG=(bool, False),APP_HOST=(str, '127.0.0.1'), APP_PORT=(int, 8000),APP_PROTOCOL=(str, 'http'),SECRET_KEY=(str, 'your_SECRET_KEY'),JWT_EXPIRY_HOURS=(str, 3))
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 APP_HOST = env('APP_HOST')
 APP_PORT = env('APP_PORT')
 APP_PROTOCOL = env('APP_PROTOCOL')
+SECRET_KEY = env('SECRET_KEY')
+JWT_EXPIRY_HOURS = env('JWT_EXPIRY_HOURS')
 
 
 # Quick-start development settings - unsuitable for production
