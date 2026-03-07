@@ -17,7 +17,6 @@ from django.conf import settings
 
 
 
-
 # 大会を一覧表示する
 class TournamentListView(ListView):
     template_name = 'tournament/list.html'
