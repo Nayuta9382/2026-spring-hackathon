@@ -1,0 +1,63 @@
+@charset "utf-8";
+
+/* 不透明度20%の背景 */
+.block_bg {
+    display: block;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.check_pulldown {
+    display: block;
+    margin-top: 0.5rem;
+    padding: 0.3rem;
+    border-radius: 5px;
+}
+
+.flex_container {
+    display: flex;
+    align-items: flex-end;
+    /* 両端に寄せる */
+    width: 100%;
+}
+
+.delete_wrapper {
+    flex-grow: 1;
+    /* 余ったスペースをすべて埋める */
+    display: flex;
+}
+
+.align-right {
+    /* 左側のマージンだけを自動（最大）にすることで右に押し出す */
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    display: block;
+    /* block要素にすることでmarginによる押し出しを有効にする */
+}
+
+.pos_right {
+  text-align: right;
+}
+
+/*スクロールバー関係*/
+.scrollbar_others {
+    max-height: 60rem;
+    overflow-y: scroll;
+    padding-right: 20px;
+}
+
+.scrollbar_others::-webkit-scrollbar,
+.list_admin::-webkit-scrollbar {
+    width: 16px;
+}
+
+.scrollbar_others::-webkit-scrollbar-track,
+.list_admin::-webkit-scrollbar-track {
+    background-color: #5D5D5D;
+}
+
+.scrollbar_others::-webkit-scrollbar-thumb,
+.list_admin::-webkit-scrollbar-thumb {
+    background-color: #fff;
+}
