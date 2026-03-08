@@ -1,10 +1,16 @@
 {% extends 'layouts/admin-layout.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/result_edit.css' %}">
+{% endblock extra_css %}
 
-{% block title %}{% endblock title %}
+{% block title %}
+クラス順位編集
+{% endblock title %}
 
 {% block content %}
+<h1 class="text_center">クラス順位編集</h1>
 <div>
-    <h1>競技結果編集</h1>
    <form method="post">
         {% csrf_token %}
         {{ formset.management_form }}
@@ -75,6 +81,12 @@
         </div>
     </form>
 </div>
+
+<!-- 埋め込み、お願いします1 -->
+<div>
+    
+</div>
+
 <script>
     const rankPoints = JSON.parse('{{ tournament_points_json|safe }}');
 </script>
