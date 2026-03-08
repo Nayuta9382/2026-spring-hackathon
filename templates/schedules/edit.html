@@ -1,15 +1,25 @@
 {% extends 'layouts/admin-layout.html' %}
 {% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/schedules_edit.css' %}">
+{% endblock extra_css %}
 
 {% block content %}
-<h1>スケジュール編集</h1>
+<div style="margin-top: 1rem; position: fixed;">
+    <!-- 戻る -->
+    <a href="#" class="sub_return_bg">
+        <img class="sub_return" src="../../static/img/icon/return.png" alt="戻る">
+    </a>
+</div>
+<h1 style="text-align: center; font-size: 2.5rem; padding-top: 5rem;">スケジュール編集</h1>
 <p>{{ event.name }}</p>
 
 {% if error %}
-    <p style="color:red;">{{ error }}</p>
+<p style="color:red;">{{ error }}</p>
 {% endif %}
 
-<form method="POST" action="{% if event.pk %}{% url 'schedule_edit' event.pk %}{% endif %}" onsubmit="return validateNowCount()">
+<form method="POST" action="{% if event.pk %}{% url 'schedule_edit' event.pk %}{% endif %}"
+    onsubmit="return validateNowCount()" class="form space">
     {% csrf_token %}
 
     <div id="deleted-ids-container"></div>
@@ -22,7 +32,7 @@
             {% for item in now_schedules %}
             <div class="schedule-item" data-pk="{{ item.pk }}">
                 <div>
-                    <label>コメント1</label>
+                    <label class="form_label">コメント1</label>
                     <input type="text" name="detail_{{ item.pk }}" value="{{ item.detail }}">
                 </div>
                 <div>
@@ -120,17 +130,138 @@
     </div>
 </form>
 
+<!-- 組み込み、お願いします1 -->
+<form action="#" class="form space">
+    <div class="scrollbar_others">
+        <div class="block_bg">
+            <div class="min_space">
+                <label class="form_label">コメント1</label>
+                <input class="text_input" type="text" name="comment_1" value="">
+            </div>
+            <div class="min_space">
+                <label class="form_label">コメント2</label>
+                <input class="text_input" type="text" name="comment_2" value="">
+            </div>
+            <div class="min_space">
+                <label for="lank" class="form_label">順序</label>
+                <select id="lank" name="lank" class="check_pulldown" style="font-weight: bold;">
+                    <option value="">選択</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+
+            <div class="flex_container">
+                <div>
+                    <label for="progress" class="form_label">進捗</label>
+                    <select id="progress" name="progress" class="check_pulldown" style="font-weight: bold;">
+                        <option value="">選択</option>
+                        <option value="now">now</option>
+                        <option value="next">next</option>
+                        <option value="previous">previous</option>
+                    </select>
+                </div>
+                <div class="delete_wrapper">
+                    <button type="submit" class="delete btn align-right">削除</button>
+                </div>
+            </div>
+        </div>
+        <div class="block_bg">
+            <div class="min_space">
+                <label class="form_label">コメント1</label>
+                <input class="text_input" type="text" name="comment_1" value="">
+            </div>
+            <div class="min_space">
+                <label class="form_label">コメント2</label>
+                <input class="text_input" type="text" name="comment_2" value="">
+            </div>
+            <div class="min_space">
+                <label for="lank" class="form_label">順序</label>
+                <select id="lank" name="lank" class="check_pulldown" style="font-weight: bold;">
+                    <option value="">選択</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+
+            <div class="flex_container">
+                <div>
+                    <label for="progress" class="form_label">進捗</label>
+                    <select id="progress" name="progress" class="check_pulldown" style="font-weight: bold;">
+                        <option value="">選択</option>
+                        <option value="now">now</option>
+                        <option value="next">next</option>
+                        <option value="previous">previous</option>
+                    </select>
+                </div>
+                <div class="delete_wrapper">
+                    <button type="submit" class="delete btn align-right">削除</button>
+                </div>
+            </div>
+        </div>
+        <div class="block_bg">
+            <div class="min_space">
+                <label class="form_label">コメント1</label>
+                <input class="text_input" type="text" name="comment_1" value="">
+            </div>
+            <div class="min_space">
+                <label class="form_label">コメント2</label>
+                <input class="text_input" type="text" name="comment_2" value="">
+            </div>
+            <div class="min_space">
+                <label for="lank" class="form_label">順序</label>
+                <select id="lank" name="lank" class="check_pulldown" style="font-weight: bold;">
+                    <option value="">選択</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+
+            <div class="flex_container">
+                <div>
+                    <label for="progress" class="form_label">進捗</label>
+                    <select id="progress" name="progress" class="check_pulldown" style="font-weight: bold;">
+                        <option value="">選択</option>
+                        <option value="now">now</option>
+                        <option value="next">next</option>
+                        <option value="previous">previous</option>
+                    </select>
+                </div>
+                <div class="delete_wrapper">
+                    <button type="submit" class="delete btn align-right">削除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pos_right">
+        <button type="submit" class="gazou btn btn_margin">追加</button>
+    </div>
+    <div>
+        <button type="submit" class="update gazou btn">更新</button>
+    </div>
+    <div>
+        <button type="button" class="update return btn">戻る</button>
+    </div>
+</form>
+
 <script>
     function validateNowCount() {
-    const nowContainer = document.getElementById('container-0');
-    const nowItems = nowContainer.querySelectorAll('.schedule-item, .new-item');
+        const nowContainer = document.getElementById('container-0');
+        const nowItems = nowContainer.querySelectorAll('.schedule-item, .new-item');
 
-    if (nowItems.length >= 2) {
-        alert('nowが二つ以上あります');
-        return false;
+        if (nowItems.length >= 2) {
+            alert('nowが二つ以上あります');
+            return false;
+        }
+        return true;
     }
-    return true;
-}
 
     function refreshAll() {
         [0, 1, 2].forEach(status => {
@@ -218,9 +349,8 @@
         refreshAll();
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         refreshAll();
     });
 </script>
 {% endblock content %}
-
