@@ -158,7 +158,7 @@
     {% endfor %}
 
     <br>
-    <a href="{% url 'schedule_edit' event.pk %}">スケジュールを編集する</a>
+    <a href="{% url 'schedule_edit' tournament_pk=event.tournament.pk  pk=event.pk %}">スケジュールを編集する</a>
 </section>
 
 <hr>
