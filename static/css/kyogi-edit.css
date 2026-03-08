@@ -25,21 +25,6 @@
   border: 1px solid #ccc;
 }
 
-.btn_margin {
-  padding-left: 3rem;
-  padding-right: 3rem;
-  text-align: right;
-}
-
-.space {
-  display: grid;
-  row-gap: 2rem;
-}
-
-.min_space {
-  margin-bottom: 1rem;
-}
-
 .block_btn {
   width: 100%;
   /* ボタンをブロック要素化して幅を有効にする */
