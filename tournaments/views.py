@@ -194,7 +194,7 @@ class TournamentUpdateView(UpdateView):
 
     def get_success_url(self):
         # 編集が終わったら、また詳細画面に戻る
-        return reverse('tournament_detail_admin', kwargs={'pk': self.object.pk})
+        return reverse('tournament_detail_superuser', kwargs={'pk': self.object.pk})
 
     # 大会ステータスのpulldown
 class UpdateStatusView(View):
