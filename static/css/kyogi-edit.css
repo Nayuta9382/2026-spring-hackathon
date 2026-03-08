@@ -1,9 +1,5 @@
 @charset "utf-8";
 
-.text_center {
-  text-align: center;
-}
-
 .pos_right {
   text-align: right;
 }
@@ -23,6 +19,18 @@
   /* 残りの幅をすべて埋める */
   /* padding: 10px; */
   border: 1px solid #ccc;
+}
+
+
+.btn_margin {
+  padding-left: 3rem;
+  padding-right: 3rem;
+  text-align: right;
+}
+
+.space {
+  display: grid;
+  row-gap: 2rem;
 }
 
 .block_btn {

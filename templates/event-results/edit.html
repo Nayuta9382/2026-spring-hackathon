@@ -1,10 +1,14 @@
 {% extends 'layouts/admin-layout.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/result_edit.css' %}">
+{% endblock extra_css %}
 
-{% block title %}{% endblock title %}
+{% block title %}クラス順位編集{% endblock title %}
 
 {% block content %}
+<h1 class="text_center">クラス順位編集</h1>
 <div>
-    <h1>競技結果編集</h1>
    <form method="post">
         {% csrf_token %}
         {{ formset.management_form }}
@@ -75,6 +79,98 @@
         </div>
     </form>
 </div>
+
+<!-- 埋め込み、お願いします -->
+<form action="#" class="form space">
+    <div class ="scroll_others min_space">
+        <div class ="block_bg">
+            <div class="min_space">
+                <label for="" class="form_label">高度情報3年</label>
+            </div>
+            <div class="min_space">
+                <label for="rank" style="font-weight: bold;" class="form_label">順位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
+                <select id="rank" name="rank" style="font-weight: bold;">
+                    <option value="">選択</option>
+                    <option value="1">1位</option>
+                    <option value="2">2位</option>
+                    <option value="3">3位</option>
+                    <option value="4">4位</option>
+                </select>
+            </div>
+            <div>
+                <label for="comment" class="form_label">ポイント：</label>
+                <input type="text" style="width: 3.5rem; font-weight: bold;" id="point" name="point">
+            </div>
+        </div>
+        <div class ="block_bg">
+            <div class="min_space">
+                <label for="" class="form_label">高度情報3年</label>
+            </div>
+            <div class="min_space">
+                <label for="rank" style="font-weight: bold;" class="form_label">順位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
+                <select id="rank" name="rank" style="font-weight: bold;">
+                    <option value="">選択</option>
+                    <option value="1">1位</option>
+                    <option value="2">2位</option>
+                    <option value="3">3位</option>
+                    <option value="4">4位</option>
+                </select>
+            </div>
+            <div>
+                <label for="comment" class="form_label">ポイント：</label>
+                <input type="text" style="width: 3.5rem; font-weight: bold;" id="point" name="point">
+            </div>
+        </div>
+        <div class ="block_bg">
+            <div class="min_space">
+                <label for="" class="form_label">高度情報3年</label>
+            </div>
+            <div class="min_space">
+                <label for="rank" style="font-weight: bold;" class="form_label">順位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
+                <select id="rank" name="rank" style="font-weight: bold;">
+                    <option value="">選択</option>
+                    <option value="1">1位</option>
+                    <option value="2">2位</option>
+                    <option value="3">3位</option>
+                    <option value="4">4位</option>
+                </select>
+            </div>
+            <div>
+                <label for="comment" class="form_label">ポイント：</label>
+                <input type="text" style="width: 3.5rem; font-weight: bold;" id="point" name="point">
+            </div>
+        </div>
+        <div class ="block_bg">
+            <div class="min_space">
+                <label for="" class="form_label">高度情報3年</label>
+            </div>
+            <div class="min_space">
+                <label for="rank" style="font-weight: bold;" class="form_label">順位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
+                <select id="rank" name="rank" style="font-weight: bold;">
+                    <option value="">選択</option>
+                    <option value="1">1位</option>
+                    <option value="2">2位</option>
+                    <option value="3">3位</option>
+                    <option value="4">4位</option>
+                </select>
+            </div>
+            <div>
+                <label for="comment" class="form_label">ポイント：</label>
+                <input type="text" style="width: 3.5rem; font-weight: bold;" id="point" name="point">
+            </div>
+        </div>
+    </div>
+    <!-- ボタン -->
+    <div class="side_by_side">
+        <div>
+            <button type="submit" class="gazou btn block_btn">更新</button>
+        </div>
+        <div>
+            <button type="button" class="return btn block_btn">戻る</button>
+        </div>
+    </div>
+</form>
+
 <script>
     const rankPoints = JSON.parse('{{ tournament_points_json|safe }}');
 </script>

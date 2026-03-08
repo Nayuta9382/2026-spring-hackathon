@@ -1,0 +1,28 @@
+@charset "utf-8";
+
+body {
+    padding: 0 200px;
+    padding-top: 100px;
+}
+
+/*スクロールバー関係*/
+.scroll_others {
+    max-height: 35rem;
+    overflow-y: scroll;
+    padding-right: 20px;
+}
+
+.scrollbar_others::-webkit-scrollbar,
+.list_admin::-webkit-scrollbar {
+    width: 16px;
+}
+
+.scrollbar_others::-webkit-scrollbar-track,
+.list_admin::-webkit-scrollbar-track {
+    background-color: #5D5D5D;
+}
+
+.scrollbar_others::-webkit-scrollbar-thumb,
+.list_admin::-webkit-scrollbar-thumb {
+    background-color: #fff;
+}
