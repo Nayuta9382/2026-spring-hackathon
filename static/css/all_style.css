@@ -364,6 +364,25 @@ body {
     background: #fff;
 }
 
+.side_by_side {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 1rem;
+  width: 100%;
+  /* 親コンテナ自体も横いっぱいに */
+}
+
+/* ボタンを包むdivを均等に（50%ずつ）広げる */
+.side_by_side>div {
+  flex: 1;
+}
+
+.block_btn {
+  width: 100%;
+  /* ボタンをブロック要素化して幅を有効にする */
+  display: block;
+}
+
 /* 画像UI */
 .image_center {
     display: flex;
@@ -466,4 +485,9 @@ body {
     background-color: rgba(255, 255, 255, 0.2);
     padding: 1rem;
     margin-bottom: 1rem;
+}
+
+/* 最小スペース */
+.min_space {
+  margin-bottom: 1rem;
 }
