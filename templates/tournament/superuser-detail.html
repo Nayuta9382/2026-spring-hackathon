@@ -27,7 +27,19 @@
                 <li>運営者URL: <a target="_blank" rel="noopener noreferrer" href="{{ admin_url }}">{{ admin_url }}</a></li>
                 <li>一般URL: <a target="_blank" rel="noopener noreferrer" href="{{ user_url }}">{{ user_url }}</a></li>
                 <li>パスワード: {{ tournament.password }}</li>
+                <li>大会ステータス:{% if tournament.status == 0 %}開催前{% elif tournament.status == 1 %}開催中{% else %}終了{% endif %}</li>
+                <li>
+                <strong>ステータス変更:</strong>
+                {% comment %} 大会ステータス変更 {% endcomment %}
+                    <form action="{% url 'api_update_status' tournament.pk %}" method="POST" style="display: inline;">
+                        {% csrf_token %}
+                        {{ status_form.status }}
+                        <button type="submit">更新</button>
+                    </form>
+                    <span id="status-msg"></span>
+                </li>
             </ul>
+            
         </section>
 
         <section>
@@ -98,13 +110,17 @@
 
     <section>
         <h2>総合ランキング</h2>
+        {% if tournament.status == 0 %}
+        開催前です
+        {% else %}
         <ol>
             {% for team in rankings %}
-                <li>{{ team.rank }}位: {{ team.name }}（{{ team.total_point|default:0 }} pt）</li>
+            <li>{{ team.rank }}位: {{ team.name }}（{{ team.total_point|default:0 }} pt）</li>
             {% empty %}
-                <li>現在、集計データはありません。</li>
+            <li>現在、集計データはありません。</li>
             {% endfor %}
         </ol>
+        {% endif %}
     </section>
 
     <hr>

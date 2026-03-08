@@ -210,10 +210,10 @@ class UpdateStatusView(View):
                 tournament.status = int(new_status)
                 tournament.save()
 
-            return redirect('tournament_detail_admin', pk=pk)
+            return redirect('tournament_detail_superuser', pk=pk)
 
         except Exception as e:
-            return redirect('tournament_detail_admin', pk=pk)
+            return redirect('tournament_detail_superuser', pk=pk)
 
      # 大会を削除する
 class TournamentDeleteView(DeleteView):

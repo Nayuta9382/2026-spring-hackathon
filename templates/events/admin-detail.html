@@ -99,6 +99,9 @@
     <h2>順位</h2>
     <a href="{% url 'event_result_edit' tournament_pk=event.tournament.url_uuid event_pk=event.id %}">順位を編集する</a>
 
+    {% if tournament.status == 0 %}
+    開催前です
+    {% else %}
     <ul>
         {% for event_result in event_results %}
             <li>{{ event_result.team.name }}:{{ event_result.rank }}位:{{ event_result.point }}</li>
@@ -106,6 +109,7 @@
             <li>順位が登録されていません。</li>
         {% endfor %}
     </ul>
+    {% endif %}
 
 </section>
 
