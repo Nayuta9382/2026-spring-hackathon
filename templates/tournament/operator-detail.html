@@ -89,14 +89,18 @@
     <hr>
 
     <section>
-        <h2>総合ランキング</h2>
+         <h2>総合ランキング</h2>
+        {% if tournament.status == 0 %}
+        開催前です
+        {% else %}
         <ol>
             {% for team in rankings %}
-                <li>{{ team.rank }}位: {{ team.name }}（{{ team.total_point|default:0 }} pt）</li>
+            <li>{{ team.rank }}位: {{ team.name }}（{{ team.total_point|default:0 }} pt）</li>
             {% empty %}
-                <li>現在、集計データはありません。</li>
+            <li>現在、集計データはありません。</li>
             {% endfor %}
         </ol>
+        {% endif %}
     </section>
 
     <hr>

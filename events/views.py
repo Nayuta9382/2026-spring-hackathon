@@ -86,9 +86,12 @@ class EventAdminDetailView(DetailView):
 
         schedules = event.schedules.all().order_by('order')
 
+
         context['next_schedules'] = schedules.filter(status=0)
         context['now_schedules'] = schedules.filter(status=1)
         context['previous_schedules'] = schedules.filter(status=2)
+        context['tournament'] = event.tournament
+
 
         return context
 
@@ -113,6 +116,8 @@ class EventUserDetailView(DetailView):
         context['next_schedules'] = schedules.filter(status=0)
         context['now_schedules'] = schedules.filter(status=1)
         context['previous_schedules'] = schedules.filter(status=2)
+        context['tournament'] = event.tournament
+
 
         return context
 
