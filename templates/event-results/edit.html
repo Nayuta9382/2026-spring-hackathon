@@ -11,7 +11,7 @@
 {% block content %}
 <h1 class="text_center">クラス順位編集</h1>
 <div>
-   <form method="post">
+    <form method="post">
         {% csrf_token %}
         {{ formset.management_form }}
 
@@ -19,8 +19,8 @@
         <div style="margin-bottom: 20px;">
             <label>クラス順位ポイント使用の有無:</label>
             <select name="class-team-flg">
-                <option {% if event.is_class_point == True %}selected{% endif %} value="1">Yes (有効)</option>
-                <option {% if event.is_class_point == False %}selected{% endif %} value="0">No (無効)</option>
+                <option {% if event.is_class_point==True %}selected{% endif %} value="1">Yes (有効)</option>
+                <option {% if event.is_class_point==False %}selected{% endif %} value="0">No (無効)</option>
             </select>
         </div>
         {% endif %}
@@ -31,7 +31,7 @@
             <li>
                 <div>
                     <strong>チーム: {{ form.instance.team.name }}</strong>
-                    
+
                     {# 既存データ更新用のID (hidden) #}
                     <input type="hidden" name="{{ form.prefix }}-id" value="{{ form.instance.id }}">
                 </div>
@@ -39,26 +39,22 @@
                 {# 順位入力 #}
                 <div>
                     <label for="id_{{ form.prefix }}-rank">順 :</label>
-                    <select name="{{ form.prefix }}-rank" 
-                        id="id_{{ form.prefix }}-rank" 
-                        class="rank-select">
-                    <option value="">-- 選択 --</option>
-                    {% for tp in tournament_points %}
-                        <option value="{{ tp.rank }}" {% if form.rank.value|stringformat:"s" == tp.rank|stringformat:"s" %}selected{% endif %}>
+                    <select name="{{ form.prefix }}-rank" id="id_{{ form.prefix }}-rank" class="rank-select">
+                        <option value="">-- 選択 --</option>
+                        {% for tp in tournament_points %}
+                        <option value="{{ tp.rank }}" {% if form.rank.value|stringformat:"s"==tp.rank|stringformat:"s"
+                            %}selected{% endif %}>
                             {{ tp.rank }}位
                         </option>
-                    {% endfor %}
-                </select>
+                        {% endfor %}
+                    </select>
                 </div>
 
                 {# スコア入力 #}
                 <div class="point-area">
                     <label for="id_{{ form.prefix }}-point">点 :</label>
-                    <input type="number" 
-                           name="{{ form.prefix }}-point" 
-                           id="id_{{ form.prefix }}-point" 
-                           class="point-input"
-                           value="{{ form.point.value|default:'' }}">
+                    <input type="number" name="{{ form.prefix }}-point" id="id_{{ form.prefix }}-point"
+                        class="point-input" value="{{ form.point.value|default:'' }}">
                     <span class="point-display">{{ form.point.value|default:'0' }}</span>
 
                 </div>
@@ -66,12 +62,10 @@
                 {# 詳細入力 #}
                 <div>
                     <label for="id_{{ form.prefix }}-detail">詳細:</label>
-                    <input type="text" 
-                           name="{{ form.prefix }}-detail" 
-                           id="id_{{ form.prefix }}-detail" 
-                           value="{{ form.detail.value|default:'' }}">
+                    <input type="text" name="{{ form.prefix }}-detail" id="id_{{ form.prefix }}-detail"
+                        value="{{ form.detail.value|default:'' }}">
                 </div>
-                <hr> 
+                <hr>
             </li>
             {% endfor %}
         </ul>
@@ -83,9 +77,24 @@
 </div>
 
 <!-- 埋め込み、お願いします1 -->
-<div>
-    
-</div>
+<form method="post">
+    <div class="scroll_others">
+        <div class="block_bg">
+            <label for="">高度情報3年</label>
+            <div>
+                <!-- プルダウン + ラベル -->
+                <label for="prefecture" style="font-weight: bold;" class="form_label">順位</label>
+                <select id="prefecture" name="prefecture">
+                    <option value="">選択</option>
+                    <option value="1">1位</option>
+                    <option value="2">2位</option>
+                    <option value="3">3位</option>
+                    <option value="4">4位</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</form>
 
 <script>
     const rankPoints = JSON.parse('{{ tournament_points_json|safe }}');
