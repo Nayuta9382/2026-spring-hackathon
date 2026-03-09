@@ -1,141 +1,147 @@
 {% extends 'layouts/admin-layout.html' %}
 {% load django_bootstrap5 %}
-
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/tournament_detail_operator.css' %}">
+{% endblock extra_css %}
 {% block content %}
-<div>
-    <h1>{{ tournament.name }} <small>(スーパユーザパネル)</small></h1>
 
-    <hr>
+<div class="su-page">
 
-    <div>
+    {# 戻るボタン（上） #}
+    <div style="text-align: left;">
+        <a href="{% url 'tournament_list' %}" class="return btn">戻る</a>
+    </div>
 
-        <section>
-            <h2>大会基本情報</h2>
-            
-            <div>
-                <p>大会画像:</p>
-                {% if tournament.img_path %}
-                    <img src="{{ tournament.img_path.url }}" alt="大会画像" width="300">
-                {% else %}
-                    <p>画像が設定されていません</p>
-                {% endif %}
-                <br>
+    {# 大会名・ステータス #}
+    <div class="su-header">
+        {% if tournament.img_path %}
+            <img src="{{ tournament.img_path.url }}" alt="大会画像" class="su-icon">
+        {% endif %}
+        <span class="su-title">{{ tournament.name }}</span>
+    </div>
+    <p class="su-status">{% if tournament.status == 0 %}開催前{% elif tournament.status == 1 %}開催中{% else %}終了{% endif %}</p>
+
+    {# しおり #}
+    <div class="su-section-label">しおり</div>
+    <div class="su-info-box">
+        {% if tournament.pdf_img_path %}
+            <a href="{{ tournament.pdf_img_path.url }}" target="_blank" style="color:#fff;">{{ tournament.pdf_img_path.name }}</a>
+        {% else %}
+            規約PDFは登録されていません。
+        {% endif %}
+    </div>
+
+    {# 大会パスワード #}
+    <div class="su-section-label">大会パスワード</div>
+    <div class="su-info-box su-password-box">
+        <span id="pw-text" class="su-pw-hidden">••••••••</span>
+        <span id="pw-real" style="display:none;">{{ tournament.password }}</span>
+        <button type="button" class="su-pw-toggle" onclick="togglePassword()">👁</button>
+    </div>
+
+    {# 大会URL（運営者） #}
+    <div class="su-section-label">大会URL（運営者）</div>
+    <div class="su-info-box">
+        <a href="{{ admin_url }}" target="_blank" style="color:#fff;">{{ admin_url }}</a>
+    </div>
+
+    {# 大会URL（一般） #}
+    <div class="su-section-label">大会URL（一般）</div>
+    <div class="su-info-box">
+        <a href="{{ user_url }}" target="_blank" style="color:#fff;">{{ user_url }}</a>
+    </div>
+
+    {# クラスチーム一覧 #}
+    <div class="su-section-label">クラスチーム一覧</div>
+    <div class="su-scroll-box">
+        {% for team in teams %}
+            <div class="su-team-row">{{ team.name }}</div>
+        {% empty %}
+            <div class="su-team-row">クラスチームが登録されていません</div>
+        {% endfor %}
+    </div>
+    <div class="su-right">
+        <a href="{% url 'tournament_update' tournament.id %}" class="gazou btn">編集</a>
+    </div>
+
+    {# ランクポイント #}
+    <div class="su-section-label">ランクポイント</div>
+    <div class="su-rank-grid">
+        {% for p in tournament.points.all %}
+            <div class="su-rank-item">
+                <span class="su-rank-label">{{ p.rank }}位</span>
+                <span class="su-rank-point">{{ p.point }}pt</span>
             </div>
+        {% empty %}
+            <p>ポイント設定が登録されていません。</p>
+        {% endfor %}
+    </div>
+    <div class="su-right">
+        <a href="{% url 'tournament_update' tournament.id %}" class="gazou btn">編集</a>
+    </div>
 
-            <ul>
-                <li>大会名: {{ tournament.name }}</li>
-                <li>運営者URL: <a target="_blank" rel="noopener noreferrer" href="{{ admin_url }}">{{ admin_url }}</a></li>
-                <li>一般URL: <a target="_blank" rel="noopener noreferrer" href="{{ user_url }}">{{ user_url }}</a></li>
-                <li>パスワード: {{ tournament.password }}</li>
-                <li>大会ステータス:{% if tournament.status == 0 %}開催前{% elif tournament.status == 1 %}開催中{% else %}終了{% endif %}</li>
-                <li>
-                <strong>ステータス変更:</strong>
-                {% comment %} 大会ステータス変更 {% endcomment %}
-                    <form action="{% url 'api_update_status' tournament.pk %}" method="POST" style="display: inline;">
-                        {% csrf_token %}
-                        {{ status_form.status }}
-                        <button type="submit">更新</button>
-                    </form>
-                    <span id="status-msg"></span>
-                </li>
-                <li>競技作成：<a href="{% url 'event_create' tournament_pk=tournament.pk %}">競技作成</a></li>
-            </ul>
-            
-        </section>
+    {# ランキング #}
+    <div class="su-section-label">ランキング</div>
+    <div class="su-scroll-box">
+        {% if tournament.status == 0 %}
+            <p style="color:#fff;">開催前です</p>
+        {% else %}
+            {% for team in rankings %}
+            <div class="ranking_item_row">
+                <span class="rank-badge">{{ team.rank }}位</span>
+                <span class="team-name">{{ team.name }}</span>
+                <span class="points">{{ team.total_point|default:0 }}pt</span>
+            </div>
+            {% empty %}
+            <p style="color:#fff;">現在、集計データはありません。</p>
+            {% endfor %}
+        {% endif %}
+    </div>
 
-        <section>
-            <h2>大会規約 (PDF)</h2>
-            {% if tournament.pdf_img_path %}
-                <p><a href="{{ tournament.pdf_img_path.url }}" target="_blank">現在の規約PDFを開く</a></p>
-            {% else %}
-                <p>規約PDFは登録されていません。</p>
-            {% endif %}
-        </section>
+    {# 削除・編集ボタン #}
+    <div class="side_by_side" style="margin-top:0.5rem;">
+        <div>
+            <form action="{% url 'tournament_delete' tournament.pk %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="delete btn block_btn" onclick="return confirm('本当にこの大会を削除しますか？');">削除</button>
+            </form>
+        </div>
+        <div>
+            <a href="{% url 'tournament_update' tournament.id %}" class="gazou btn block_btn" style="text-align:center;">編集</a>
+        </div>
+    </div>
 
-        <hr>
-
-        <section>
-            <h2>競技一覧</h2>
-            <ul>
-                {% for event in events %}
-                    <li>
-                        <a href="{% url 'event_detail_admin' tournament_pk=tournament.pk pk=event.pk %}">
-                            {{ event.name }} 
-                            {% if event.category == 1 %}(クラス対抗){% else %}(一般){% endif %}
-                        </a>
-                    </li>
-                {% empty %}
-                    <li>登録されている競技はありません。</li>
-                {% endfor %}
-            </ul>
-          
-        </section>
-
-        <section>
-            <a href="{% url 'tournament_update' tournament.id %}">大会を編集する</a>
-        </section>
-
-        <hr>
-
-        <section>
-            <h2>クラスチーム一覧</h2>
-            <ul>
-                {% for team in teams %}
-                    <li>{{ team.name }}</li>
-                {% empty %}
-                    <li>クラスチームが登録されていません</li>
-                {% endfor %}
-            </ul>
-        </section>
-
-        <section>
-            <h2>順位別ポイント設定</h2>
-            {% if tournament.points.all %}
-                <ul>
-                    {% for p in tournament.points.all %}
-                        <li>
-                            第 {{ p.rank }} 位: {{ p.point }} pt
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>ポイント設定が登録されていません。</p>
-            {% endif %}
-        </section>
-
-        <hr>
-
+    {# 大会ステータス変更 #}
+    <div class="su-section-label">大会ステータスの変更</div>
+    <form action="{% url 'api_update_status' tournament.pk %}" method="POST">
+        {% csrf_token %}
+        <div class="su-info-box" style="padding:0;">
+            {{ status_form.status }}
+        </div>
+        <div class="su-right" style="margin-top:8px;">
+            <button type="submit" class="gazou btn">確定</button>
+        </div>
     </form>
 
-    <hr>
+    {% comment %} {# 競技作成リンク #}
+    <div style="margin: 1rem 0;">
+        <a href="{% url 'event_create' tournament_pk=tournament.pk %}" class="su-btn su-btn-green">競技作成</a>
+    </div> {% endcomment %}
 
-    <section>
-        <h2>総合ランキング</h2>
-        {% if tournament.status == 0 %}
-        開催前です
-        {% else %}
-        <ol>
-            {% for team in rankings %}
-            <li>{{ team.rank }}位: {{ team.name }}（{{ team.total_point|default:0 }} pt）</li>
-            {% empty %}
-            <li>現在、集計データはありません。</li>
-            {% endfor %}
-        </ol>
-        {% endif %}
-    </section>
+    {# 戻るボタン（下） #}
+    <a href="{% url 'tournament_list' %}" class="return btn block_btn" style="text-align:center;">戻る</a>
 
-    <hr>
-
-    <section>
-        <h2>大会の削除</h2>
-        <p>大会を削除すると、紐付いている全てのデータが消去されます。</p>
-        <form action="{% url 'tournament_delete' tournament.pk %}" method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="tournament_id" value="{{ tournament.pk }}">
-            <button type="submit" onclick="return confirm('本当にこの大会を削除しますか？');">
-                大会を削除する
-            </button>
-        </form>
-    </section>
 </div>
+
+<script>
+let pwVisible = false;
+function togglePassword() {
+    pwVisible = !pwVisible;
+    document.getElementById('pw-text').style.display = pwVisible ? 'none' : 'inline';
+    document.getElementById('pw-real').style.display = pwVisible ? 'inline' : 'none';
+}
+</script>
+
 {% endblock %}
+
