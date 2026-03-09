@@ -74,3 +74,11 @@
     width: 100%;
     text-align: center;
 }
+
+.display_block{
+    display: block
+}
+
+.top {
+    margin-top: 1rem;
+}
