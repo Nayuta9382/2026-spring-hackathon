@@ -74,3 +74,23 @@ def create_schedules_by_post(event, post_data):
                 status=int(status) if status else 0,
                 order=int(order) if order else 1,
             )
+
+# 競技を受けとり、スケージュールを再登録する
+def reassign_schedules_to_event(new_event_instance, before_schedules):
+
+    new_schedules = []
+
+    for sch in before_schedules:
+        # 1. スケジュールインスタンスの主キーをクリアして「新規」扱いにする
+        sch.pk = None
+        sch.id = None
+        
+        # 2. 新しいイベント（親）をセットする
+        sch.event = new_event_instance
+        
+        # 3. 保存 (一つずつ保存する場合)
+        sch.save()
+        
+        new_schedules.append(sch)
+
+    return new_schedules
