@@ -143,6 +143,7 @@
     {% endfor %}
 
     <br>
+    <a href="{% url 'event_result_edit' tournament_pk=event.tournament.pk  event_pk=event.pk  %}">競技結果編集</a>
     <a href="{% url 'schedule_edit' tournament_pk=event.tournament.pk  pk=event.pk %}">スケジュールを編集する</a>
 </section>
 
