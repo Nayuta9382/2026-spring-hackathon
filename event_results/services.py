@@ -7,7 +7,8 @@ def create_event_results(event,teams):
         EventResult(
             event=event, 
             team=team, 
-            rank=0  
+            rank=0,
+            point=0 
         ) 
         for team in teams
     ]
