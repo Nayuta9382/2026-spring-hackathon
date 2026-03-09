@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from .services import create_jwt_and_set_cookie
 from tournaments.services import get_tournament_by_uuid
+import re
 
 class IndexView(TemplateView):
     template_name = "index.html"
@@ -45,8 +46,22 @@ class OperatorLoginView(FormView):
 
         is_valid = False
         # 大会パスワードと一致しているか検証
+        # uuidを取得
+        redirect_to = self.request.POST.get('next') or self.request.GET.get('next')
+        uuid = None
+        match = re.search(r'/tournaments/([0-9a-f-]+)', redirect_to)
+        if match:
+            uuid = match.group(1)
+        else:
+            form.add_error('url', 'urlが違います')
+            return self.form_invalid(form)
+
         # 大会を取得
-        tournament = get_tournament_by_uuid('bd1e91b6-6655-4a6c-8f98-a454b43e2c53')
+        tournament = get_tournament_by_uuid(uuid)
+        if not tournament:
+            form.add_error('tournament', '存在しない大会です')
+            return self.form_invalid(form)
+
         if tournament.password == password:
             is_valid = True
 

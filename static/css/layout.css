@@ -1,0 +1,6 @@
+@charset "utf-8";
+
+.menu{
+    position: sticky;
+    bottom: 0;
+}

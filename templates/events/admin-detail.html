@@ -1,163 +1,168 @@
 {% extends 'layouts/admin-layout.html' %}
 
+{% load static %}
+{% comment %} 自作css読み込み {% endcomment %}
+{% block extra_css %} 
+    <link rel="stylesheet" href="{% static 'css/event_admin_detail.css' %}">
+    <style> .special-button { background-color: gold; } </style>
+{% endblock extra_css %}
+
 {% block content %}
 <p>
     <a href="{% url 'tournament_detail_superuser' event.tournament.id %}">←  スーパユーザ大会詳細に戻る</a>
     <a href="{% url 'tournament_detail_operator' event.tournament.id %}">←  運営者大会詳細に戻る</a>
 </p>
 
-<h1>競技詳細: {{ event.name }} (管理者用)</h1>
-<hr>
 
-<section>
-    <h2>競技基本情報</h2>
-    <table border="1" cellpadding="5" cellspacing="0">
-        <tr>
-            <th>競技名</th>
-            <td>{{ event.name }}</td>
-        </tr>
-        <tr>
-            <th>競技区分</th>
-            <td>
-                {% if event.category == 1 %}
-                    クラス対抗
-                {% else %}
-                    一般
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <th>対象チームグループ</th>
-            <td>{{ event.team_group.name }}</td>
-        </tr>
-        <tr>
-            <th>登録日時</th>
-            <td>{{ event.created_at|date:"Y/m/d H:i" }}</td>
-        </tr>
-    </table>
-</section>
+<div class="content">
+    <a href="#" class="update return btn display_block top">戻る</a>
 
-<br>
+    <h1 class="h1 title">{{ event.name }}</h1>
 
-<section>
-    <h2>競技詳細説明</h2>
-    <div style="border: 1px solid #ccc; padding: 10px;">
-        {{ event.detail|linebreaks|default:"(説明文なし)" }}
-    </div>
-</section>
-
-<br>
-
-<section>
-    <h2>画像資料</h2>
     <div>
-        <h3>競技イメージ画像</h3>
-        {% if event.event_img %}
-            <img src="{{ event.event_img.url }}" alt="競技画像" width="400">
-        {% else %}
-            <p>画像はありません</p>
-        {% endif %}
+        <h2 class="h2">explanation</h2>
+        <div class="explanation">
+            <p class="p">{{ event.detail|linebreaksbr|default:"(説明文なし)" }}</p>
+        </div>
     </div>
 
     <div>
-        <h3>トーナメント表画像</h3>
-        {% if event.tournament_img %}
-            <img src="{{ event.tournament_img.url }}" alt="トーナメント画像" width="400">
-        {% else %}
-            <p>画像はありません</p>
-        {% endif %}
+        <h2 class="h2">Tournament</h2>
+        <div class="image_center">
+            {% if event.tournament_img %}
+            <img src="{{ event.tournament_img.url }}" alt="トーナメント画像">
+            {% else %}
+            <img src="{% static 'img/icon/noimg.png' %}" alt="トーナメント画像" width="300px">
+            {% endif %}
+        </div>
     </div>
-</section>
 
-<hr>
+    <div class="ranking">
+        <h2 class="h2">CompetitionResults</h2>
+        <ul class="list_admin">
+            <li class="list_item">
+                <p class="p">1位</p>
+                <p class="p">テキスト</p>
+                <p class="p">00pt</p>
+            </li>
+            <li class="list_item">
+                <p class="p">2位</p>
+                <p class="p">テキスト</p>
+                <p class="p">00pt</p>
+            </li>
+            <li class="list_item">
+                <p class="p">3位</p>
+                <p class="p">テキスト</p>
+                <p class="p">00pt</p>
+            </li>
+            <li class="list_item">
+                <p class="p">4位</p>
+                <p class="p">テキスト</p>
+                <p class="p">00pt</p>
+            </li>
+            <li class="list_item">
+                <p class="p">5位</p>
+                <p class="p">テキスト</p>
+                <p class="p">00pt</p>
+            </li>
+            <li class="list_item">
+                <p class="p">6位</p>
+                <p class="p">テキスト</p>
+                <p class="p">00pt</p>
+            </li>
+        </ul>
+        <a href="{% url 'event_result_edit' tournament_pk=event.tournament.pk  event_pk=event.pk  %}" class="gazou btn a_btn">編集</a>
+    </div>
 
-<section>
-    <h2>操作</h2>
-    <ul>
-       <li>
-            <a href="{% url 'event_edit' tournament_pk=event.tournament.url_uuid pk=event.id %}">
-                この競技の内容を編集する
-            </a>
-        </li>
-    </ul>
-</section>
+    <div>
+        <h2 class="h2">MatchSchedule</h2>
+        <div class="schedule">
+            <div class="next">
+                <h2 class="h2">Next</h2>
+                <ul>
+                    {% for schedule in next_schedules %}
+                        <li>
+                            <p class="p">{{ schedule.detail }}</p>
+                        </li>
+                        {% if schedule.result %}
+                            <li>
 
-<section>
-    <h2>チーム一覧</h2>
-    <ul>
-        {% for team in teams %}
-            <li>{{ team }}</li>
-        {% empty %}
-            <li>登録されているチームはありません。</li>
-        {% endfor %}
-    </ul>
-</section>
+                                <p class="p">{{ schedule.result }}</p>
+                            </li>
+                        {% endif %}
+                    {% empty %}
+                        <li>
 
-<section>
-    <h2>順位</h2>
-    <ul id="ranking-list">
-        <li>読み込み中...</li>
-    </ul>
-</section>
+                            <p class="p">なし</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="now">
+                <h2 class="h2">Now</h2>
+                <ul>
+                    {% for schedule in now_schedules %}
+                        <li><p class="p">{{ schedule.detail }}</p></li>
+                        
+                        {% if schedule.result %}
+                            <li><p class="p">{{ schedule.result }}</p></li>
+                        {% endif %}
+                    {% empty %}
+                    <li>
+                        <p class="p">なし</p>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="previous">
+                <h2 class="h2">Previous</h2>
 
-<hr>
+                <ul>
+                    {% for schedule in previous_schedules %}
+                    <li>
+                        <p class="p">{{ schedule.detail }}</p>
+                    </li>
+                        {% if schedule.result %}
+                        <hr>
+                        <li>
+                            <p class="p">{{ schedule.result }}</p>
+                        </li>
+                        {% endif %}
+                    {% empty %}
+                        <li>
+                            <p class="p">なし</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
 
-{# スケジュール表示エリア #}
-<section>
-    <h1>スケジュール一覧</h1>
-    <p>{{ event.name }}</p>
+        </div>
+        <a href="{% url 'schedule_edit' tournament_pk=event.tournament.pk  pk=event.pk %}" class="gazou btn a_btn">編集</a>
+    </div>
 
-    <h2>now</h2>
-    {% for schedule in now_schedules %}
-        <p>{{ schedule.detail }}</p>
-        {% if schedule.result %}
-            <p>{{ schedule.result }}</p>
-        {% endif %}
-    {% empty %}
-        <p>なし</p>
-    {% endfor %}
+    <div class="team_list">
+        <h2 class="h2">teams</h2>
+        <ul class="list_admin">
+            {% for team in teams %}
+                <li class="list_item">
+                    <p class="p">{{ team }}</p>
+                </li>
+            {% empty %}
+                <li class="list_item">
+                    <p class="p">登録されているチームはありません。</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 
-    <hr>
-
-    <h2>next</h2>
-    {% for schedule in next_schedules %}
-        <p>{{ schedule.detail }}</p>
-        {% if schedule.result %}
-            <p>{{ schedule.result }}</p>
-        {% endif %}
-    {% empty %}
-        <p>なし</p>
-    {% endfor %}
-
-    <hr>
-
-    {# 3. previous (status: 2) #}
-    <h2>previous</h2>
-    {% for schedule in previous_schedules %}
-        <p>{{ schedule.detail }}</p>
-        {% if schedule.result %}
-            <p>{{ schedule.result }}</p>
-        {% endif %}
-    {% empty %}
-        <p>なし</p>
-    {% endfor %}
-
-    <br>
-    <a href="{% url 'event_result_edit' tournament_pk=event.tournament.pk  event_pk=event.pk  %}">競技結果編集</a>
-    <a href="{% url 'schedule_edit' tournament_pk=event.tournament.pk  pk=event.pk %}">スケジュールを編集する</a>
-</section>
-
-<hr>
-
-<section>
-    <h2>競技削除</h2>
     <form method="post"
-          action="{% url 'event_delete' tournament_pk=event.tournament.url_uuid pk=event.id %}"
-          onsubmit="return confirm('この競技を削除します。本当によろしいですか？');">
+            action="{% url 'event_delete' tournament_pk=event.tournament.url_uuid pk=event.id %}"
+            onsubmit="return confirm('この競技を削除します。本当によろしいですか？');">
         {% csrf_token %}
-        <button type="submit">この競技を削除する</button>
+        <button type="submit" class="delete btn a_btn">この競技を削除する</button>
     </form>
-</section>
+</div>
+
 
 <script>
 const apiUrl = "/tournaments/{{ event.tournament.url_uuid }}/events/{{ event.pk }}/api/results";
