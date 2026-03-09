@@ -37,19 +37,14 @@
         <textarea class="text_input" name="description" id="detail" cols="150" rows="8">{{ event.detail }}</textarea>
     </div> -->
 
-    {# 2. 競技区分 #}
-    <div>
-        <label class="form_label">競技カテゴリー</label>
-        <select name="category" id="id_category" onchange="toggleTeamsDisplay()">
-            <option value="0" {% if event.category == 0 %}selected{% endif %}>一般 (独自チーム)</option>
-            <option value="1" {% if event.category == 1 %}selected{% endif %}>クラス対抗</option>
-        </select>
-    </div>
+    
 
     {# 4. 競技説明 #}
     <div>
         <label class="form_label">競技説明</label>
-        <textarea name="detail" rows="5">{{ event.detail }}</textarea>
+        <textarea class="text_input" name="description" id="description" cols="150"
+            rows="8">{{ event.detail }}
+        </textarea>
     </div>
 
     {# 5. 画像類 #}
@@ -109,7 +104,7 @@
 
     {# チーム設定エリア #}
     <div id="teams-section">
-        <h3>チーム設定</h3>
+        <h3>クラスチーム</h3>
 
         {# 一般(0)の時：入力欄を表示 #}
         <div id="custom-teams-area">
@@ -135,6 +130,14 @@
             <p><strong>クラス対抗モード適用中:</strong> 大会共通のクラスチーム設定が適用されます。</p>
         </div>
     </div>
+    {# 競技区分 #}
+    <div>
+        <label class="form_label">競技カテゴリー</label>
+        <select name="category" id="id_category" onchange="toggleTeamsDisplay()">
+            <option value="0" {% if event.category == 0 %}selected{% endif %}>一般 (独自チーム)</option>
+            <option value="1" {% if event.category == 1 %}selected{% endif %}>クラス対抗</option>
+        </select>
+    </div>
 
     <!-- 組み込み、お願いします3 -->
     <div>
@@ -150,12 +153,12 @@
     {# 送信・戻る #}
 
     <!-- 組み込み、お願いします4 -->
-    <div class="side_by_side" style="">
-        <div>
-            <button type="submit" class="gazou btn block_btn">更新</button>
-        </div>
+    <div class="side_by_side">
         <div>
             <button type="button" class="return btn block_btn">戻る</button>
+        </div>
+        <div>
+            <button type="submit" class="gazou btn block_btn">更新</button>
         </div>
     </div>
 </form>

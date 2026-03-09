@@ -91,10 +91,11 @@ body{
 }
 
 /* クラスチーム */
-.input-row button{
+.input-row .delete_btn{
     text-decoration: none;
     width: auto;
     margin: auto;
+    margin-left: 1rem;
     padding: 0.5rem 1rem;
     font-weight: bold;
     color: #fff;
@@ -108,7 +109,7 @@ body{
     background: #AC0000;
     
 }
-.input-row button:hover {
+.input-row .delete_btn:hover {
     color: #AC0000;
     background: #fff;
 }
@@ -118,9 +119,11 @@ body{
     align-items: center;
 }
 
-.input-row input{
+
+.input-row .class_team_input{
     flex: 1;
 }
+
 
 .input-row.form{
     align-items: stretch;
@@ -134,12 +137,10 @@ body{
 .form .class_team_btn{
     margin-left: auto;
 }
-
-/* チーム一覧リスト */
 #teams-container{
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
 }
 
 /* 順位ポイント */
