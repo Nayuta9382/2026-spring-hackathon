@@ -40,7 +40,7 @@ class TournamentCreateView(CreateView):
 
     # 大会詳細にリダイレクト
     def get_success_url(self):
-        return reverse('tournament_detail_admin', kwargs={'pk': self.object.pk})
+        return reverse('tournament_detail_superuser', kwargs={'pk': self.object.pk})
 
 # スーパユーザの大会詳細情報を取得する
 class TournamentDetailSuperuserView(DetailView):

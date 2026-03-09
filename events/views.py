@@ -182,7 +182,7 @@ class EventDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse_lazy(
-            'tournament_detail_admin',
+            'tournament_detail_operator',
             kwargs={'pk': self.object.tournament.url_uuid}
         )
 
