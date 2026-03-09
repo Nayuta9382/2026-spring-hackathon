@@ -1,445 +1,463 @@
 @charset "utf-8";
 
 /* リスト表示のコンポーネントcss */
-        html {
-            margin: 0;
-            padding: 0;
-            /* overflow: hidden; */
-        }
-        body{
-            padding: 0 20px;
-            height: 100vh;
-        }
-        h1,h2,h3,h4 {
-            color: #fff;
-        }
+html {
+    margin: 0;
+    padding: 0;
+    /* overflow: hidden; */
+}
 
-        @media screen and (min-width: 640px) {
-            body{
-                padding: 0 40px;
-            }
-        }
+body {
+    padding: 0 20px;
+    height: 100vh;
+}
 
-    /* googleFont */
-    .quantico-regular {
-        font-family: "Quantico", sans-serif;
-        font-weight: 400;
-        font-style: normal;
-    }
+h1,
+h2,
+h3,
+h4 {
+    color: #fff;
+}
 
-    .quantico-bold {
-        font-family: "Quantico", sans-serif;
-        font-weight: 700;
-        font-style: normal;
+@media screen and (min-width: 640px) {
+    body {
+        padding: 0 40px;
     }
+}
 
-    .quantico-regular-italic {
-        font-family: "Quantico", sans-serif;
-        font-weight: 400;
-        font-style: italic;
-    }
+/* googleFont */
+.quantico-regular {
+    font-family: "Quantico", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
 
-    .quantico-bold-italic {
-        font-family: "Quantico", sans-serif;
-        font-weight: 700;
-        font-style: italic;
-    }
+.quantico-bold {
+    font-family: "Quantico", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
 
-    /* ランキング */
-    /* 文字色など */
-    .ranking_user p,
-    .list_admin p,
-    .ranking_user h1,
-    .list_admin h1,
-    .ranking_user h2,
-    .list_admin h2,
-    .ranking_user h3,
-    .list_admin h3,
-    .ranking_user h4,
-    .list_admin h4 {
-        color: #fff;
-        margin: 0px;
-    }
+.quantico-regular-italic {
+    font-family: "Quantico", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
 
-    /* ランキングのコンテナの幅など */
-    .ranking_user {
-        gap: 10px;
-        display: flex;
-        flex-flow: column;
-    }
-    
-    /* リストのスタイル */
-    ul.ranking_user,
-    ul.list_admin{
-        list-style: none;
-        padding-left: 0;
-    }
+.quantico-bold-italic {
+    font-family: "Quantico", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+}
 
-    /* 共通画像(王冠) */
-    .crown {
-        width: 50px;
-        margin: 0 auto;
-    }
+/* ランキング */
+/* 文字色など */
+.ranking_user p,
+.list_admin p,
+.ranking_user h1,
+.list_admin h1,
+.ranking_user h2,
+.list_admin h2,
+.ranking_user h3,
+.list_admin h3,
+.ranking_user h4,
+.list_admin h4 {
+    color: #fff;
+    margin: 0px;
+}
 
-    .crown img {
-        width: 100%;
-        height: auto;
-    }
+/* ランキングのコンテナの幅など */
+.ranking_user {
+    gap: 10px;
+    display: flex;
+    flex-flow: column;
+}
 
-    /* 共通余白 */
-    .ranking_item,
-    .ranking_one,
-    .ranking_two,
-    .ranking_three {
-        padding: 1rem;
-    }
+/* リストのスタイル */
+ul.ranking_user,
+ul.list_admin {
+    list-style: none;
+    padding-left: 0;
+}
 
-    /* 文字の位置調整 */
-    .ranking_one,
-    .ranking_two,
-    .ranking_three {
-        text-align: center;
-    }
-    
-    /* 第一位 */
-    .winner_font {
-        font-size: 32px;
-        font-weight: bold;
-        -webkit-text-stroke: 1px #E3AD17;
-        text-shadow: #EFFF62 4px 4px 10px;
-    }
-    
-    .ranking_user .ranking_one {
-        border: #FFEBC1 1px solid;
-        box-shadow: 0px 0px 10px 5px #EFFF62;
-        background: linear-gradient(to right, #FFD000, #C26E00);
-        width: 100%;
-    }
+/* 共通画像(王冠) */
+.crown {
+    width: 50px;
+    margin: 0 auto;
+}
 
-    /* 第二位 */
-    .ranking_user .ranking_two {
-        border: #FFFFFF 1px solid;
-        background: linear-gradient(to right, #A6A6A6, #6B6B6B);
-        width: 100%;
-    }
+.crown img {
+    width: 100%;
+    height: auto;
+}
 
-    .ranking_user .ranking_two .crown {
-        margin-bottom: 0.5rem;
-    }
+/* 共通余白 */
+.ranking_item,
+.ranking_one,
+.ranking_two,
+.ranking_three {
+    padding: 1rem;
+}
 
-    /* 第三位 */
-    .ranking_user .ranking_three {
-        border: #FFA57E 1px solid;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: linear-gradient(to right, #DC4200, #651E00);
-        width: 100%;
-    }
+/* 文字の位置調整 */
+.ranking_one,
+.ranking_two,
+.ranking_three {
+    text-align: center;
+}
 
-    .ranking_user .ranking_three .crown {
-        margin: 0px;
-    }
+/* 第一位 */
+.winner_font {
+    font-size: 32px;
+    font-weight: bold;
+    -webkit-text-stroke: 1px #E3AD17;
+    text-shadow: #EFFF62 4px 4px 10px;
+}
 
-    /*その他ランキング*/
-    .ranking_others {
-        max-height: 200px;
-        overflow-y: scroll;
-        padding-right: 20px;
-    }
+.ranking_user .ranking_one {
+    border: #FFEBC1 1px solid;
+    box-shadow: 0px 0px 10px 5px #EFFF62;
+    background: linear-gradient(to right, #FFD000, #C26E00);
+    width: 100%;
+}
 
-    .ranking_item {
-        border: #0000FF 1px solid;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-weight: bold;
-        color: white;
-        background-color: #00009B;
-        width: 100%;
-    }
+/* 第二位 */
+.ranking_user .ranking_two {
+    border: #FFFFFF 1px solid;
+    background: linear-gradient(to right, #A6A6A6, #6B6B6B);
+    width: 100%;
+}
 
-    /* 管理画面でのリスト */
-    .list_admin{
-        display: flex;
-        flex-flow: column;
-        gap: 10px;
-        max-height: 190px;
-        overflow-y: scroll;
-        padding-right: 20px;
-    }
-    .list_item{
-        padding: 1rem;
-        background-color: rgba(255, 255, 255, 0.3);
-    }
+.ranking_user .ranking_two .crown {
+    margin-bottom: 0.5rem;
+}
 
-    /* スクロールバー */
+/* 第三位 */
+.ranking_user .ranking_three {
+    border: #FFA57E 1px solid;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to right, #DC4200, #651E00);
+    width: 100%;
+}
 
-    article {
-        padding: 8px 40px;
-        background-color: #eee;
-    }
+.ranking_user .ranking_three .crown {
+    margin: 0px;
+}
 
-    article+article {
-        border-top: 2px dashed #fff;
-    }
+/*その他ランキング*/
+.ranking_others {
+    max-height: 200px;
+    overflow-y: scroll;
+    padding-right: 20px;
+}
 
-    .ranking_others::-webkit-scrollbar,
-    .list_admin::-webkit-scrollbar {
-        width: 16px;
-    }
+.ranking_item {
+    border: #0000FF 1px solid;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    color: white;
+    background-color: #00009B;
+    width: 100%;
+}
 
-    .ranking_others::-webkit-scrollbar-track,
-    .list_admin::-webkit-scrollbar-track {
-        background-color: #5D5D5D;
-    }
+/* 管理画面でのリスト */
+.list_admin {
+    display: flex;
+    flex-flow: column;
+    gap: 10px;
+    max-height: 190px;
+    overflow-y: scroll;
+    padding-right: 20px;
+}
 
-    .ranking_others::-webkit-scrollbar-thumb,
-    .list_admin::-webkit-scrollbar-thumb {
-        background-color: #fff;
-    }
+.list_item {
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* スクロールバー */
+
+article {
+    padding: 8px 40px;
+    background-color: #eee;
+}
+
+article+article {
+    border-top: 2px dashed #fff;
+}
+
+.ranking_others::-webkit-scrollbar,
+.list_admin::-webkit-scrollbar {
+    width: 16px;
+}
+
+.ranking_others::-webkit-scrollbar-track,
+.list_admin::-webkit-scrollbar-track {
+    background-color: #5D5D5D;
+}
+
+.ranking_others::-webkit-scrollbar-thumb,
+.list_admin::-webkit-scrollbar-thumb {
+    background-color: #fff;
+}
 
 /* 戻るボタン */
-    .sub_return_bg{
-        background-color: rgba(255, 255, 255, 0.5);
-        border-radius: 2px;
-    }
-    .sub_return{
-        display: inline-block;
-    }
+.sub_return_bg {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 2px;
+}
+
+.sub_return {
+    display: inline-block;
+}
 
 /* メニュー */
-    .menu_link {
-        /* 中身を揃える */
-        display: block;
-        text-align: center;
-        /* 上下の中央揃え */
-        align-content: center;
-        color: #fff;
-        font-weight: bold;
-    }
+.menu_link {
+    /* 中身を揃える */
+    display: block;
+    text-align: center;
+    /* 上下の中央揃え */
+    align-content: center;
+    color: #fff;
+    font-weight: bold;
+}
 
-    .menu {
-        margin: 1rem 0;
-        display: flex;
-        gap: 2rem;
-        justify-content: center;
-        text-decoration: none;
-    }
+.menu {
+    margin: 1rem 0;
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    text-decoration: none;
+}
 
-    .item {
-        width: 100%;
-        padding: 1rem;
-    }
+.item {
+    width: 100%;
+    padding: 1rem;
+}
 
-    .item_user{
-        background: #16006C;
-    }
-    .item_admin {
-        background: #8B0482;
-    }
+.item_user {
+    background: #16006C;
+}
 
-    /* 画像の写真フレーム化 */
-    .frame {
-        object-fit: contain;
-        width: 100%;
-        height: 55px;
-    }
+.item_admin {
+    background: #8B0482;
+}
+
+/* 画像の写真フレーム化 */
+.frame {
+    object-fit: contain;
+    width: 100%;
+    height: 55px;
+}
 
 /* 画面サイズ指定 */
 /* 非表示(500px以上) */
-    @media screen and (min-width: 500px) {
-        .menu {
-            display: none;
-        }
-        .sub_return_bg {
-            display: none;
-        }
+@media screen and (min-width: 500px) {
+    .menu {
+        display: none;
     }
+
+    .sub_return_bg {
+        display: none;
+    }
+}
 
 /* ヘッダーレイアウト */
-    body{
-        padding-top: 100px;
-    }
-    .bg_deader {
-        /* ヘッダーを固定する */
-        position: fixed;
-        /* 画面の上部に固定 */
-        top: 0;
-        left: 0;
-        right: 0;
-        /* 画面の幅いっぱいに広げる */
-        /* width: 100%; */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #000;
-        height: 100px;
-    }
+body {
+    padding-top: 100px;
+}
+
+.bg_deader {
+    /* ヘッダーを固定する */
+    position: fixed;
+    /* 画面の上部に固定 */
+    top: 0;
+    left: 0;
+    right: 0;
+    /* 画面の幅いっぱいに広げる */
+    /* width: 100%; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    height: 100px;
+}
 
 /* クリッピングマスク */
-    .image_circle2 {
-        width: 4rem;
-        height: 4rem;
-        object-fit: none;
-        border-radius: 50%;
-    }
+.image_circle2 {
+    width: 4rem;
+    height: 4rem;
+    object-fit: none;
+    border-radius: 50%;
+}
 
-    .form {
-        border: none;
-    }
+.form {
+    border: none;
+}
 
-    .form_label {
-        font-weight: bold;
-        color: #fff;
-    }
+.form_label {
+    font-weight: bold;
+    color: #fff;
+}
 
-    .text_input {
-        display: block;
-        width: 100%;
-    }
+.text_input {
+    display: block;
+    width: 100%;
+}
 
-    /* プルダウン関係 */
-    .pulldown {
-        outline: none;
-    }
+/* プルダウン関係 */
+.pulldown {
+    outline: none;
+}
 
-    /* ボタン関係 */
-    .btn {
-        text-decoration: none;
-        width: max-content;
-        margin: auto;
-        padding: 0.5rem;
-        font-weight: bold;
-        color: #fff;
-        /* 角丸 */
-        border-radius: 10px;
-        transition: 0.5s;
-        /* ドロップジャドウ */
-        box-shadow: 0px 0px 3px 3px rgba(255, 255, 255, 0.3);
-    }
+/* ボタン関係 */
+.btn {
+    text-decoration: none;
+    width: max-content;
+    margin: auto;
+    padding: 0.5rem;
+    font-weight: bold;
+    color: #fff;
+    /* 角丸 */
+    border-radius: 10px;
+    transition: 0.5s;
+    /* ドロップジャドウ */
+    box-shadow: 0px 0px 3px 3px rgba(255, 255, 255, 0.3);
+}
 
-    .gazou {
-        border: 3px solid #77FF00;
-        background: #52BC77;
-    }
+.gazou {
+    border: 3px solid #77FF00;
+    background: #52BC77;
+}
 
-    .gazou:hover {
-        color: #52BC77;
-        background: #fff;
-    }
+.gazou:hover {
+    color: #52BC77;
+    background: #fff;
+}
 
-    .delete {
-        border: 3px solid #FF0000;
-        background: #AC0000;
-    }
+.delete {
+    border: 3px solid #FF0000;
+    background: #AC0000;
+}
 
-    .delete:hover {
-        color: #AC0000;
-        background: #fff;
-    }
+.delete:hover {
+    color: #AC0000;
+    background: #fff;
+}
 
-    .update {
-        width: 100%;
+.delete_size {
+    /* height: 21.33px; */
+    border-radius: 7px;
+    display: flex;
+    align-self: center;
+}
 
-    }
+.update {
+    width: 100%;
 
-    .return {
-        border: 3px solid #FF00ED;
-        background: #B53DAD;
-    }
+}
 
-    .return:hover {
-        color: #B53DAD;
-        background: #fff;
-    }
+.return {
+    border: 3px solid #FF00ED;
+    background: #B53DAD;
+}
+
+.return:hover {
+    color: #B53DAD;
+    background: #fff;
+}
 
 /* 画像UI */
-    .image_center {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+.image_center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    .image_item {
-        /* 中身のセンタリング */
-        display: block;
-        /* 上下の中央揃え */
-        align-content: center;
-        justify-items: center;
-        width: 100%;
-        height: auto;
-        margin: 1rem;
-        background: #D9D9D9;
-    }
+.image_item {
+    /* 中身のセンタリング */
+    display: block;
+    /* 上下の中央揃え */
+    align-content: center;
+    justify-items: center;
+    width: 100%;
+    height: auto;
+    margin: 1rem;
+    background: #D9D9D9;
+}
 
-    /* このクラスは、ダミー（ヘッダーに隠れるため、上部、左右に余白を追加） */
-    /* 削除クラス */
-    .dummy {
-        margin-top: 150px;
-        margin-left: 20px;
-        margin-right: 20px;
-    }
+/* このクラスは、ダミー（ヘッダーに隠れるため、上部、左右に余白を追加） */
+/* 削除クラス */
+.dummy {
+    margin-top: 150px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
 
 /* 共通のスクリーン設定 */
 .user_screen::after,
-.admin_screen::after{
-            height: 100vh;
-            z-index: -2;
-            width: 100vw;
-            position: fixed;
-            top: 0;
-            left: 0;
-            content: "";
+.admin_screen::after {
+    height: 100vh;
+    z-index: -2;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    content: "";
 
-        }
-
- 
-
-    .user_screen::after{
-        background: linear-gradient(to bottom, #4800CF 0%, #000000 100%);
-    }
-
-    .admin_screen::after{
-        background: linear-gradient(to bottom, #FF00EE 0%, #3C0038 100%);
-    }
-    /* 3. 【文字】背景の上に置く */
-    .content_container {
-        width: 100%;
-    }
-
-    /*背景の画像*/
-    .bg_overlay_image {
-        width: 100%;
-        opacity: 0.13;
-        position: fixed;
-        top: 0px;
-        left: 0px;
-        pointer-events: none;
-        z-index: -1;
-    }
+}
 
 
-    .h1,
-    .h2,
-    .p {
-        font-weight: bold;
-        color: #ffccff;
-        /* 背景が暗い想定の明るい色 */
-        margin-bottom: 20px;
-    }
 
-    /*見出しなど*/
-    .h1 {
-        font-size: 32px;
-    }
+.user_screen::after {
+    background: linear-gradient(to bottom, #4800CF 0%, #000000 100%);
+}
 
-    /*項目 */
-    .h2 {
-        font-size: 20px;
-    }
+.admin_screen::after {
+    background: linear-gradient(to bottom, #FF00EE 0%, #3C0038 100%);
+}
 
-    /*説明・詳細など */
-    .p {
-        font-size: 16px;
-    }
+/* 3. 【文字】背景の上に置く */
+.content_container {
+    width: 100%;
+}
+
+/*背景の画像*/
+.bg_overlay_image {
+    width: 100%;
+    opacity: 0.13;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+
+.h1,
+.h2,
+.p {
+    font-weight: bold;
+    color: #ffccff;
+    /* 背景が暗い想定の明るい色 */
+    margin-bottom: 20px;
+}
+
+/*見出しなど*/
+.h1 {
+    font-size: 32px;
+}
+
+/*項目 */
+.h2 {
+    font-size: 20px;
+}
+
+/*説明・詳細など */
+.p {
+    font-size: 16px;
+}

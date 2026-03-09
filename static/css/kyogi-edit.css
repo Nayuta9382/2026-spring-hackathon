@@ -41,9 +41,12 @@
 }
 
 .block_btn {
-  width: 100%;
-  /* ボタンをブロック要素化して幅を有効にする */
   display: block;
+  /* max-content を上書きして親要素いっぱいにする */
+  width: 100% !important;
+  /* margin: auto が邪魔をしないようにリセット */
+  margin: 0 !important;
+  box-sizing: border-box;
 }
 
 .side_by_side {
@@ -57,4 +60,8 @@
 /* ボタンを包むdivを均等に（50%ずつ）広げる */
 .side_by_side>div {
   flex: 1;
+}
+
+.text_size {
+  height: 30px;
 }
