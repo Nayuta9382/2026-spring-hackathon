@@ -135,6 +135,13 @@ body{
     margin-left: auto;
 }
 
+/* チーム一覧リスト */
+#teams-container{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
 /* 順位ポイント */
 #rank-container .input-row{
     display: flex;
