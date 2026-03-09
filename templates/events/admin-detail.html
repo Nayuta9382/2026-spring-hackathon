@@ -42,7 +42,7 @@
 <section>
     <h2>競技詳細説明</h2>
     <div style="border: 1px solid #ccc; padding: 10px;">
-        {{ event.detail|linebreaks|default:"(説明文なし)" }}
+        {{ event.detail|linebreaksbr|default:"(説明文なし)" }}
     </div>
 </section>
 
@@ -84,7 +84,6 @@
 
 <section>
     <h2>チーム一覧</h2>
-
     <ul>
         {% for team in teams %}
             <li>{{ team }}</li>
@@ -92,25 +91,13 @@
             <li>登録されているチームはありません。</li>
         {% endfor %}
     </ul>
-
 </section>
 
 <section>
     <h2>順位</h2>
-    <a href="{% url 'event_result_edit' tournament_pk=event.tournament.url_uuid event_pk=event.id %}">順位を編集する</a>
-
-    {% if tournament.status == 0 %}
-    開催前です
-    {% else %}
-    <ul>
-        {% for event_result in event_results %}
-            <li>{{ event_result.team.name }}:{{ event_result.rank }}位:{{ event_result.point }}</li>
-        {% empty %}
-            <li>順位が登録されていません。</li>
-        {% endfor %}
+    <ul id="ranking-list">
+        <li>読み込み中...</li>
     </ul>
-    {% endif %}
-
 </section>
 
 <hr>
@@ -120,7 +107,6 @@
     <h1>スケジュール一覧</h1>
     <p>{{ event.name }}</p>
 
-    {# 1. now (status: 0) #}
     <h2>now</h2>
     {% for schedule in now_schedules %}
         <p>{{ schedule.detail }}</p>
@@ -133,7 +119,6 @@
 
     <hr>
 
-    {# 2. next (status: 1) #}
     <h2>next</h2>
     {% for schedule in next_schedules %}
         <p>{{ schedule.detail }}</p>
@@ -158,6 +143,7 @@
     {% endfor %}
 
     <br>
+    <a href="{% url 'event_result_edit' tournament_pk=event.tournament.pk  event_pk=event.pk  %}">競技結果編集</a>
     <a href="{% url 'schedule_edit' tournament_pk=event.tournament.pk  pk=event.pk %}">スケジュールを編集する</a>
 </section>
 
@@ -165,14 +151,40 @@
 
 <section>
     <h2>競技削除</h2>
-
     <form method="post"
           action="{% url 'event_delete' tournament_pk=event.tournament.url_uuid pk=event.id %}"
           onsubmit="return confirm('この競技を削除します。本当によろしいですか？');">
-
         {% csrf_token %}
         <button type="submit">この競技を削除する</button>
     </form>
-
 </section>
+
+<script>
+const apiUrl = "/tournaments/{{ event.tournament.url_uuid }}/events/{{ event.pk }}/api/results";
+
+function fetchRanking() {
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const list = document.getElementById('ranking-list');
+            list.innerHTML = '';
+            if (data.results.length === 0) {
+                list.innerHTML = '<li>順位が登録されていません。</li>';
+                return;
+            }
+            data.results.forEach(r => {
+                const li = document.createElement('li');
+                li.textContent = `${r.teams}: ${r.rank}位: ${r.point}`;
+                list.appendChild(li);
+            });
+        })
+        .catch(() => {
+            document.getElementById('ranking-list').innerHTML = '<li>取得に失敗しました。</li>';
+        });
+}
+
+fetchRanking();
+setInterval(fetchRanking, 1000);
+</script>
+
 {% endblock content %}

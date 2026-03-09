@@ -14,6 +14,7 @@ from django.http import JsonResponse
 from django.views import View
 import json
 
+
 # 競技の新規作成処理
 class EventCreateView(CreateView):
     model = Event
@@ -85,13 +86,10 @@ class EventAdminDetailView(DetailView):
         context['event_results'] = event_results
 
         schedules = event.schedules.all().order_by('order')
-
-
-        context['next_schedules'] = schedules.filter(status=0)
-        context['now_schedules'] = schedules.filter(status=1)
+        context['now_schedules'] = schedules.filter(status=0)
+        context['next_schedules'] = schedules.filter(status=1)
         context['previous_schedules'] = schedules.filter(status=2)
         context['tournament'] = event.tournament
-
 
         return context
 
@@ -112,12 +110,11 @@ class EventUserDetailView(DetailView):
         context['event_results'] = event_results
 
         # スケジュール
-        schedules = event.schedules.all()
-        context['next_schedules'] = schedules.filter(status=0)
-        context['now_schedules'] = schedules.filter(status=1)
+        schedules = event.schedules.all().order_by('order')
+        context['now_schedules'] = schedules.filter(status=0)
+        context['next_schedules'] = schedules.filter(status=1)
         context['previous_schedules'] = schedules.filter(status=2)
         context['tournament'] = event.tournament
-
 
         return context
 
@@ -133,6 +130,7 @@ class EventEditView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+
         event = self.get_object()
 
         teams = get_teams_by_event(event)
@@ -145,7 +143,6 @@ class EventEditView(UpdateView):
         return context
 
     def form_valid(self, form):
-
         event = form.instance
         tournament = event.tournament
         teams = form.cleaned_data.get('teams')
@@ -196,20 +193,28 @@ class EventResultsAPIView(View):
         event = get_object_or_404(Event, pk=pk)
         results = get_event_results_by_event(event)
 
-        data = []
-
+        # pointごとにチームをまとめる
+        point_map = {}
         for r in results:
             team_name = r.team.name
-
             try:
                 team_name = json.loads(team_name)["name"]
             except:
                 pass
 
+            point = r.point
+            rank = r.rank
+
+            if point not in point_map:
+                point_map[point] = {"teams": [], "rank": rank, "point": point}
+            point_map[point]["teams"].append(team_name)
+
+        data = []
+        for point, entry in sorted(point_map.items(), key=lambda x: x[1]["rank"]):
             data.append({
-                "team": team_name,
-                "rank": r.rank,
-                "point": r.point
+                "teams": "／".join(entry["teams"]),
+                "rank": entry["rank"],
+                "point": entry["point"],
             })
 
         return JsonResponse({"results": data}, json_dumps_params={'ensure_ascii': False})

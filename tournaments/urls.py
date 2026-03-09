@@ -22,7 +22,7 @@ urlpatterns = [
     # 大会編集
     path('<t_url:pk>/edit', super_user_required(TournamentUpdateView.as_view()), name='tournament_update'),
     # 大会ステータスのpulldown
-    path('<int:pk>/api/update-status/', super_user_required(UpdateStatusView.as_view()), name='api_update_status'),
+    path('<t_url:pk>/api/update-status/', super_user_required(UpdateStatusView.as_view()), name='api_update_status'),
      # 大会削除
     path('<t_url:pk>/delete', super_user_required(TournamentDeleteView.as_view()), name='tournament_delete'),
     # 大会順位を取得する

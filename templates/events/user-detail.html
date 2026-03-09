@@ -16,208 +16,135 @@
 <div>
     <h1>競技詳細(user)</h1>
 
-<section>
-    <h2>競技基本情報</h2>
-    <table border="1" cellpadding="5" cellspacing="0">
-        <tr>
-            <th>競技名</th>
-            <td>{{ event.name }}</td>
-        </tr>
-        <tr>
-            <th>競技区分</th>
-            <td>
-                {% if event.category == 1 %}
-                    クラス対抗
-                {% else %}
-                    一般
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <th>登録日時</th>
-            <td>{{ event.created_at|date:"Y/m/d H:i" }}</td>
-        </tr>
-    </table>
-</section>
+    <section>
+        <h2>競技基本情報</h2>
+        <table border="1" cellpadding="5" cellspacing="0">
+            <tr>
+                <th>競技名</th>
+                <td>{{ event.name }}</td>
+            </tr>
+            <tr>
+                <th>競技区分</th>
+                <td>
+                    {% if event.category == 1 %}
+                        クラス対抗
+                    {% else %}
+                        一般
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>登録日時</th>
+                <td>{{ event.created_at|date:"Y/m/d H:i" }}</td>
+            </tr>
+        </table>
+    </section>
 
-<br>
+    <br>
 
-<section>
-    <h2>競技詳細説明</h2>
-    <div style="border: 1px solid #ccc; padding: 10px;">
-        {{ event.detail|linebreaks|default:"(説明文なし)" }}
-    </div>
-</section>
+    <section>
+        <h2>競技詳細説明</h2>
+        <div style="border: 1px solid #ccc; padding: 10px;">
+            {{ event.detail|linebreaksbr|default:"(説明文なし)" }}
+        </div>
+    </section>
 
-<br>
+    <br>
 
-<section>
-    <h2>画像資料</h2>
+    <section>
+        <h2>画像資料</h2>
+        <div>
+            <h3>競技イメージ画像</h3>
+            {% if event.event_img %}
+                <img src="{{ event.event_img.url }}" alt="競技画像" width="400">
+            {% else %}
+                <p>画像はありません</p>
+            {% endif %}
+        </div>
+
+        <div>
+            <h3>トーナメント表画像</h3>
+            {% if event.tournament_img %}
+                <img src="{{ event.tournament_img.url }}" alt="トーナメント画像" width="400">
+            {% else %}
+                <p>画像はありません</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <hr>
+
+    <section>
+        <h2>順位</h2>
+        <ul id="ranking-list">
+            <li>読み込み中...</li>
+        </ul>
+    </section>
+
+    <hr>
+
     <div>
-        <h3>競技イメージ画像</h3>
-        {% if event.event_img %}
-            <img src="{{ event.event_img.url }}" alt="競技画像" width="400">
-        {% else %}
-            <p>画像はありません</p>
-        {% endif %}
-    </div>
+        <h1>スケジュール</h1>
+        <p>{{ event.name }}</p>
 
-    <div>
-        <h3>トーナメント表画像</h3>
-        {% if event.tournament_img %}
-            <img src="{{ event.tournament_img.url }}" alt="トーナメント画像" width="400">
-        {% else %}
-            <p>画像はありません</p>
-        {% endif %}
-    </div>
-</section>
-
-<hr>
-
-
-<section>
-    <h2>順位</h2>
-    {% if tournament.status == 0 %}
-    開催前です
-    {% else %}
-    <ul>
-        {% for event_result in event_results %}
-            <li>{{ event_result.team.name }}:{{ event_result.rank }}位:{{ event_result.point }}</li>
+        <h2>now</h2>
+        {% for schedule in now_schedules %}
+            <p>{{ schedule.detail }}</p>
+            {% if schedule.result %}
+                <p>{{ schedule.result }}</p>
+            {% endif %}
         {% empty %}
-            <li>順位が登録されていません。</li>
+            <p>なし</p>
         {% endfor %}
-    </ul>
-    {% endif %}
-    
-</section>
 
-<hr>
+        <h2>next</h2>
+        {% for schedule in next_schedules %}
+            <p>{{ schedule.detail }}</p>
+            {% if schedule.result %}
+                <p>{{ schedule.result }}</p>
+            {% endif %}
+        {% empty %}
+            <p>なし</p>
+        {% endfor %}
 
-<div>
-    <h1>スケジュール</h1>
-    <p>{{ event.name }}</p>
-
-    <h2>next</h2>
-    {% for schedule in next_schedules %}
-        <p>{{ schedule.detail }}</p>
-    {% empty %}
-        <p>なし</p>
-    {% endfor %}
-
-    <h2>now</h2>
-    {% for schedule in now_schedules %}
-        <p>{{ schedule.detail }}</p>
-    {% empty %}
-        <p>なし</p>
-    {% endfor %}
-
-    <h2>previous</h2>
-    {% for schedule in previous_schedules %}
-        <p>{{ schedule.detail }}</p>
-        {% if schedule.result %}
-            <p>{{ schedule.result }}</p>
-        {% endif %}
-    {% empty %}
-        <p>なし</p>
-    {% endfor %}
-
+        <h2>previous</h2>
+        {% for schedule in previous_schedules %}
+            <p>{{ schedule.detail }}</p>
+            {% if schedule.result %}
+                <p>{{ schedule.result }}</p>
+            {% endif %}
+        {% empty %}
+            <p>なし</p>
+        {% endfor %}
+    </div>
 </div>
 
+<script>
+const apiUrl = "/tournaments/{{ event.tournament.url_uuid }}/events/{{ event.pk }}/api/results";
 
-<div class="content">
-    <h1 class="h1 title">競技名</h1>
-            
-    <!-- ランキング -->
-    <div>
-    
-        <ul class="ranking_user">
-            <li class="ranking_one">
-                <div class="crown"><img src="./static/img/crown/mark_oukan_crown1.png" alt=""></div>
-                <p class="winner_font quantico-regular">WINNER!!</p>
-                <h1>総合、高度3,4年</h1>
-                <h2>00pt</h2>
-            </li>
-            <li class="ranking_two">
-                <div class="crown"><img src="./static/img/crown/mark_oukan_crown2.png" alt=""></div>
-                <h2>総合、高度3,4年</h2>
-                <h3>00pt</h3>
-            </li>
-            <li class="ranking_three">
-                <div class="crown"><img src="./static/img/crown/mark_oukan_crown3.png" alt=""></div>
-                <h3>総合、高度3,4年</h3>
-                <h4>00pt</h4>
-            </li>
+function fetchRanking() {
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const list = document.getElementById('ranking-list');
+            list.innerHTML = '';
+            if (data.results.length === 0) {
+                list.innerHTML = '<li>順位が登録されていません。</li>';
+                return;
+            }
+            data.results.forEach(r => {
+                const li = document.createElement('li');
+                li.textContent = `${r.teams}: ${r.rank}位: ${r.point}`;
+                list.appendChild(li);
+            });
+        })
+        .catch(() => {
+            document.getElementById('ranking-list').innerHTML = '<li>取得に失敗しました。</li>';
+        });
+}
 
-        </ul>
-        <ul class="ranking_user ranking_others">
-            <li class="ranking_item">
-                <p>テキスト</p>
-                <p>00pt</p>
-            </li>
-            <li class="ranking_item">
-                <p>テキスト</p>
-                <p>00pt</p>
-            </li>
-            <li class="ranking_item">
-                <p>テキスト</p>
-                <p>00pt</p>
-            </li>
-            <li class="ranking_item">
-                <p>テキスト</p>
-                <p>00pt</p>
-            </li>
-        </ul>
-    </div>
-
-    <div>
-        <h2 class="h2">Tournament</h2>
-        <div class="image_center">
-            <div class="image_item">
-                <img src="./static/img/dummy/tournament.png" alt="イメージ">
-            </div>
-        </div>
-    </div>
-
-    
-    <div>
-        <h2 class="h2">explanation</h2>
-        <div class="explanation">
-            <p class="p">競技の説明文がここに表示されます。</p>
-        </div>
-    </div>
-
-    <div>
-        <h2 class="h2">MatchSchedule</h2>
-        <div class="schedule">
-            <div class="next">
-                <h2 class="h2">Next</h2>
-                <ul>
-                    <li><p class="p">総合・高度1,2年VS総合・高度3,4年</p></li>
-                </ul>
-            </div>
-            <div class="now">
-                <h2 class="h2">Now</h2>
-                <ul>
-                    <li><p class="p">デザイン1年VSビジネス2年</p></li>
-                    <li><p class="p">デザイン2年VSビジネス1年</p></li>
-                    <li><p class="p">システム1年VSザイン2年VSビジネス1年</p></li>
-                </ul>
-            </div>
-            <div class="previous">
-                <h2 class="h2">Previous</h2>
-                <ul>
-                    <li>
-                        <p class="p">総合・高度1,2年VS総合・高度3,4年</p>
-                        <hr>
-                        <p class="p">総合・高度3,4年が勝ちました。</p>
-                    </li>
-                </ul>
-            </div>
-
-        </div>
-    </div>
-
-</div>
+fetchRanking();
+setInterval(fetchRanking, 1000);
+</script>
 
 {% endblock content %}
-
