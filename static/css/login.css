@@ -1,3 +1,82 @@
-body{
-    border-color: red!important;
+/* ログイン用レイアウト設定 */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 50px;
+}
+
+.login-title {
+    font-size: 3rem;
+    /* 画像に合わせて大きめに設定 */
+    margin-bottom: 30px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+/* 中央の半透明カード */
+.login-card {
+    background: rgba(255, 255, 255, 0.1);
+    /* 非常に薄い白 */
+    backdrop-filter: blur(5px);
+    /* 背景を少しぼかすとおしゃれになります */
+    padding: 40px;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+/* 入力欄のスタイル */
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    font-size: 1rem;
+    box-sizing: border-box;
+    /* パディングを含めたサイズ計算 */
+}
+
+.form-group input::placeholder {
+    color: #aaa;
+}
+
+/* ログインボタン（緑） */
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    background-color: #5cb874;
+    /* スクリーンショットの緑色に近い色 */
+    border: 2px solid #8be0a0;
+    /* 明るい縁取り */
+    border-radius: 8px;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-top: 10px;
+}
+
+.btn-login:hover {
+    filter: brightness(1.1);
+}
+
+.btn-login:active {
+    transform: scale(0.98);
 }
