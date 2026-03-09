@@ -174,7 +174,7 @@ function fetchRanking() {
             }
             data.results.forEach(r => {
                 const li = document.createElement('li');
-                li.textContent = `${r.team}: ${r.rank}位: ${r.point}`;
+                li.textContent = `${r.teams}: ${r.rank}位: ${r.point}`;
                 list.appendChild(li);
             });
         })
