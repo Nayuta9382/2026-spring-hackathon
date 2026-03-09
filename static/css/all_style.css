@@ -441,7 +441,7 @@ body {
 /* このクラスは、ダミー（ヘッダーに隠れるため、上部、左右に余白を追加） */
 /* 削除クラス */
 .dummy {
-    margin-top: 150px;
+    padding-top: 20px;
     margin-left: 20px;
     margin-right: 20px;
 }

@@ -3,6 +3,7 @@
 .tournament-header {
     position: relative;
     padding-left: 50px;
+    z-index: -1;
 }
 
 .return-btn {
@@ -241,4 +242,9 @@
     border-radius: 4px;
     border: none;
     font-size: 1rem;
+}
+.url-info{
+    display: flex;   
+    flex-direction: column;
+    gap: 0.5rem;
 }
