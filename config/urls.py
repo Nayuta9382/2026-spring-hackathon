@@ -33,7 +33,7 @@ urlpatterns = [
     path('tournaments/', include('tournaments.urls')),
     path('tournaments/<t_url:tournament_pk>/events/', include('events.urls')),
     path('tournaments/<t_url:tournament_pk>/events/<event_pk>/event_results/', include('event_results.urls')),
-    path('tournaments/schedules/', include('schedules.urls')),
+    path('tournaments/<t_url:tournament_pk>/schedules/', include('schedules.urls')),
     path('pages/', include('pages.urls')), # 開発中htmlを表示するようのアプリ
 ]
 

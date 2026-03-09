@@ -1,7 +1,10 @@
 {% extends 'layouts/user-layout.html' %}
 
 {% block title %}index{% endblock title %}
-
+{% load static %}
+{% block extra_css %} 
+<link rel="stylesheet" href="{% static 'css/tournament_detail_user.css' %}">
+{% endblock extra_css %}
 {% block content %}
 <div>
     <h1>User大会詳細</h1>
@@ -70,4 +73,103 @@
         </section>
     </div>
 </div>
+
+
+<div class="container">
+    <div class="dummy">
+        <h2 class="h1" style="text-align: center;">Result</h2>
+
+        <div class="ranking_user">
+            <div class="ranking_one">
+                <div class="crown"><img src="./img/crown/mark_oukan_crown1.png" alt=""></div>
+                <p class="winner_font quantico-regular">WINNER!!</p>
+                <h1>総合、高度3,4年</h1>
+                <h2>00pt</h2>
+            </div>
+            <div class="ranking_two">
+                <div class="crown"><img src="./img/crown/mark_oukan_crown2.png" alt=""></div>
+                <h2>総合、高度3,4年</h2>
+                <h3>00pt</h3>
+            </div>
+            <div class="ranking_three">
+                <div class="crown"><img src="./img/crown/mark_oukan_crown3.png" alt=""></div>
+                <h3>総合、高度3,4年</h3>
+                <h4>00pt</h4>
+            </div>
+        </div>
+
+        <div class="ranking_user ranking_others">
+            <div class="ranking_item">
+                <p>テキスト</p>
+                <p>00pt</p>
+            </div>
+            <div class="ranking_item">
+                <p>テキスト</p>
+                <p>00pt</p>
+            </div>
+            <div class="ranking_item">
+                <p>テキスト</p>
+                <p>00pt</p>
+            </div>
+            <div class="ranking_item">
+                <p>テキスト</p>
+                <p>00pt</p>
+            </div>
+        </div>
+
+        <h2 class="h1" style="margin-top: 20px;">Competitions</h2>
+
+        <div class="list_admin">
+            <div class="list_item">
+                <div class="thumb-box" style="background-color: #fff;"></div>
+                <div class="item-name">あそび大全（トイボクシング）</div>
+                <div class="item-actions">
+                    <button class="btn gazou">編集</button>
+                    <button class="btn delete">削除</button>
+                </div>
+            </div>
+            <div class="list_item">
+                <div class="thumb-box"></div>
+                <div class="item-name">アルティメットチキンホース</div>
+                <div class="item-actions">
+                    <button class="btn gazou">編集</button>
+                    <button class="btn delete">削除</button>
+                </div>
+            </div>
+            <div class="list_item">
+                <div class="thumb-box"></div>
+                <div class="item-name">アルティメットチキンホース</div>
+                <div class="item-actions">
+                    <button class="btn gazou">編集</button>
+                    <button class="btn delete">削除</button>
+                </div>
+            </div>
+            <div class="list_item">
+                <div class="thumb-box"></div>
+                <div class="item-name">アルティメットチキンホース</div>
+                <div class="item-actions">
+                    <button class="btn gazou">編集</button>
+                    <button class="btn delete">削除</button>
+                </div>
+            </div>
+            <div class="list_item">
+                <div class="thumb-box"></div>
+                <div class="item-name">アルティメットチキンホース</div>
+                <div class="item-actions">
+                    <button class="btn gazou">編集</button>
+                    <button class="btn delete">削除</button>
+                </div>
+            </div>
+            <div class="list_item">
+                <div class="thumb-box"></div>
+                <div class="item-name">アルティメットチキンホース</div>
+                <div class="item-actions">
+                    <button class="btn gazou">編集</button>
+                    <button class="btn delete">削除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ｄ>
+
 {% endblock %}

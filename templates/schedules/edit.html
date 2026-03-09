@@ -18,7 +18,7 @@
 <p style="color:red;">{{ error }}</p>
 {% endif %}
 
-<form method="POST" action="{% if event.pk %}{% url 'schedule_edit' event.pk %}{% endif %}"
+<form method="POST" action="{% if event.pk %}{% url 'schedule_edit' tournament_pk=event.tournament.pk  pk=event.pk %}{% endif %}"
     onsubmit="return validateNowCount()" class="form space">
     {% csrf_token %}
 
