@@ -8,13 +8,8 @@
 {% endblock extra_css %}
 
 {% block content %}
-<p>
-    <a href="{% url 'tournament_detail_superuser' event.tournament.id %}">←  スーパユーザ大会詳細に戻る</a>
-    <a href="{% url 'tournament_detail_operator' event.tournament.id %}">←  運営者大会詳細に戻る</a>
-</p>
-
 <div class="content">
-    <a href="#" class="update return btn display_block top">戻る</a>
+    <a href="{% url 'tournament_detail_operator' event.tournament.id %}" class="update return btn display_block top">戻る</a>
 
     <h1 class="h1 title">{{ event.name }}</h1>
 
