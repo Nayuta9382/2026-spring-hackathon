@@ -28,7 +28,7 @@
 }
 
 .form-group {
-    margin-bottom: 50px;
+    margin-bottom: 10px;
 }
 
 .form-group label {
@@ -55,31 +55,16 @@
     color: #aaa;
 }
 
-/* ログインボタン（緑） */
-.btn-login {
-    width: 100%;
-    padding: 12px;
-    background-color: #5cb874;
-    /* スクリーンショットの緑色に近い色 */
-    border: 2px solid #8be0a0;
-    /* 明るい縁取り */
-    border-radius: 8px;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-    margin-top: 20px;
-}
-
-.btn-login:hover {
-    filter: brightness(1.1);
-}
-
-.btn-login:active {
-    transform: scale(0.98);
-}
-
 label {
     color: #fff;
+}
+
+.h2 {
+    text-align: center;
+    margin-bottom: 50px;
+    font-size: 30px;
+}
+
+.update.btn.gazou{
+    margin-top: 40px;
 }
