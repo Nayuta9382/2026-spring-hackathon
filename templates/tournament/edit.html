@@ -1,94 +1,136 @@
 {% extends 'layouts/admin-layout.html' %}
 {% load static %}
+{% comment %} 自作css読み込み {% endcomment %}
+{% block extra_css %} 
+    <link rel="stylesheet" href="{% static 'css/tournament-edit.css' %}">
+    <style> .special-button { background-color: gold; } </style>
+{% endblock extra_css %}
 
 {% block content %}
-<h2>大会編集</h2>
 {# ファイルを扱うので enctype は必須 #}
 <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-
-    {# 1. 大会名 #}
-    <div>
-        <label for="id_name">大会名</label>
-        <input type="text" name="name" id="id_name" 
-               value="{{ form.name.value|default:'' }}" 
-               class="custom-input" placeholder="大会名を入力">
-        {% if form.name.errors %}<p class="error">{{ form.name.errors.0 }}</p>{% endif %}
-    </div>
-
-    {# 2. パスワード #}
-    <div>
-        <label for="id_password">パスワード</label>
-        <input type="text" name="password" id="id_password" 
-               value="{{ form.password.value|default:'' }}" 
-               class="custom-input">
-        {% if form.password.errors %}<p class="error">{{ form.password.errors.0 }}</p>{% endif %}
-    </div>
-
-    {# 3. 大会画像 #}
-    <div>
-        <label for="id_img_path">大会画像 (PNG/JPG)</label>
-        {% if form.instance.img_path %}
-            <p>現在の画像: <img src="{{ form.instance.img_path.url }}" width="100"></p>
-        {% endif %}
-        <input type="file" name="img_path" id="id_img_path" accept="image/*">
-    </div>
-
-    {# 4. 案内PDF #}
-    <div>
-        <label for="id_pdf_img_path">案内PDF</label>
-        {% if form.instance.pdf_img_path %}
-            <p>現在のファイル: <a href="{{ form.instance.pdf_img_path.url }}">PDFを表示</a></p>
-        {% endif %}
-        <input type="file" name="pdf_img_path" id="id_pdf_img_path" accept="application/pdf">
-    </div>
-
-    {# --- 動的パーツ --- #}
-    <hr>
-    <div>
-    <h3>クラスチーム</h3>
-    <div id="teams-container">
-        {# 1. 取得したチーム一覧でループ #}
-            {% for team in teams %}
-                <div class="input-row">
-                    <input type="text" name="teams" value="{{ team.name }}" placeholder="クラスチーム名を入力">
-                    {% if forloop.counter != 1 %}
-                        <input type="button" value="x" onclick="removeBtnEvent(this)">
-                    {% endif %}
+    <div class="form_container">
+        <div class="img_name_container">
+            <div class="form">
+                <h2 class="h2">大会画像</h2>
+                <div class="preview_img">
+                    <img id="img_preview" src="" alt="">
+                    <label class="gazou btn">
+                        画像選択
+                        {{ form.img_path }}
+                    </label>
                 </div>
-            {% empty %}
-                {# 2. チームが1つもない #}
-                <div class="input-row">
-                    <input type="text" name="teams" placeholder="クラスチーム名を入力">
-                </div>
-            {% endfor %}
+            </div>
+            <div class="form name">
+                <h2 class="h2">大会名</h2>
+                {{ form.name }}
+            </div>
+    
         </div>
-        <button type="button" onclick="teamAddInput()">クラスチームを追加</button>
-    </div>
-
-   <div>
-    <h3>ランクポイント</h3>
-        <div id="rank-container">
-            {% for point in rank_points %}
-                <div class="input-row">
-                    <label>{{ point.rank }}位: </label>
-                    <input type="number" name="rank_points" value="{{ point.point }}">
+        
+        <div class="form">
+            <h2 class="h2">しおり</h2>
+            <div class="preview_pdf">
+                <div id="preview_pdf">
+                    <p class="p">選択されていません</p>
                 </div>
-            {% empty %}
-                {# データが一つもない場合（初期値として1位分だけ出す例） #}
-                <div class="input-row">
-                    <label>1位: </label>
-                    <input type="number" name="rank_points" value="0">
-                </div>
-            {% endfor %}
+                <label class="gazou btn">
+                    PDF選択
+                    {{ form.pdf_img_path }}
+                </label>
+            </div>
         </div>
-        {# 必要であればポイント設定を増やすボタンも #}
-        <button type="button" onclick="rankAddInput()">順位を追加</button>
+        
+        <div class="form">
+            <h2 class="h2">大会パスワード</h2>
+            {{ form.password }}
+        </div>
+        {% comment %} クラスチーム {% endcomment %}
+        <div class="form">
+            <h2 class="h2">クラスチーム</h2>
+            <div id="teams-container">
+                {% for team in teams %}
+                    <div class="input-row ">
+                        <input class="class_team_input" type="text" name="teams" value="{{ team.name }}" placeholder="クラスチーム名を入力">
+                        {% if forloop.counter != 1 %}
+                            <input type="button" class="delete_btn" value="削除" onclick="removeBtnEvent(this)">
+                        {% endif %}
+                    </div>
+                {% empty %}
+                    {# 2. チームが1つもない #}
+                    <div class="input-row">
+                        <input class="class_team_input" type="text" name="teams" placeholder="クラスチーム名を入力">
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="button" onclick="teamAddInput()" class="gazou btn class_team_btn">追加</button>
+        </div>
+        {% comment %} ランクポイント {% endcomment %}
+        <div class="form">
+            <h2 class="h2">ランクポイント</h2>
+            <div id="rank-container">
+                {% for point in rank_points %}
+                    <div class="input-row">
+                        <label><h2>{{ point.rank }}位</h2></label>
+                        <input type="number" name="rank_points" value="{{ point.point }}">
+                    </div>
+                {% empty %}
+                    {# データが一つもない場合（初期値として1位分だけ出す例） #}
+                    <div class="input-row">
+                        <label><h2>1位</h2></label>
+                        <input type="number" name="rank_points" value="0">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    
+        <div class="button_container">
+            <a class="return btn display_block" href="{% url 'tournament_list' %}">大会一覧に戻る</a>
+            <button type="submit" class="gazou btn add_btn">保存</button>
+        </div>
     </div>
-
-    <button type="submit">保存</button>
 </form>
 
+
 <script src="{% static 'js/tournament/update.js' %}"></script>
+{% comment %} プレビュー {% endcomment %}
+<script>
+    {% comment %} 画像プレビュー {% endcomment %}
+    const input = document.getElementById('id_img_path');
+    const preview = document.getElementById("img_preview");
+
+    console.log(input, preview);
+
+    input.addEventListener("change", function () {
+    const file = this.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+        preview.src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    }
+    });
+
+    {% comment %} PDFファイル名プレビュー {% endcomment %}
+
+    const fileInput = document.getElementById('id_pdf_img_path');
+
+    fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0]; // 最初のファイルを取得
+    if (file) {
+        const previewPdf = document.getElementById('preview_pdf');
+        previewPdf.innerHTML = `<p class="p">${file.name}</p>`; // ファイル名を表示
+    }else{
+        const previewPdf = document.getElementById('preview_pdf');
+        previewPdf.innerHTML = `<p class="p">選択されていません</p>`; // ファイルが選択されていない場合の表示
+    }
+    });
+</script>
 {% endblock content %}
+
 
