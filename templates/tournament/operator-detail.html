@@ -5,174 +5,43 @@
 <link rel="stylesheet" href="{% static 'css/tournament_detail_operator.css' %}">
 {% endblock extra_css %}
 {% block content %}
-<div>
-    <h1>{{ tournament.name }} <small>(運営者)</small></h1>
-    <hr>
-    <div>
-
-        <section>
-            <h2>大会基本情報</h2>
-            
-            <div>
-                <p>大会画像:</p>
-                {% if tournament.img_path %}
-                    <img src="{{ tournament.img_path.url }}" alt="大会画像" width="300">
-                {% else %}
-                    <p>画像が設定されていません</p>
-                {% endif %}
-                <br>
-            </div>
-
-            <ul>
-                <li>大会名: {{ tournament.name }}</li>
-                <li>一般URL: <a target="_blank" rel="noopener noreferrer" href="{{ user_url }}">{{ user_url }}</a></li>
-                <li>パスワード: {{ tournament.password }}</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>大会規約 (PDF)</h2>
-            {% if tournament.pdf_img_path %}
-                <p><a href="{{ tournament.pdf_img_path.url }}" target="_blank">現在の規約PDFを開く</a></p>
-            {% else %}
-                <p>規約PDFは登録されていません。</p>
-            {% endif %}
-        </section>
-
-        <hr>
-
-        <section>
-            <h2>競技一覧</h2>
-            <ul>
-                {% for event in events %}
-                    <li>
-                        <a href="{% url 'event_detail_admin' tournament_pk=tournament.pk pk=event.pk %}">
-                            {{ event.name }} 
-                            {% if event.category == 1 %}(クラス対抗){% else %}(一般){% endif %}
-                        </a>
-                    </li>
-                {% empty %}
-                    <li>登録されている競技はありません。</li>
-                {% endfor %}
-            </ul>
-          
-        </section>
-        <hr>
-
-        <section>
-            <h2>クラスチーム一覧</h2>
-            <ul>
-                {% for team in teams %}
-                    <li>{{ team.name }}</li>
-                {% empty %}
-                    <li>クラスチームが登録されていません</li>
-                {% endfor %}
-            </ul>
-        </section>
-
-        <section>
-            <h2>順位別ポイント設定</h2>
-            {% if tournament.points.all %}
-                <ul>
-                    {% for p in tournament.points.all %}
-                        <li>
-                            第 {{ p.rank }} 位: {{ p.point }} pt
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>ポイント設定が登録されていません。</p>
-            {% endif %}
-        </section>
-
-        <hr>
-
-    </form>
-
-    <hr>
-
-    <section>
-         <h2>総合ランキング</h2>
-        {% if tournament.status == 0 %}
-        開催前です
-        {% else %}
-        <ol>
-            {% for team in rankings %}
-            <li>{{ team.rank }}位: {{ team.name }}（{{ team.total_point|default:0 }} pt）</li>
-            {% empty %}
-            <li>現在、集計データはありません。</li>
-            {% endfor %}
-        </ol>
-        {% endif %}
-    </section>
-
-    <hr>
-
-
-
 <div class="container">
         <div class="dummy">
             <div class="tournament-header">
                 <a href="#" class="return-btn">＜</a>
-                <h2 class="h1">e-スポーツ大会</h2>
-                <div class="url-info">
-                    <p class="p">大会URL</p>
-                    <p class="p">https://xxxxxxxxxxxxxxxxxxxx</p>
+                <h2 class="h1">{{ tournament.name }} </h2>
+            </div>
+            <div class="url-info">    
+                <div class="su-section-label">一般URL</div>
+                <div class="su-info-box">
+                    <a target="_blank" rel="noopener noreferrer" href="{{ user_url }}" style="color:#fff;">{{ user_url }}</a>          
                 </div>
             </div>
 
             <h3 class="h2" style="margin-top: 20px;">競技一覧</h3>
             <div class="list_admin">
-                <div class="list_item">
-                    <div class="thumb-box"></div>
-                    <div class="item-name">あそび大全<br>(トイボクシング)</div>
+            {% for event in events %}
+                 <div class="list_item">
+                    <img src="{% if event.event_img %}{{ event.event_img.url }}{% else %}{% static 'img/icon/no-img.png' %}{% endif %}" class="thumb-box">
+                    <a style="text-decoration: none;" href="{% url 'event_detail_admin' tournament_pk=event.tournament.pk pk=event.id %}" class="item-name">{{ event.name }}</a>
                     <div class="item-actions">
-                        <button class="btn gazou">編集</button>
+                        <a href="{% url 'event_edit' tournament_pk=event.tournament.pk pk=event.id %}" style="text-align: center;" class="btn gazou">編集</a>
                     </div>
                 </div>
-                <div class="list_item">
-                    <div class="thumb-box"></div>
-                    <div class="item-name">あそび大全<br>(トイボクシング)</div>
-                    <div class="item-actions">
-                        <button class="btn gazou">編集</button>
-                    </div>
-                </div>
-                <div class="list_item">
-                    <div class="thumb-box"></div>
-                    <div class="item-name">あそび大全<br>(トイボクシング)</div>
-                    <div class="item-actions">
-                        <button class="btn gazou">編集</button>
-                    </div>
-                </div>
+            {% endfor %}
             </div>
 
             <h3 class="h2" style="margin-top: 30px;">総合順位</h3>
             <div class="ranking_user ranking_others">
+            {% for rank  in rankings %}
+            
                 <div class="ranking_item_row">
-                    <span class="rank-badge">1位</span>
-                    <span class="team-name">チーム名</span>
-                    <span class="points">00pt</span>
+                    <span class="rank-badge">{{rank.rank}}位</span>
+                    <span class="team-name">{{rank.name}}</span>
+                    <span class="points">{{rank.total_point}}pt</span>
                 </div>
-                <div class="ranking_item_row">
-                    <span class="rank-badge">2位</span>
-                    <span class="team-name">チーム名</span>
-                    <span class="points">00pt</span>
-                </div>
-                <div class="ranking_item_row">
-                    <span class="rank-badge">3位</span>
-                    <span class="team-name">チーム名</span>
-                    <span class="points">00pt</span>
-                </div>
-                <div class="ranking_item_row">
-                    <span class="rank-badge">4位</span>
-                    <span class="team-name">チーム名</span>
-                    <span class="points">00pt</span>
-                </div>
-                <div class="ranking_item_row">
-                    <span class="rank-badge">5位</span>
-                    <span class="team-name">チーム名</span>
-                    <span class="points">00pt</span>
-                </div>
+            {% endfor %}
+              
             </div>
         </div>
     </div>
