@@ -14,6 +14,7 @@ from django.http import JsonResponse
 from django.views import View
 import json
 
+
 # 競技の新規作成処理
 class EventCreateView(CreateView):
     model = Event
@@ -85,13 +86,10 @@ class EventAdminDetailView(DetailView):
         context['event_results'] = event_results
 
         schedules = event.schedules.all().order_by('order')
-
-
-        context['next_schedules'] = schedules.filter(status=0)
-        context['now_schedules'] = schedules.filter(status=1)
+        context['now_schedules'] = schedules.filter(status=0)
+        context['next_schedules'] = schedules.filter(status=1)
         context['previous_schedules'] = schedules.filter(status=2)
         context['tournament'] = event.tournament
-
 
         return context
 
@@ -112,12 +110,11 @@ class EventUserDetailView(DetailView):
         context['event_results'] = event_results
 
         # スケジュール
-        schedules = event.schedules.all()
-        context['next_schedules'] = schedules.filter(status=0)
-        context['now_schedules'] = schedules.filter(status=1)
+        schedules = event.schedules.all().order_by('order')
+        context['now_schedules'] = schedules.filter(status=0)
+        context['next_schedules'] = schedules.filter(status=1)
         context['previous_schedules'] = schedules.filter(status=2)
         context['tournament'] = event.tournament
-
 
         return context
 
@@ -188,6 +185,7 @@ class EventDeleteView(DeleteView):
             'tournament_detail_admin',
             kwargs={'pk': self.object.tournament.url_uuid}
         )
+
 
 # 競技結果表示
 class EventResultsAPIView(View):

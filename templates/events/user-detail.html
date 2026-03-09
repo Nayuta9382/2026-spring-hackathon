@@ -6,111 +6,135 @@
 <div>
     <h1>競技詳細(user)</h1>
 
-<section>
-    <h2>競技基本情報</h2>
-    <table border="1" cellpadding="5" cellspacing="0">
-        <tr>
-            <th>競技名</th>
-            <td>{{ event.name }}</td>
-        </tr>
-        <tr>
-            <th>競技区分</th>
-            <td>
-                {% if event.category == 1 %}
-                    クラス対抗
-                {% else %}
-                    一般
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <th>登録日時</th>
-            <td>{{ event.created_at|date:"Y/m/d H:i" }}</td>
-        </tr>
-    </table>
-</section>
+    <section>
+        <h2>競技基本情報</h2>
+        <table border="1" cellpadding="5" cellspacing="0">
+            <tr>
+                <th>競技名</th>
+                <td>{{ event.name }}</td>
+            </tr>
+            <tr>
+                <th>競技区分</th>
+                <td>
+                    {% if event.category == 1 %}
+                        クラス対抗
+                    {% else %}
+                        一般
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>登録日時</th>
+                <td>{{ event.created_at|date:"Y/m/d H:i" }}</td>
+            </tr>
+        </table>
+    </section>
 
-<br>
+    <br>
 
-<section>
-    <h2>競技詳細説明</h2>
-    <div style="border: 1px solid #ccc; padding: 10px;">
-        {{ event.detail|linebreaks|default:"(説明文なし)" }}
-    </div>
-</section>
+    <section>
+        <h2>競技詳細説明</h2>
+        <div style="border: 1px solid #ccc; padding: 10px;">
+            {{ event.detail|linebreaks|default:"(説明文なし)" }}
+        </div>
+    </section>
 
-<br>
+    <br>
 
-<section>
-    <h2>画像資料</h2>
+    <section>
+        <h2>画像資料</h2>
+        <div>
+            <h3>競技イメージ画像</h3>
+            {% if event.event_img %}
+                <img src="{{ event.event_img.url }}" alt="競技画像" width="400">
+            {% else %}
+                <p>画像はありません</p>
+            {% endif %}
+        </div>
+
+        <div>
+            <h3>トーナメント表画像</h3>
+            {% if event.tournament_img %}
+                <img src="{{ event.tournament_img.url }}" alt="トーナメント画像" width="400">
+            {% else %}
+                <p>画像はありません</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <hr>
+
+    <section>
+        <h2>順位</h2>
+        <ul id="ranking-list">
+            <li>読み込み中...</li>
+        </ul>
+    </section>
+
+    <hr>
+
     <div>
-        <h3>競技イメージ画像</h3>
-        {% if event.event_img %}
-            <img src="{{ event.event_img.url }}" alt="競技画像" width="400">
-        {% else %}
-            <p>画像はありません</p>
-        {% endif %}
-    </div>
+        <h1>スケジュール</h1>
+        <p>{{ event.name }}</p>
 
-    <div>
-        <h3>トーナメント表画像</h3>
-        {% if event.tournament_img %}
-            <img src="{{ event.tournament_img.url }}" alt="トーナメント画像" width="400">
-        {% else %}
-            <p>画像はありません</p>
-        {% endif %}
-    </div>
-</section>
-
-<hr>
-
-
-<section>
-    <h2>順位</h2>
-    {% if tournament.status == 0 %}
-    開催前です
-    {% else %}
-    <ul>
-        {% for event_result in event_results %}
-            <li>{{ event_result.team.name }}:{{ event_result.rank }}位:{{ event_result.point }}</li>
+        <h2>now</h2>
+        {% for schedule in now_schedules %}
+            <p>{{ schedule.detail }}</p>
+            {% if schedule.result %}
+                <p>{{ schedule.result }}</p>
+            {% endif %}
         {% empty %}
-            <li>順位が登録されていません。</li>
+            <p>なし</p>
         {% endfor %}
-    </ul>
-    {% endif %}
-    
-</section>
 
-<hr>
+        <h2>next</h2>
+        {% for schedule in next_schedules %}
+            <p>{{ schedule.detail }}</p>
+            {% if schedule.result %}
+                <p>{{ schedule.result }}</p>
+            {% endif %}
+        {% empty %}
+            <p>なし</p>
+        {% endfor %}
 
-<div>
-    <h1>スケジュール</h1>
-    <p>{{ event.name }}</p>
-
-    <h2>next</h2>
-    {% for schedule in next_schedules %}
-        <p>{{ schedule.detail }}</p>
-    {% empty %}
-        <p>なし</p>
-    {% endfor %}
-
-    <h2>now</h2>
-    {% for schedule in now_schedules %}
-        <p>{{ schedule.detail }}</p>
-    {% empty %}
-        <p>なし</p>
-    {% endfor %}
-
-    <h2>previous</h2>
-    {% for schedule in previous_schedules %}
-        <p>{{ schedule.detail }}</p>
-        {% if schedule.result %}
-            <p>{{ schedule.result }}</p>
-        {% endif %}
-    {% empty %}
-        <p>なし</p>
-    {% endfor %}
-
+        <h2>previous</h2>
+        {% for schedule in previous_schedules %}
+            <p>{{ schedule.detail }}</p>
+            {% if schedule.result %}
+                <p>{{ schedule.result }}</p>
+            {% endif %}
+        {% empty %}
+            <p>なし</p>
+        {% endfor %}
+    </div>
 </div>
-{% endblock content %}
 
+<script>
+const apiUrl = "/tournaments/{{ event.tournament.url_uuid }}/events/{{ event.pk }}/api/results";
+
+function fetchRanking() {
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const list = document.getElementById('ranking-list');
+            list.innerHTML = '';
+            if (data.results.length === 0) {
+                list.innerHTML = '<li>順位が登録されていません。</li>';
+                return;
+            }
+            data.results.forEach(r => {
+                const li = document.createElement('li');
+                li.textContent = `${r.team}: ${r.rank}位: ${r.point}`;
+                list.appendChild(li);
+            });
+        })
+        .catch(() => {
+            document.getElementById('ranking-list').innerHTML = '<li>取得に失敗しました。</li>';
+        });
+}
+
+fetchRanking();
+setInterval(fetchRanking, 1000);
+</script>
+
+{% endblock content %}
