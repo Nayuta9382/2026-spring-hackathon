@@ -1,14 +1,17 @@
 {% extends 'layouts/user-layout.html' %}
 
 {% block title %}index{% endblock title %}
-
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/tournament_detail_user.css' %}">
+{% endblock extra_css %}
 {% block content %}
 <div>
     <h1>User大会詳細</h1>
     <div>
         <section>
             <h2>大会基本情報</h2>
-            
+
             <div>
                 <p>大会画像:</p>
                 {% if tournament.img_path %}
@@ -41,7 +44,7 @@
                 {% for event in events %}
                     <li>
                         <a href="{% url 'event_detail_user' tournament_pk=tournament.pk pk=event.pk %}">
-                            {{ event.name }} 
+                            {{ event.name }}
                             {% if event.category == 1 %}(クラス対抗){% else %}(一般){% endif %}
                         </a>
                     </li>
@@ -49,21 +52,125 @@
                     <li>登録されている競技はありません。</li>
                 {% endfor %}
             </ul>
-          
         </section>
 
         <hr>
 
         <section>
             <h2>総合ランキング</h2>
+            {% if tournament.status == 0 %}
+            開催前です
+            {% else %}
             <ol>
                 {% for team in rankings %}
-                    <li>{{ team.rank }}位: {{ team.name }}（{{ team.total_point|default:0 }} pt）</li>
+                <li>{{ team.rank }}位: {{ team.name }}（{{ team.total_point|default:0 }} pt）</li>
                 {% empty %}
-                    <li>現在、集計データはありません。</li>
+                <li>現在、集計データはありません。</li>
                 {% endfor %}
             </ol>
+            {% endif %}
         </section>
     </div>
 </div>
+
+
+<div class="container">
+    <div class="dummy">
+        <h2 class="h1" style="text-align: center;">Result</h2>
+
+        {# 1位 #}
+        <div class="ranking_user" id="ranking-top3">
+            <div class="ranking_one" id="rank-1">
+                <div class="crown"><img src="{% static 'img/crown/mark_oukan_crown1.png' %}" alt=""></div>
+                <p class="winner_font quantico-regular">WINNER!!</p>
+                <h1 id="rank1-name">-</h1>
+                <h2 id="rank1-point">-</h2>
+            </div>
+            <div class="ranking_two" id="rank-2">
+                <div class="crown"><img src="{% static 'img/crown/mark_oukan_crown2.png' %}" alt=""></div>
+                <h2 id="rank2-name">-</h2>
+                <h3 id="rank2-point">-</h3>
+            </div>
+            <div class="ranking_three" id="rank-3">
+                <div class="crown"><img src="{% static 'img/crown/mark_oukan_crown3.png' %}" alt=""></div>
+                <h3 id="rank3-name">-</h3>
+                <h4 id="rank3-point">-</h4>
+            </div>
+        </div>
+
+        {# 4位以下 #}
+        <div class="ranking_user ranking_others" id="ranking-others">
+        </div>
+
+        <h2 class="h1" style="margin-top: 20px;">Competitions</h2>
+
+        <div class="list_admin">
+            <div class="list_item">
+                <div class="thumb-box" style="background-color: #fff;"></div>
+                <div class="item-name">あそび大全（トイボクシング）</div>
+                <div class="item-actions">
+                    <button class="btn gazou">編集</button>
+                    <button class="btn delete">削除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const apiUrl = "/tournaments/{{ tournament.url_uuid }}/api/tournament-rank";
+
+// APIレスポンスをrank順に整形する
+function parseRankings(data) {
+    const result = [];
+    const ranks = Object.keys(data).map(Number).sort((a, b) => a - b);
+    for (const rank of ranks) {
+        const teams = data[rank];
+        const names = teams.map(t => t.name).join("／");
+        const point = teams[0].total_point;
+        result.push({ rank, names, point });
+    }
+    return result;
+}
+
+function renderRankings(rankings) {
+    // 1〜3位を描画
+    for (let i = 1; i <= 3; i++) {
+        const entry = rankings.find(r => r.rank === i);
+        const nameEl = document.getElementById(`rank${i}-name`);
+        const pointEl = document.getElementById(`rank${i}-point`);
+        if (nameEl) nameEl.textContent = entry ? entry.names : "-";
+        if (pointEl) pointEl.textContent = entry ? `${entry.point}pt` : "-";
+    }
+
+    // 4位以下を描画
+    const othersEl = document.getElementById('ranking-others');
+    othersEl.innerHTML = '';
+    const others = rankings.filter(r => r.rank >= 4);
+    for (const entry of others) {
+        const div = document.createElement('div');
+        div.className = 'ranking_item';
+        div.innerHTML = `
+            <p>${entry.rank}位: ${entry.names}</p>
+            <p>${entry.point}pt</p>
+        `;
+        othersEl.appendChild(div);
+    }
+}
+
+function fetchRankings() {
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const rankings = parseRankings(data);
+            renderRankings(rankings);
+        })
+        .catch(err => {
+            console.error('ランキング取得失敗:', err);
+        });
+}
+fetchRankings();
+setInterval(fetchRankings, 1000);
+</script>
+
 {% endblock %}

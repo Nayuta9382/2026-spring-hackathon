@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
     <!-- 自作css -->
     <link rel="stylesheet" href="{% static 'css/all_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
     <!-- googleFont -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,14 +35,14 @@
 
     <footer class="menu">
         <!-- home -->
-        <a href="#" class="menu item item_user">
+        <a  href="{% if tournament %}{% url 'tournament_detail_user' pk=tournament.id %}{% else %}#{% endif %}" class="menu item item_user">
             <span class="menu_link">
                 <img src="{% static 'img/icon/Home.webp' %}" alt="home" class="frame">
                 home
             </span>
         </a>
         <!-- schedule -->
-        <a href="#" class="menu item item_user">
+        <a href="{% if tournament.pdf_img_path %}{{ tournament.pdf_img_path.url }}{% else %}#{% endif %}" class="menu item item_user">
             <span class="menu_link">
                 <img src="{% static 'img/icon/Calendar.webp' %}" alt="home" class="frame">
                 schedule

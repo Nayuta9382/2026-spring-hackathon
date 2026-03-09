@@ -207,12 +207,24 @@ article+article {
 
 /* 戻るボタン */
 .sub_return_bg {
+
+    display: flex;
+    /* サイズ設定: remを使用してルート基準にする */
+    width: 3rem;
+    /* 強制的に正方形を維持 */
+    aspect-ratio: 1 / 1;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 2px;
 }
 
 .sub_return {
+
     display: inline-block;
+    /* 親要素（正方形）に対しての相対サイズ */
+    width: 100%;
+    height: auto;
+    display: block;
+
 }
 
 /* メニュー */
@@ -329,6 +341,15 @@ body {
     box-shadow: 0px 0px 3px 3px rgba(255, 255, 255, 0.3);
 }
 
+
+/* ボタンの余白 */
+.btn_margin {
+  padding-left: 3rem;
+  padding-right: 3rem;
+  text-align: right;
+}
+
+
 .gazou {
     border: 3px solid #77FF00;
     background: #52BC77;
@@ -349,12 +370,14 @@ body {
     background: #fff;
 }
 
+
 .delete_size {
     /* height: 21.33px; */
     border-radius: 7px;
     display: flex;
     align-self: center;
 }
+
 
 .update {
     width: 100%;
@@ -370,6 +393,27 @@ body {
     color: #B53DAD;
     background: #fff;
 }
+
+
+.side_by_side {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 1rem;
+  width: 100%;
+  /* 親コンテナ自体も横いっぱいに */
+}
+
+/* ボタンを包むdivを均等に（50%ずつ）広げる */
+.side_by_side>div {
+  flex: 1;
+}
+
+.block_btn {
+  width: 100%;
+  /* ボタンをブロック要素化して幅を有効にする */
+  display: block;
+}
+
 
 /* 画像UI */
 .image_center {
@@ -460,4 +504,28 @@ body {
 /*説明・詳細など */
 .p {
     font-size: 16px;
+}
+
+/* 中央揃え */
+.text_center {
+    text-align: center;
+}
+
+/* 不透明度20%の背景 */
+.block_bg {
+    display: block;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* 最小スペース */
+/* コンテンツの余白 */
+.space {
+    display: grid;
+    row-gap: 2rem;
+}
+
+.min_space {
+  margin-bottom: 1rem;
 }

@@ -1,9 +1,13 @@
 from django.contrib.auth import login, authenticate
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, FormView
 from django.contrib.auth.views import LoginView as BaseLoginView
 from django.urls import reverse_lazy
-from .forms import LoginFrom # ログインフォームをimport
-
+from .forms import LoginFrom ,OperatorLoginForm
+from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
+from .services import create_jwt_and_set_cookie
+from tournaments.services import get_tournament_by_uuid
+import re
 
 class IndexView(TemplateView):
     template_name = "index.html"
@@ -14,4 +18,65 @@ class IndexView(TemplateView):
 class LoginView(BaseLoginView):
     form_class = LoginFrom
     template_name = "accounts/login.html"
+    def get_success_url(self):
+        # 名前空間を使わず、URLを直接文字列で返す
+        return "/tournaments/"
 
+# 運営者ログイン処理
+class OperatorLoginView(FormView):
+    template_name = 'accounts/operator-login.html'
+    form_class = OperatorLoginForm
+
+
+    # 最初にログインしようとしていたページへリダイレクト
+    def get_success_url(self):
+        next_url = self.request.GET.get('next')
+        print(next_url)
+        
+        # nextが存在し、かつ空文字でない場合はそのURLへ
+        if next_url:
+            return next_url
+            
+        # なければデフォルトURLへリダイレクト
+        return ('/')
+
+    def form_valid(self, form):
+        password = form.cleaned_data['password']
+        
+
+        is_valid = False
+        # 大会パスワードと一致しているか検証
+        # uuidを取得
+        redirect_to = self.request.POST.get('next') or self.request.GET.get('next')
+        uuid = None
+        match = re.search(r'/tournaments/([0-9a-f-]+)', redirect_to)
+        if match:
+            uuid = match.group(1)
+        else:
+            form.add_error('url', 'urlが違います')
+            return self.form_invalid(form)
+
+        # 大会を取得
+        tournament = get_tournament_by_uuid(uuid)
+        if not tournament:
+            form.add_error('tournament', '存在しない大会です')
+            return self.form_invalid(form)
+
+        if tournament.password == password:
+            is_valid = True
+
+        # 認証が成功したら
+        if is_valid:
+
+            target_url = self.get_success_url()
+            
+            # 2. ここで初めて Redirect オブジェクトを作る
+            response = HttpResponseRedirect(target_url)
+            
+            # JWTを作成してCookieに保存
+            create_jwt_and_set_cookie(response)
+            
+            return response
+        else:
+            form.add_error('password', 'パスワードが違います。')
+            return self.form_invalid(form)

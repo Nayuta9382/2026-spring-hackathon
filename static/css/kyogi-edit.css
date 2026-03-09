@@ -1,9 +1,5 @@
 @charset "utf-8";
 
-.text_center {
-  text-align: center;
-}
-
 .pos_right {
   text-align: right;
 }
@@ -25,6 +21,7 @@
   border: 1px solid #ccc;
 }
 
+
 .btn_margin {
   padding-left: 3rem;
   padding-right: 3rem;
@@ -34,10 +31,6 @@
 .space {
   display: grid;
   row-gap: 2rem;
-}
-
-.min_space {
-  margin-bottom: 1rem;
 }
 
 .block_btn {

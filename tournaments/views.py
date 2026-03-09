@@ -13,7 +13,10 @@ from django.views.generic import DeleteView
 from django.urls import reverse_lazy
 from .forms import UpdateStatusForm
 from django.conf import settings
-
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from collections import defaultdict
+from rest_framework import status
 
 
 
@@ -37,7 +40,7 @@ class TournamentCreateView(CreateView):
 
     # 大会詳細にリダイレクト
     def get_success_url(self):
-        return reverse('tournament_detail_admin', kwargs={'pk': self.object.pk})
+        return reverse('tournament_detail_superuser', kwargs={'pk': self.object.pk})
 
 # スーパユーザの大会詳細情報を取得する
 class TournamentDetailSuperuserView(DetailView):
@@ -191,7 +194,7 @@ class TournamentUpdateView(UpdateView):
 
     def get_success_url(self):
         # 編集が終わったら、また詳細画面に戻る
-        return reverse('tournament_detail_admin', kwargs={'pk': self.object.pk})
+        return reverse('tournament_detail_superuser', kwargs={'pk': self.object.pk})
 
     # 大会ステータスのpulldown
 class UpdateStatusView(View):
@@ -207,10 +210,10 @@ class UpdateStatusView(View):
                 tournament.status = int(new_status)
                 tournament.save()
 
-            return redirect('tournament_detail_admin', pk=pk)
+            return redirect('tournament_detail_superuser', pk=pk)
 
         except Exception as e:
-            return redirect('tournament_detail_admin', pk=pk)
+            return redirect('tournament_detail_superuser', pk=pk)
 
      # 大会を削除する
 class TournamentDeleteView(DeleteView):
@@ -219,3 +222,23 @@ class TournamentDeleteView(DeleteView):
     #削除後は大会一覧へリダイレクト
     success_url = reverse_lazy('tournament_list')
 
+
+# 大会の総合順位を返すapi
+class GetTournamentRankAPIView(APIView):
+    # GETリクエストの処理
+    def get(self, request,pk, format=None):
+        pk = self.kwargs.get('pk')
+
+        # ランキングを取得
+        data = get_tournament_rannkings(pk)
+
+        # ランキングをjsonに変換
+        rankings = defaultdict(list)
+
+        for item in data:
+            rank = item['rank']
+            rankings[rank].append({
+                "name": item['name'],
+                "total_point": item['total_point']
+            })
+        return Response(rankings, status=status.HTTP_200_OK)

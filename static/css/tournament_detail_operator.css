@@ -1,0 +1,120 @@
+/* 運営者大会トップ */
+/* 大会ヘッダー部分（戻るボタンとタイトル） */
+.tournament-header {
+    position: relative;
+    padding-left: 50px;
+}
+
+.return-btn {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* 競技一覧のテキスト改行対応 */
+.item-name {
+    line-height: 1.2 ;
+    font-size: 14px ;
+}
+
+/* 総合順位の横並びデザイン */
+.ranking_item_row {
+    display: flex;
+    align-items: center ;
+    background: rgba(255, 255, 255, 0.2) ;
+    padding: 10px 15px ;
+    margin-bottom: 8px ;
+    border-radius: 4px ;
+    color: white ;
+    flex-shrink: 0 ;
+}
+
+.rank-badge {
+    width: 50px ;
+    font-weight: bold ;
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.team-name {
+    flex-grow: 1 ;
+    text-align: center;
+    font-weight: bold;
+}
+
+.points {
+    width: 60px;
+    text-align: right;
+    font-style: italic;
+}
+
+/* スクロールバーの調整 */
+.ranking_others {
+    max-height: 250px;
+    /* 順位表が見える高さに広げました */
+}
+
+.list_item {
+    display: flex ;
+    flex-direction: row ;
+    align-items: center ;
+    /* 上下中央に揃える */
+    padding: 10px 15px ;
+    background-color: rgba(255, 255, 255, 0.2) ;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    height: 70px ;
+    /* 高さを揃える */
+}
+
+/* 競技名：ここを flex-grow で広げることで、ボタンを右端へ飛ばす */
+.item-name {
+    flex-grow: 1 ;
+    margin-left: 15px;
+    color: #fff ;
+    font-weight: bold;
+    line-height: 1.2 ;
+}
+
+/* --- ボタンを横に並べるための設定（最重要） --- */
+.item-actions {
+    display: flex;
+    flex-direction: row;
+    /* ボタン同士を横に並べる */
+    gap: 8px;
+    /* ボタン間の隙間 */
+    margin-left: auto;
+    /* 確実に右側に配置 */
+    flex-shrink: 0;
+    /* ボタンエリアが潰れないように固定 */
+}
+
+/* .btn 自体が「幅いっぱい」になろうとするのを阻止する */
+.item-actions .btn {
+    display: inline-block;
+    width: auto ;
+    /* 100%を解除 */
+    min-width: 70px;
+    /* 最低限の横幅 */
+    margin: 0;
+    /* margin: auto を解除 */
+    padding: 6px 12px ;
+    white-space: nowrap;
+    /* 文字がはみ出ても改行しない */
+}
+
+/* サムネイルの固定 */
+.thumb-box {
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+}

@@ -18,12 +18,14 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = environ.Env(DEBUG=(bool, False),APP_HOST=(str, '127.0.0.1'), APP_PORT=(int, 8000),APP_PROTOCOL=(str, 'http'))
+env = environ.Env(DEBUG=(bool, False),APP_HOST=(str, '127.0.0.1'), APP_PORT=(int, 8000),APP_PROTOCOL=(str, 'http'),SECRET_KEY=(str, 'your_SECRET_KEY'),JWT_EXPIRY_HOURS=(str, 3))
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 APP_HOST = env('APP_HOST')
 APP_PORT = env('APP_PORT')
 APP_PROTOCOL = env('APP_PROTOCOL')
+SECRET_KEY = env('SECRET_KEY')
+JWT_EXPIRY_HOURS = env('JWT_EXPIRY_HOURS')
 
 
 # Quick-start development settings - unsuitable for production
@@ -48,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_bootstrap5',
+    'rest_framework',
     'accounts',
     'tournaments',
     'events',
@@ -57,6 +60,7 @@ INSTALLED_APPS = [
     'stats',
     'pages',
     'db_seeder',
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +71,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'core.middleware.TournamentDiscoveryMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -81,6 +86,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_processors.tournament_context',
             ],
         },
     },
@@ -145,7 +151,7 @@ STATICFILES_DIRS = [BASE_DIR / 'static']    # 静的ファイルのディレク�
 AUTH_USER_MODEL =  "accounts.User" 
 
 # ログイン後のリダイレクト先
-LOGIN_REDIRECT_URL = 'accounts:index'
+LOGIN_REDIRECT_URL = 'tournaments:tournament_list'
 
 
 # 実際にファイルが保存されるサーバー上の絶対パス
@@ -153,3 +159,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # ブラウザからアクセスする際のURLの入り口
 MEDIA_URL = '/media/'
+
+
+REST_FRAMEWORK = {
+    # 誰でも閲覧できる設定（とりあえず試す用）
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+}

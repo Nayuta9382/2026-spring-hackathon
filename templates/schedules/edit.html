@@ -1,15 +1,25 @@
 {% extends 'layouts/admin-layout.html' %}
 {% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/schedules_edit.css' %}">
+{% endblock extra_css %}
 
 {% block content %}
-<h1>スケジュール編集</h1>
+<div style="margin-top: 1rem; position: fixed;">
+    <!-- 戻る -->
+    <a href="#" class="sub_return_bg">
+        <img class="sub_return" src="{% static 'img/icon/return.png' %}" alt="戻る">
+    </a>
+</div>
+<h1 style="text-align: center; font-size: 2.5rem; padding-top: 5rem;">スケジュール編集</h1>
 <p>{{ event.name }}</p>
 
 {% if error %}
-    <p style="color:red;">{{ error }}</p>
+<p style="color:red;">{{ error }}</p>
 {% endif %}
 
-<form method="POST" action="{% if event.pk %}{% url 'schedule_edit' event.pk %}{% endif %}" onsubmit="return validateNowCount()">
+<form method="POST" action="{% if event.pk %}{% url 'schedule_edit' tournament_pk=event.tournament.pk pk=event.pk %}{% endif %}"
+    onsubmit="return validateNowCount()" class="form space">
     {% csrf_token %}
 
     <div id="deleted-ids-container"></div>
@@ -18,119 +28,143 @@
 
     <div>
         <h3>now</h3>
-        <div id="container-0">
+        <div id="container-0" class="scrollbar_others">
             {% for item in now_schedules %}
-            <div class="schedule-item" data-pk="{{ item.pk }}">
-                <div>
-                    <label>コメント1</label>
-                    <input type="text" name="detail_{{ item.pk }}" value="{{ item.detail }}">
+            <div class="schedule-item block_bg" data-pk="{{ item.pk }}">
+                <div class="min_space">
+                    <label class="form_label">コメント1</label>
+                    <input class="text_input" type="text" name="detail_{{ item.pk }}" value="{{ item.detail }}">
                 </div>
-                <div>
-                    <label>コメント2</label>
-                    <input type="text" name="result_{{ item.pk }}" value="{{ item.result }}">
+                <div class="min_space">
+                    <label class="form_label">コメント2</label>
+                    <input class="text_input" type="text" name="result_{{ item.pk }}" value="{{ item.result }}">
                 </div>
-                <div>
-                    <label>順序</label>
-                    <select name="order_{{ item.pk }}" class="order-select" onchange="onOrderChange(this)"></select>
-                    <label>進捗</label>
-                    <select name="status_{{ item.pk }}" onchange="onStatusChange(this)">
-                        <option value="0" selected>now</option>
-                        <option value="1">next</option>
-                        <option value="2">previous</option>
-                    </select>
-                    <input type="button" value="削除" onclick="deleteItem(this, '{{ item.pk }}')">
+                <div class="min_space flex_container">
+                    <div>
+                        <label class="form_label">順序</label>
+                        <select name="order_{{ item.pk }}" class="order-select check_pulldown" style="font-weight: bold;" onchange="onOrderChange(this)"></select>
+                    </div>
+                    <div>
+                        <label class="form_label">進捗</label>
+                        <select name="status_{{ item.pk }}" class="check_pulldown" style="font-weight: bold;" onchange="onStatusChange(this)">
+                            <option value="0" selected>now</option>
+                            <option value="1">next</option>
+                            <option value="2">previous</option>
+                        </select>
+                    </div>
+                    <div class="delete_wrapper">
+                        <button type="button" class="delete btn align-right" onclick="deleteItem(this, '{{ item.pk }}')">削除</button>
+                    </div>
                 </div>
-                <hr>
             </div>
             {% endfor %}
         </div>
-        <button type="button" onclick="addSchedule(0)">nowにスケジュールを追加</button>
+        <div class="pos_right">
+            <button type="button" class="gazou btn btn_margin" onclick="addSchedule(0)">nowにスケジュールを追加</button>
+        </div>
     </div>
 
     <hr>
 
     <div>
         <h3>next</h3>
-        <div id="container-1">
+        <div id="container-1" class="scrollbar_others">
             {% for item in next_schedules %}
-            <div class="schedule-item" data-pk="{{ item.pk }}">
-                <div>
-                    <label>コメント1</label>
-                    <input type="text" name="detail_{{ item.pk }}" value="{{ item.detail }}">
+            <div class="schedule-item block_bg" data-pk="{{ item.pk }}">
+                <div class="min_space">
+                    <label class="form_label">コメント1</label>
+                    <input class="text_input" type="text" name="detail_{{ item.pk }}" value="{{ item.detail }}">
                 </div>
-                <div>
-                    <label>コメント2</label>
-                    <input type="text" name="result_{{ item.pk }}" value="{{ item.result }}">
+                <div class="min_space">
+                    <label class="form_label">コメント2</label>
+                    <input class="text_input" type="text" name="result_{{ item.pk }}" value="{{ item.result }}">
                 </div>
-                <div>
-                    <label>順序</label>
-                    <select name="order_{{ item.pk }}" class="order-select" onchange="onOrderChange(this)"></select>
-                    <label>進捗</label>
-                    <select name="status_{{ item.pk }}" onchange="onStatusChange(this)">
-                        <option value="0">now</option>
-                        <option value="1" selected>next</option>
-                        <option value="2">previous</option>
-                    </select>
-                    <input type="button" value="削除" onclick="deleteItem(this, '{{ item.pk }}')">
+                <div class="min_space flex_container">
+                    <div>
+                        <label class="form_label">順序</label>
+                        <select name="order_{{ item.pk }}" class="order-select check_pulldown" style="font-weight: bold;" onchange="onOrderChange(this)"></select>
+                    </div>
+                    <div>
+                        <label class="form_label">進捗</label>
+                        <select name="status_{{ item.pk }}" class="check_pulldown" style="font-weight: bold;" onchange="onStatusChange(this)">
+                            <option value="0">now</option>
+                            <option value="1" selected>next</option>
+                            <option value="2">previous</option>
+                        </select>
+                    </div>
+                    <div class="delete_wrapper">
+                        <button type="button" class="delete btn align-right" onclick="deleteItem(this, '{{ item.pk }}')">削除</button>
+                    </div>
                 </div>
-                <hr>
             </div>
             {% endfor %}
         </div>
-        <button type="button" onclick="addSchedule(1)">nextにスケジュールを追加</button>
+        <div class="pos_right">
+            <button type="button" class="gazou btn btn_margin" onclick="addSchedule(1)">nextにスケジュールを追加</button>
+        </div>
     </div>
 
     <hr>
 
     <div>
         <h3>previous</h3>
-        <div id="container-2">
+        <div id="container-2" class="scrollbar_others">
             {% for item in previous_schedules %}
-            <div class="schedule-item" data-pk="{{ item.pk }}">
-                <div>
-                    <label>コメント1</label>
-                    <input type="text" name="detail_{{ item.pk }}" value="{{ item.detail }}">
+            <div class="schedule-item block_bg" data-pk="{{ item.pk }}">
+                <div class="min_space">
+                    <label class="form_label">コメント1</label>
+                    <input class="text_input" type="text" name="detail_{{ item.pk }}" value="{{ item.detail }}">
                 </div>
-                <div>
-                    <label>コメント2</label>
-                    <input type="text" name="result_{{ item.pk }}" value="{{ item.result }}">
+                <div class="min_space">
+                    <label class="form_label">コメント2</label>
+                    <input class="text_input" type="text" name="result_{{ item.pk }}" value="{{ item.result }}">
                 </div>
-                <div>
-                    <label>順序</label>
-                    <select name="order_{{ item.pk }}" class="order-select" onchange="onOrderChange(this)"></select>
-                    <label>進捗</label>
-                    <select name="status_{{ item.pk }}" onchange="onStatusChange(this)">
-                        <option value="0">now</option>
-                        <option value="1">next</option>
-                        <option value="2" selected>previous</option>
-                    </select>
-                    <input type="button" value="削除" onclick="deleteItem(this, '{{ item.pk }}')">
+                <div class="min_space flex_container">
+                    <div>
+                        <label class="form_label">順序</label>
+                        <select name="order_{{ item.pk }}" class="order-select check_pulldown" style="font-weight: bold;" onchange="onOrderChange(this)"></select>
+                    </div>
+                    <div>
+                        <label class="form_label">進捗</label>
+                        <select name="status_{{ item.pk }}" class="check_pulldown" style="font-weight: bold;" onchange="onStatusChange(this)">
+                            <option value="0">now</option>
+                            <option value="1">next</option>
+                            <option value="2" selected>previous</option>
+                        </select>
+                    </div>
+                    <div class="delete_wrapper">
+                        <button type="button" class="delete btn align-right" onclick="deleteItem(this, '{{ item.pk }}')">削除</button>
+                    </div>
                 </div>
-                <hr>
             </div>
             {% endfor %}
         </div>
-        <button type="button" onclick="addSchedule(2)">previousにスケジュールを追加</button>
+        <div class="pos_right">
+            <button type="button" class="gazou btn btn_margin" onclick="addSchedule(2)">previousにスケジュールを追加</button>
+        </div>
     </div>
 
     <hr>
 
     <div>
-        <button type="submit">更新保存</button>
+        <button type="submit" class="update gazou btn">更新保存</button>
+    </div>
+    <div>
+        <button type="button" class="update return btn" onclick="history.back()">戻る</button>
     </div>
 </form>
 
 <script>
     function validateNowCount() {
-    const nowContainer = document.getElementById('container-0');
-    const nowItems = nowContainer.querySelectorAll('.schedule-item, .new-item');
+        const nowContainer = document.getElementById('container-0');
+        const nowItems = nowContainer.querySelectorAll('.schedule-item, .new-item');
 
-    if (nowItems.length >= 2) {
-        alert('nowが二つ以上あります');
-        return false;
+        if (nowItems.length >= 2) {
+            alert('nowが二つ以上あります');
+            return false;
+        }
+        return true;
     }
-    return true;
-}
 
     function refreshAll() {
         [0, 1, 2].forEach(status => {
@@ -191,36 +225,40 @@
     function addSchedule(status) {
         const container = document.getElementById(`container-${status}`);
         const div = document.createElement('div');
-        div.className = 'new-item';
+        div.className = 'new-item block_bg';
         div.innerHTML = `
-            <div>
-                <label>コメント1</label>
-                <input type="text" name="new_detail" required>
+            <div class="min_space">
+                <label class="form_label">コメント1</label>
+                <input class="text_input" type="text" name="new_detail" required>
             </div>
-            <div>
-                <label>コメント2</label>
-                <input type="text" name="new_result">
+            <div class="min_space">
+                <label class="form_label">コメント2</label>
+                <input class="text_input" type="text" name="new_result">
             </div>
-            <div>
-                <label>順序</label>
-                <select name="new_order" class="order-select" onchange="onOrderChange(this)"></select>
-                <label>進捗</label>
-                <select name="new_status" onchange="onStatusChange(this)">
-                    <option value="0" ${status === 0 ? 'selected' : ''}>now</option>
-                    <option value="1" ${status === 1 ? 'selected' : ''}>next</option>
-                    <option value="2" ${status === 2 ? 'selected' : ''}>previous</option>
-                </select>
-                <input type="button" value="取消" onclick="deleteItem(this)">
+            <div class="min_space flex_container">
+                <div>
+                    <label class="form_label">順序</label>
+                    <select name="new_order" class="order-select check_pulldown" style="font-weight: bold;" onchange="onOrderChange(this)"></select>
+                </div>
+                <div>
+                    <label class="form_label">進捗</label>
+                    <select name="new_status" class="check_pulldown" style="font-weight: bold;" onchange="onStatusChange(this)">
+                        <option value="0" ${status === 0 ? 'selected' : ''}>now</option>
+                        <option value="1" ${status === 1 ? 'selected' : ''}>next</option>
+                        <option value="2" ${status === 2 ? 'selected' : ''}>previous</option>
+                    </select>
+                </div>
+                <div class="delete_wrapper">
+                    <button type="button" class="delete btn align-right" onclick="deleteItem(this)">取消</button>
+                </div>
             </div>
-            <hr>
         `;
         container.appendChild(div);
         refreshAll();
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         refreshAll();
     });
 </script>
 {% endblock content %}
-

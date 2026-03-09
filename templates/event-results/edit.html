@@ -1,74 +1,105 @@
 {% extends 'layouts/admin-layout.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/result_edit.css' %}">
+{% endblock extra_css %}
 
-{% block title %}{% endblock title %}
+{% block title %}クラス順位編集{% endblock title %}
 
 {% block content %}
-<div>
-    <h2>じかいyes no のgetじの値とそれにともなう保存処理</h2>
-    <h1>競技結果編集</h1>
-   <form method="post">
-        {% csrf_token %}
-        {{ formset.management_form }}
-
-        {% if team_group.category == 1 %}
-        <div style="margin-bottom: 20px;">
-            <label>クラス順位ポイント使用の有無:</label>
-            <select name="class-team-flg">
-                <option {% if event.is_class_point == True %}selected{% endif %} value="1">Yes (有効)</option>
-                <option {% if event.is_class_point == False %}selected{% endif %} value="0">No (無効)</option>
-            </select>
-        </div>
-        {% endif %}
-
-        <ul>
-            {% for form in formset %}
-
-            <li>
-                <div>
-                    <strong>チーム: {{ form.instance.team.name }}</strong>
-                    
-                    {# 既存データ更新用のID (hidden) #}
-                    <input type="hidden" name="{{ form.prefix }}-id" value="{{ form.instance.id }}">
-                </div>
-
-                {# 順位入力 #}
-                <div>
-                    <label for="id_{{ form.prefix }}-rank">順 :</label>
-                    <input type="number" 
-                           name="{{ form.prefix }}-rank" 
-                           id="id_{{ form.prefix }}-rank" 
-                           value="{{ form.rank.value|default:'' }}">
-                </div>
-
-                {# スコア入力 #}
-                <div class="point-area">
-                    <label for="id_{{ form.prefix }}-point">点 :</label>
-                    <input type="number" 
-                           name="{{ form.prefix }}-point" 
-                           id="id_{{ form.prefix }}-point" 
-                           class="point-input"
-                           value="{{ form.point.value|default:'' }}">
-                    <span class="point-display">{{ form.point.value|default:'0' }}</span>
-
-                </div>
-
-                {# 詳細入力 #}
-                <div>
-                    <label for="id_{{ form.prefix }}-detail">詳細:</label>
-                    <input type="text" 
-                           name="{{ form.prefix }}-detail" 
-                           id="id_{{ form.prefix }}-detail" 
-                           value="{{ form.detail.value|default:'' }}">
-                </div>
-                <hr> 
-            </li>
-            {% endfor %}
-        </ul>
-
-        <div>
-            <button type="submit">保存</button>
-        </div>
-    </form>
+<div style="margin-top: 1rem; position: fixed;">
+    <a href="#" class="sub_return_bg">
+        <img class="sub_return" src="{% static 'img/icon/return.png' %}" alt="戻る">
+    </a>
 </div>
-<script src="/static/js/event-result/event-result.js"></script>
+
+<h1 class="text_center" style="padding: 3rem 0">クラス順位編集</h1>
+
+<form method="post" class="form space">
+    {% csrf_token %}
+    {{ formset.management_form }}
+
+    {# クラス順位ポイント使用の有無 #}
+    {% if team_group.category == 1 %}
+    <div class="side_by_side min_space">
+        <label for="class-team-flg" style="font-weight: bold; font-size: 1.5rem;" class="form_label">
+            クラス順位ポイント使用の有無：
+        </label>
+        <select id="class-team-flg" name="class-team-flg" style="font-weight: bold; font-size: 1.5rem;">
+            <option {% if event.is_class_point == True %}selected{% endif %} value="1">Yes (有効)</option>
+            <option {% if event.is_class_point == False %}selected{% endif %} value="0">No (無効)</option>
+        </select>
+    </div>
+    {% endif %}
+
+    {# フォームセット #}
+    <div class="scroll_others min_space">
+        {% for form in formset %}
+        <div class="block_bg">
+
+            {# チーム名 #}
+            <div class="min_space">
+                <label class="form_label">{{ form.instance.team.name }}</label>
+            </div>
+
+            {# 既存データ更新用のID #}
+            <input type="hidden" name="{{ form.prefix }}-id" value="{{ form.instance.id }}">
+
+            {# 順位入力 #}
+            <div class="min_space">
+                <label for="id_{{ form.prefix }}-rank" style="font-weight: bold;" class="form_label">順位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
+                <select name="{{ form.prefix }}-rank"
+                        id="id_{{ form.prefix }}-rank"
+                        class="rank-select"
+                        style="font-weight: bold;">
+                    <option value="">-- 選択 --</option>
+                    {% for tp in tournament_points %}
+                        <option value="{{ tp.rank }}" {% if form.rank.value|stringformat:"s" == tp.rank|stringformat:"s" %}selected{% endif %}>
+                            {{ tp.rank }}位
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            {# ポイント入力 #}
+            <div class="min_space point-area">
+                <label for="id_{{ form.prefix }}-point" class="form_label">ポイント：</label>
+                <input type="number"
+                       name="{{ form.prefix }}-point"
+                       id="id_{{ form.prefix }}-point"
+                       class="point-input"
+                       style="width: 3.5rem; font-weight: bold;"
+                       value="{{ form.point.value|default:'0' }}">
+                <span class="point-display">{{ form.point.value|default:'0' }}</span>
+            </div>
+
+            {# 詳細結果入力 #}
+            <div>
+                <label for="id_{{ form.prefix }}-detail" class="form_label">結果&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
+                <input type="text"
+                       name="{{ form.prefix }}-detail"
+                       id="id_{{ form.prefix }}-detail"
+                       style="width: 3.5rem; font-weight: bold;"
+                       value="{{ form.detail.value|default:'' }}">
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+
+    {# ボタン #}
+    <div>
+        <div class="min_space">
+            <button type="submit" class="gazou btn block_btn">更新</button>
+        </div>
+        <div class="min_space">
+            <button type="button" class="return btn block_btn" onclick="history.back()">戻る</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    const rankPoints = JSON.parse('{{ tournament_points_json|safe }}');
+</script>
+<script src="{% static 'js/event-result/event-result.js' %}"></script>
 {% endblock content %}

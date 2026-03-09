@@ -1,6 +1,9 @@
 {% extends 'layouts/admin-layout.html' %}
 {% load django_bootstrap5 %}
-
+{% load static %}
+{% block extra_css %} 
+<link rel="stylesheet" href="{% static 'css/tournament_detail_operator.css' %}">
+{% endblock extra_css %}
 {% block content %}
 <div>
     <h1>{{ tournament.name }} <small>(運営者)</small></h1>
@@ -54,11 +57,6 @@
             </ul>
           
         </section>
-
-        <section>
-            <a href="{% url 'tournament_update' tournament.id %}">編集する</a>
-        </section>
-
         <hr>
 
         <section>
@@ -94,28 +92,89 @@
     <hr>
 
     <section>
-        <h2>総合ランキング</h2>
+         <h2>総合ランキング</h2>
+        {% if tournament.status == 0 %}
+        開催前です
+        {% else %}
         <ol>
             {% for team in rankings %}
-                <li>{{ team.rank }}位: {{ team.name }}（{{ team.total_point|default:0 }} pt）</li>
+            <li>{{ team.rank }}位: {{ team.name }}（{{ team.total_point|default:0 }} pt）</li>
             {% empty %}
-                <li>現在、集計データはありません。</li>
+            <li>現在、集計データはありません。</li>
             {% endfor %}
         </ol>
+        {% endif %}
     </section>
 
     <hr>
 
-    <section>
-        <h2>大会の削除</h2>
-        <p>大会を削除すると、紐付いている全てのデータが消去されます。</p>
-        <form action="{% url 'tournament_delete' tournament.pk %}" method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="tournament_id" value="{{ tournament.pk }}">
-            <button type="submit" onclick="return confirm('本当にこの大会を削除しますか？');">
-                大会を削除する
-            </button>
-        </form>
-    </section>
+
+
+<div class="container">
+        <div class="dummy">
+            <div class="tournament-header">
+                <a href="#" class="return-btn">＜</a>
+                <h2 class="h1">e-スポーツ大会</h2>
+                <div class="url-info">
+                    <p class="p">大会URL</p>
+                    <p class="p">https://xxxxxxxxxxxxxxxxxxxx</p>
+                </div>
+            </div>
+
+            <h3 class="h2" style="margin-top: 20px;">競技一覧</h3>
+            <div class="list_admin">
+                <div class="list_item">
+                    <div class="thumb-box"></div>
+                    <div class="item-name">あそび大全<br>(トイボクシング)</div>
+                    <div class="item-actions">
+                        <button class="btn gazou">編集</button>
+                    </div>
+                </div>
+                <div class="list_item">
+                    <div class="thumb-box"></div>
+                    <div class="item-name">あそび大全<br>(トイボクシング)</div>
+                    <div class="item-actions">
+                        <button class="btn gazou">編集</button>
+                    </div>
+                </div>
+                <div class="list_item">
+                    <div class="thumb-box"></div>
+                    <div class="item-name">あそび大全<br>(トイボクシング)</div>
+                    <div class="item-actions">
+                        <button class="btn gazou">編集</button>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="h2" style="margin-top: 30px;">総合順位</h3>
+            <div class="ranking_user ranking_others">
+                <div class="ranking_item_row">
+                    <span class="rank-badge">1位</span>
+                    <span class="team-name">チーム名</span>
+                    <span class="points">00pt</span>
+                </div>
+                <div class="ranking_item_row">
+                    <span class="rank-badge">2位</span>
+                    <span class="team-name">チーム名</span>
+                    <span class="points">00pt</span>
+                </div>
+                <div class="ranking_item_row">
+                    <span class="rank-badge">3位</span>
+                    <span class="team-name">チーム名</span>
+                    <span class="points">00pt</span>
+                </div>
+                <div class="ranking_item_row">
+                    <span class="rank-badge">4位</span>
+                    <span class="team-name">チーム名</span>
+                    <span class="points">00pt</span>
+                </div>
+                <div class="ranking_item_row">
+                    <span class="rank-badge">5位</span>
+                    <span class="team-name">チーム名</span>
+                    <span class="points">00pt</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

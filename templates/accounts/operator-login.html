@@ -1,9 +1,29 @@
 {% extends 'layouts/admin-layout.html' %}
 
-{% block title %}index{% endblock title %}
+{% block title %}運営者ログイン{% endblock title %}
 
 {% block content %}
-    <div>
+    <div style="max-width: 400px; margin: 2rem auto;">
         <h2>運営者ログイン</h2>
+        
+        <form method="post" action="">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.GET.next }}">
+
+            <div style="margin-bottom: 1rem;">
+                <label for="id_password">パスワード</label><br>
+                
+                <input type="password" name="password" id="id_password" placeholder="パスワードを入力"style="width: 100%; padding: 8px; margin-top: 5px;"required>
+
+                {# エラー表示（Formクラス側で add_error された内容が出る） #}
+                {% if form.password.errors %}
+                    <div style="color: red; font-size: 0.8rem; margin-top: 5px;">
+                        {{ form.password.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <button type="submit">ログイン</button>
+        </form>
     </div>
 {% endblock content %}

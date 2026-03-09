@@ -20,10 +20,12 @@ from django.urls import path, include, register_converter
 from django.conf import settings
 from django.conf.urls.static import static
 
+from django.urls.converters import get_converters
 from .converters import TournamentURLConverter
 
 # コンバーターの登録
-register_converter(TournamentURLConverter, 't_url')
+if 't_url' not in get_converters():
+    register_converter(TournamentURLConverter, 't_url')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,7 +33,7 @@ urlpatterns = [
     path('tournaments/', include('tournaments.urls')),
     path('tournaments/<t_url:tournament_pk>/events/', include('events.urls')),
     path('tournaments/<t_url:tournament_pk>/events/<event_pk>/event_results/', include('event_results.urls')),
-    path('tournaments/schedules/', include('schedules.urls')),
+    path('tournaments/<t_url:tournament_pk>/schedules/', include('schedules.urls')),
     path('pages/', include('pages.urls')), # 開発中htmlを表示するようのアプリ
 ]
 

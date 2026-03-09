@@ -10,6 +10,20 @@
 
 <form action="" method="POST" enctype="multipart/form-data" class="form space">
     {% csrf_token %}
+    {# --- エラーメッセージ表示エリア --- #}
+    {% if form.errors %}
+    <div class="error-summary" style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 20px;">
+        <p><strong>入力内容にエラーがあります：</strong></p>
+        <ul>
+            {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                    <li>{{ field|capfirst }}: {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {# ------------------------------ #}
 
     {# 1. 競技名 #}
     <div>
@@ -18,25 +32,25 @@
     </div>
 
     {# 2. 競技説明 #}
-    <div>
+    <!-- <div>
         <label for="description" class="form_label">競技説明</label>
         <textarea class="text_input" name="description" id="detail" cols="150" rows="8">{{ event.detail }}</textarea>
-    </div>
+    </div> -->
 
-    <!-- {# 2. 競技区分 #}
+    {# 2. 競技区分 #}
     <div>
         <label class="form_label">競技カテゴリー</label>
         <select name="category" id="id_category" onchange="toggleTeamsDisplay()">
             <option value="0" {% if event.category == 0 %}selected{% endif %}>一般 (独自チーム)</option>
             <option value="1" {% if event.category == 1 %}selected{% endif %}>クラス対抗</option>
         </select>
-    </div> -->
+    </div>
 
-    <!-- {# 4. 競技詳細 #}
+    {# 4. 競技説明 #}
     <div>
-        <label class="form_label">競技詳細・ルール</label>
+        <label class="form_label">競技説明</label>
         <textarea name="detail" rows="5">{{ event.detail }}</textarea>
-    </div> -->
+    </div>
 
     {# 5. 画像類 #}
     <div>
@@ -57,11 +71,11 @@
                     <img src="{% static 'img/icon/イメージファイルアイコン.webp' %}" alt="イメージ">
                 </div>
             </div>
-            <form action="#">
+            <div>
                 <div class="pos_right">
                     <button type="submit" class="gazou btn">画像選択</button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -83,11 +97,13 @@
                     <img src="{% static 'img/icon/イメージファイルアイコン.webp' %}" alt="イメージ">
                 </div>
             </div>
-            <form action="#">
+            <div action="#">
                 <div class="pos_right">
                     <button type="submit" class="gazou btn">画像選択</button>
                 </div>
-            </form>
+        <button type="submit">更新保存</button>
+
+            </div>
         </div>
     </div>
 
@@ -132,9 +148,6 @@
     </div>
 
     {# 送信・戻る #}
-    <div>
-        <button type="submit">更新保存</button>
-    </div>
 
     <!-- 組み込み、お願いします4 -->
     <div class="side_by_side" style="">
