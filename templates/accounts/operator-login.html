@@ -11,48 +11,26 @@
 </style>
 {% endblock extra_css %}
 {% block content %}
-<div style="max-width: 400px; margin: 2rem auto;">
-    <h2>運営者ログイン</h2>
-
-    <form method="post" action="">
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ request.GET.next }}">
-
-        <div style="margin-bottom: 1rem;">
-            <label for="id_password">パスワード</label><br>
-
-            <input type="password" name="password" id="id_password" placeholder="パスワードを入力"
-                style="width: 100%; padding: 8px; margin-top: 5px;" required>
-
-            {# エラー表示（Formクラス側で add_error された内容が出る） #}
-            {% if form.password.errors %}
-            <div style="color: red; font-size: 0.8rem; margin-top: 5px;">
-                {{ form.password.errors.0 }}
-            </div>
-            {% endif %}
-        </div>
-
-        <button type="submit">ログイン</button>
-    </form>
-
-
-</div>
-
 <div class="login-container">
     <h2 class="login-title">ログイン<span style="font-size: 35px;">（運営）</span></h2>
 
     <div class="login-card">
-        <form action="/login" method="POST">
-            <h1 class="h2">
-                2025_morijyobi_e-sport
-            </h1>
-
+        <form method="POST" action="">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.GET.next }}">
+            
             <div class="form-group">
-                <label for="password">パスワード</label>
-                <input type="password" id="password" name="password" placeholder="パスワードを入力">
+                <label for="id_password">パスワード</label>
+                <input type="password" id="id_password" name="password" placeholder="パスワードを入力" required>
+                {# エラー表示（Formクラス側で add_error された内容が出る） #}
+                {% if form.password.errors %}
+                <div style="color: red; font-size: 0.8rem; margin-top: 5px;">
+                    {{ form.password.errors.0 }}
+                </div>
+                {% endif %}
             </div>
 
-             <button type="submit" class="update btn gazou">ログイン</button>
+            <button type="submit" class="update btn gazou">ログイン</button>
         </form>
     </div>
 </div>
