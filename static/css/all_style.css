@@ -370,6 +370,15 @@ body {
     background: #fff;
 }
 
+
+.delete_size {
+    /* height: 21.33px; */
+    border-radius: 7px;
+    display: flex;
+    align-self: center;
+}
+
+
 .update {
     width: 100%;
 
