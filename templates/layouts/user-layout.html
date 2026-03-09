@@ -33,29 +33,16 @@
         {% endblock content %}
     </main>
 
-    <section>
-    {% if tournament %}
-        <a href="{% url 'tournament_detail_user' pk=tournament.id %}">home</a>
-    {% else %}
-        homeなし
-    {% endif %}
-
-    {% if tournament.pdf_img_path %}
-        <p><a href="{{ tournament.pdf_img_path.url }}" target="_blank">現在の規約PDFを開く</a></p>
-    {% else %}
-        <p>規約PDFは登録されていません。</p>
-    {% endif %}
-    </section>
     <footer class="menu">
         <!-- home -->
-        <a href="#" class="menu item item_user">
+        <a  href="{% if tournament %}{% url 'tournament_detail_user' pk=tournament.id %}{% else %}#{% endif %}" class="menu item item_user">
             <span class="menu_link">
                 <img src="{% static 'img/icon/Home.webp' %}" alt="home" class="frame">
                 home
             </span>
         </a>
         <!-- schedule -->
-        <a href="#" class="menu item item_user">
+        <a href="{% if tournament.pdf_img_path %}{{ tournament.pdf_img_path.url }}{% else %}#{% endif %}" class="menu item item_user">
             <span class="menu_link">
                 <img src="{% static 'img/icon/Calendar.webp' %}" alt="home" class="frame">
                 schedule
