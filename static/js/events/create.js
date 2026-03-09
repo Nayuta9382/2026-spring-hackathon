@@ -66,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const fileInput = document.getElementById('tournament_input');
     const selectButton = document.getElementById('tournament_btn');
     const previewImage = document.getElementById('tournament_preview');
-    const defaultSrc = "{% static 'img/icon/イメージファイルアイコン.webp' %}";
 
     // ボタンをクリックしたら隠れたinputを起動
     selectButton.addEventListener('click', () => {
@@ -95,7 +94,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const fileInput = document.getElementById('event_input');
     const selectButton = document.getElementById('event_btn');
     const previewImage = document.getElementById('event_preview');
-    const defaultSrc = "{% static 'img/icon/イメージファイルアイコン.webp' %}";
 
     // ボタンをクリックして隠しinputを呼び出す
     selectButton.addEventListener('click', () => {
