@@ -7,39 +7,51 @@
 {% block title %}クラス順位編集{% endblock title %}
 
 {% block content %}
-<h1 class="text_center">クラス順位編集</h1>
-<div>
-   <form method="post">
-        {% csrf_token %}
-        {{ formset.management_form }}
+<div style="margin-top: 1rem; position: fixed;">
+    <a href="#" class="sub_return_bg">
+        <img class="sub_return" src="{% static 'img/icon/return.png' %}" alt="戻る">
+    </a>
+</div>
 
-        {% if team_group.category == 1 %}
-        <div style="margin-bottom: 20px;">
-            <label>クラス順位ポイント使用の有無:</label>
-            <select name="class-team-flg">
-                <option {% if event.is_class_point == True %}selected{% endif %} value="1">Yes (有効)</option>
-                <option {% if event.is_class_point == False %}selected{% endif %} value="0">No (無効)</option>
-            </select>
-        </div>
-        {% endif %}
+<h1 class="text_center" style="padding: 3rem 0">クラス順位編集</h1>
 
-        <ul>
-            {% for form in formset %}
+<form method="post" class="form space">
+    {% csrf_token %}
+    {{ formset.management_form }}
 
-            <li>
-                <div>
-                    <strong>チーム: {{ form.instance.team.name }}</strong>
-                    
-                    {# 既存データ更新用のID (hidden) #}
-                    <input type="hidden" name="{{ form.prefix }}-id" value="{{ form.instance.id }}">
-                </div>
+    {# クラス順位ポイント使用の有無 #}
+    {% if team_group.category == 1 %}
+    <div class="side_by_side min_space">
+        <label for="class-team-flg" style="font-weight: bold; font-size: 1.5rem;" class="form_label">
+            クラス順位ポイント使用の有無：
+        </label>
+        <select id="class-team-flg" name="class-team-flg" style="font-weight: bold; font-size: 1.5rem;">
+            <option {% if event.is_class_point == True %}selected{% endif %} value="1">Yes (有効)</option>
+            <option {% if event.is_class_point == False %}selected{% endif %} value="0">No (無効)</option>
+        </select>
+    </div>
+    {% endif %}
 
-                {# 順位入力 #}
-                <div>
-                    <label for="id_{{ form.prefix }}-rank">順 :</label>
-                    <select name="{{ form.prefix }}-rank" 
-                        id="id_{{ form.prefix }}-rank" 
-                        class="rank-select">
+    {# フォームセット #}
+    <div class="scroll_others min_space">
+        {% for form in formset %}
+        <div class="block_bg">
+
+            {# チーム名 #}
+            <div class="min_space">
+                <label class="form_label">{{ form.instance.team.name }}</label>
+            </div>
+
+            {# 既存データ更新用のID #}
+            <input type="hidden" name="{{ form.prefix }}-id" value="{{ form.instance.id }}">
+
+            {# 順位入力 #}
+            <div class="min_space">
+                <label for="id_{{ form.prefix }}-rank" style="font-weight: bold;" class="form_label">順位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
+                <select name="{{ form.prefix }}-rank"
+                        id="id_{{ form.prefix }}-rank"
+                        class="rank-select"
+                        style="font-weight: bold;">
                     <option value="">-- 選択 --</option>
                     {% for tp in tournament_points %}
                         <option value="{{ tp.rank }}" {% if form.rank.value|stringformat:"s" == tp.rank|stringformat:"s" %}selected{% endif %}>
@@ -47,539 +59,47 @@
                         </option>
                     {% endfor %}
                 </select>
-                </div>
-
-                {# スコア入力 #}
-                <div class="point-area">
-                    <label for="id_{{ form.prefix }}-point">点 :</label>
-                    <input type="number" 
-                           name="{{ form.prefix }}-point" 
-                           id="id_{{ form.prefix }}-point" 
-                           class="point-input"
-                           value="{{ form.point.value|default:'' }}">
-                    <span class="point-display">{{ form.point.value|default:'0' }}</span>
-
-                </div>
-
-                {# 詳細入力 #}
-                <div>
-                    <label for="id_{{ form.prefix }}-detail">詳細:</label>
-                    <input type="text" 
-                           name="{{ form.prefix }}-detail" 
-                           id="id_{{ form.prefix }}-detail" 
-                           value="{{ form.detail.value|default:'' }}">
-                </div>
-                <hr> 
-            </li>
-            {% endfor %}
-        </ul>
-
-        <div>
-            <button type="submit">保存</button>
-        </div>
-    </form>
-</div>
-
-<!-- 埋め込み、お願いします -->
-<form action="#" class="form space">
-    <div class ="scroll_others min_space">
-        <div class ="block_bg">
-            <div class="min_space">
-                <label for="" class="form_label">高度情報3年</label>
             </div>
-            <div class="min_space">
-                <label for="rank" style="font-weight: bold;" class="form_label">順位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
-                <select id="rank" name="rank" style="font-weight: bold;">
-                    <option value="">選択</option>
-                    <option value="1">1位</option>
-                    <option value="2">2位</option>
-                    <option value="3">3位</option>
-                    <option value="4">4位</option>
-                </select>
+
+            {# ポイント入力 #}
+            <div class="min_space point-area">
+                <label for="id_{{ form.prefix }}-point" class="form_label">ポイント：</label>
+                <input type="number"
+                       name="{{ form.prefix }}-point"
+                       id="id_{{ form.prefix }}-point"
+                       class="point-input"
+                       style="width: 3.5rem; font-weight: bold;"
+                       value="{{ form.point.value|default:'0' }}">
+                <span class="point-display">{{ form.point.value|default:'0' }}</span>
             </div>
+
+            {# 詳細結果入力 #}
             <div>
-                <label for="comment" class="form_label">ポイント：</label>
-                <input type="text" style="width: 3.5rem; font-weight: bold;" id="point" name="point">
+                <label for="id_{{ form.prefix }}-detail" class="form_label">結果&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
+                <input type="text"
+                       name="{{ form.prefix }}-detail"
+                       id="id_{{ form.prefix }}-detail"
+                       style="width: 3.5rem; font-weight: bold;"
+                       value="{{ form.detail.value|default:'' }}">
             </div>
+
         </div>
-        <div class ="block_bg">
-            <div class="min_space">
-                <label for="" class="form_label">高度情報3年</label>
-            </div>
-            <div class="min_space">
-                <label for="rank" style="font-weight: bold;" class="form_label">順位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
-                <select id="rank" name="rank" style="font-weight: bold;">
-                    <option value="">選択</option>
-                    <option value="1">1位</option>
-                    <option value="2">2位</option>
-                    <option value="3">3位</option>
-                    <option value="4">4位</option>
-                </select>
-            </div>
-            <div>
-                <label for="comment" class="form_label">ポイント：</label>
-                <input type="text" style="width: 3.5rem; font-weight: bold;" id="point" name="point">
-            </div>
-        </div>
-        <div class ="block_bg">
-            <div class="min_space">
-                <label for="" class="form_label">高度情報3年</label>
-            </div>
-            <div class="min_space">
-                <label for="rank" style="font-weight: bold;" class="form_label">順位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
-                <select id="rank" name="rank" style="font-weight: bold;">
-                    <option value="">選択</option>
-                    <option value="1">1位</option>
-                    <option value="2">2位</option>
-                    <option value="3">3位</option>
-                    <option value="4">4位</option>
-                </select>
-            </div>
-            <div>
-                <label for="comment" class="form_label">ポイント：</label>
-                <input type="text" style="width: 3.5rem; font-weight: bold;" id="point" name="point">
-            </div>
-        </div>
-        <div class ="block_bg">
-            <div class="min_space">
-                <label for="" class="form_label">高度情報3年</label>
-            </div>
-            <div class="min_space">
-                <label for="rank" style="font-weight: bold;" class="form_label">順位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
-                <select id="rank" name="rank" style="font-weight: bold;">
-                    <option value="">選択</option>
-                    <option value="1">1位</option>
-                    <option value="2">2位</option>
-                    <option value="3">3位</option>
-                    <option value="4">4位</option>
-                </select>
-            </div>
-            <div>
-                <label for="comment" class="form_label">ポイント：</label>
-                <input type="text" style="width: 3.5rem; font-weight: bold;" id="point" name="point">
-            </div>
-        </div>
+        {% endfor %}
     </div>
-    <!-- ボタン -->
-    <div class="side_by_side">
-        <div>
+
+    {# ボタン #}
+    <div>
+        <div class="min_space">
             <button type="submit" class="gazou btn block_btn">更新</button>
         </div>
-        <div>
-            <button type="button" class="return btn block_btn">戻る</button>
+        <div class="min_space">
+            <button type="button" class="return btn block_btn" onclick="history.back()">戻る</button>
         </div>
     </div>
 </form>
 
-<link href="https://fonts.googleapis.com/css2?family=Quantico:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-        rel="stylesheet">
-<style>
-    @media screen and (min-width: 500px) {
-        .menu {
-            display: none;
-        }
-
-        .sub_return_bg {
-            display: none;
-        }
-    }
-
-    body {
-        padding: 0 20px;
-        padding-top: 100px;
-    }
-
-    .bg_deader {
-        /* ヘッダーを固定する */
-        position: fixed;
-        /* 画面の上部に固定 */
-        top: 0;
-        left: 0;
-        right: 0;
-        /* 画面の幅いっぱいに広げる */
-        /* width: 100%; */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #000;
-        height: 100px;
-    }
-
-    /* クリッピングマスク */
-    .image_circle2 {
-        width: 4rem;
-        height: 4rem;
-        object-fit: none;
-        border-radius: 50%;
-    }
-
-    .form {
-        border: none;
-    }
-
-    .form_label {
-        font-weight: bold;
-        color: #fff;
-    }
-
-    .text_input {
-        display: block;
-        width: 100%;
-    }
-
-    /* プルダウン関係 */
-    .pulldown {
-        outline: none;
-    }
-
-    /* 3. 【文字】背景の上に置く */
-    .content_container {
-        width: 100%;
-    }
-
-    * 共通のスクリーン設定 */ .user_screen::after,
-    .admin_screen::after {
-        height: 100vh;
-        z-index: -2;
-        width: 100vw;
-        position: fixed;
-        top: 0;
-        left: 0;
-        content: "";
-
-    }
-
-
-
-    .user_screen::after {
-        background: linear-gradient(to bottom, #4800CF 0%, #000000 100%);
-    }
-
-    .admin_screen::after {
-        background: linear-gradient(to bottom, #FF00EE 0%, #3C0038 100%);
-    }
-
-    /* 3. 【文字】背景の上に置く */
-    .content_container {
-        width: 100%;
-    }
-
-    /*背景の画像*/
-    .bg_overlay_image {
-        width: 100%;
-        opacity: 0.13;
-        position: fixed;
-        top: 0px;
-        left: 0px;
-        pointer-events: none;
-        z-index: -1;
-    }
-
-    .space {
-        display: grid;
-        row-gap: 2rem;
-    }
-
-    .min_space {
-        margin-bottom: 1rem;
-    }
-
-    /*スクロールバー関係*/
-    .scroll_others {
-        max-height: 35rem;
-        overflow-y: scroll;
-        padding-right: 20px;
-    }
-
-    .scrollbar_others::-webkit-scrollbar,
-    .list_admin::-webkit-scrollbar {
-        width: 16px;
-    }
-
-    .scrollbar_others::-webkit-scrollbar-track,
-    .list_admin::-webkit-scrollbar-track {
-        background-color: #5D5D5D;
-    }
-
-    .scrollbar_others::-webkit-scrollbar-thumb,
-    .list_admin::-webkit-scrollbar-thumb {
-        background-color: #fff;
-    }
-
-    .block_bg {
-        display: block;
-        background-color: rgba(255, 255, 255, 0.2);
-        padding: 1rem;
-        margin-bottom: 1rem;
-    }
-
-    /* メニュー */
-    .menu_link {
-        /* 中身を揃える */
-        display: block;
-        text-align: center;
-        /* 上下の中央揃え */
-        align-content: center;
-        color: #fff;
-        font-weight: bold;
-    }
-
-    .menu {
-        margin: 1rem 0;
-        display: flex;
-        gap: 2rem;
-        justify-content: center;
-        text-decoration: none;
-    }
-
-    .item {
-        width: 100%;
-        padding: 1rem;
-    }
-
-    .item_user {
-        background: #16006C;
-    }
-
-    .item_admin {
-        background: #8B0482;
-    }
-
-    /* 画像の写真フレーム化 */
-    .frame {
-        object-fit: contain;
-        width: 100%;
-        height: 55px;
-    }
-
-    /* 戻るボタン */
-    .sub_return_bg {
-        display: flex;
-        /* サイズ設定: remを使用してルート基準にする */
-        width: 3rem;
-        /* 強制的に正方形を維持 */
-        aspect-ratio: 1 / 1;
-        background-color: rgba(255, 255, 255, 0.5);
-        border-radius: 2px;
-    }
-
-    .sub_return {
-        /* 親要素（正方形）に対しての相対サイズ */
-        width: 100%;
-        height: auto;
-        display: block;
-    }
-
-    .text_center {
-        text-align: center;
-        color: #fff;
-    }
-
-    /* ボタン関係 */
-    .btn {
-        text-decoration: none;
-        width: max-content;
-        margin: auto;
-        padding: 0.5rem;
-        font-weight: bold;
-        color: #fff;
-        /* 角丸 */
-        border-radius: 10px;
-        transition: 0.5s;
-        /* ドロップジャドウ */
-        box-shadow: 0px 0px 3px 3px rgba(255, 255, 255, 0.3);
-    }
-
-    /* ボタンの余白 */
-    .btn_margin {
-        padding-left: 3rem;
-        padding-right: 3rem;
-        text-align: right;
-    }
-
-    .gazou {
-        border: 3px solid #77FF00;
-        background: #52BC77;
-    }
-
-    .gazou:hover {
-        color: #52BC77;
-        background: #fff;
-    }
-
-    .update {
-        width: 100%;
-
-    }
-
-    .return {
-        border: 3px solid #FF00ED;
-        background: #B53DAD;
-    }
-
-    .return:hover {
-        color: #B53DAD;
-        background: #fff;
-    }
-
-    .block_btn {
-        width: 100%;
-        /* ボタンをブロック要素化して幅を有効にする */
-        display: block;
-    }
-
-    .side_by_side {
-        display: flex;
-        margin-left: 0;
-        /* gap: 1rem; */
-        /* width: 100%; */
-        /* 親コンテナ自体も横いっぱいに */
-    }
-</style>
-</head>
-
-<body style="background-color: #FF00EE;">
-<img src="/static/texture.png" class="bg_overlay_image">
-<header class="bg_deader">
-    <img src="{% static 'img/icon/ダミー.png' %}" alt="大会の画像" class="image_circle2">
-    <h1 style="color: white; padding-left: 1rem;">大会名</h1>
-</header>
-<main>
-    <div style="margin-top: 1rem; position: fixed;">
-        <!-- 戻る -->
-        <a href="#" class="sub_return_bg">
-            <img class="sub_return" src="static/img/icon/return.png" alt="戻る">
-        </a>
-    </div>
-    <h1 class="text_center" style="padding: 3rem 0">競技結果編集</h1>
-    <form action="#" class="form space">
-        <div class="scroll_others">
-            <div class="block_bg">
-                <div class="min_space">
-                    <label for="" class="form_label">高度情報3年</label>
-                </div>
-                <div class="min_space">
-                    <label for="rank" style="font-weight: bold;"
-                        class="form_label">順位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
-                    <select id="rank" name="rank" style="font-weight: bold;">
-                        <option value="">選択</option>
-                        <option value="1">1位</option>
-                        <option value="2">2位</option>
-                        <option value="3">3位</option>
-                        <option value="4">4位</option>
-                    </select>
-                </div>
-                <div class="min_space">
-                    <label for="comment" class="form_label">ポイント：</label>
-                    <input type="text" style="width: 3.5rem; font-weight: bold;" id="point" name="point">
-                </div>
-                <div>
-                    <label for="comment"
-                        class="form_label">結果&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
-                    <input type="text" style="width: 3.5rem; font-weight: bold;" id="point" name="point">
-                </div>
-            </div>
-            <div class="block_bg">
-                <div class="min_space">
-                    <label for="" class="form_label">高度情報3年</label>
-                </div>
-                <div class="min_space">
-                    <label for="rank" style="font-weight: bold;"
-                        class="form_label">順位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
-                    <select id="rank" name="rank" style="font-weight: bold;">
-                        <option value="">選択</option>
-                        <option value="1">1位</option>
-                        <option value="2">2位</option>
-                        <option value="3">3位</option>
-                        <option value="4">4位</option>
-                    </select>
-                </div>
-                <div class="min_space">
-                    <label for="comment" class="form_label">ポイント：</label>
-                    <input type="text" style="width: 3.5rem; font-weight: bold;" id="point" name="point">
-                </div>
-                <div>
-                    <label for="comment"
-                        class="form_label">結果&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
-                    <input type="text" style="width: 3.5rem; font-weight: bold;" id="point" name="point">
-                </div>
-            </div>
-            <div class="block_bg">
-                <div class="min_space">
-                    <label for="" class="form_label">高度情報3年</label>
-                </div>
-                <div class="min_space">
-                    <label for="rank" style="font-weight: bold;"
-                        class="form_label">順位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
-                    <select id="rank" name="rank" style="font-weight: bold;">
-                        <option value="">選択</option>
-                        <option value="1">1位</option>
-                        <option value="2">2位</option>
-                        <option value="3">3位</option>
-                        <option value="4">4位</option>
-                    </select>
-                </div>
-                <div class="min_space">
-                    <label for="comment" class="form_label">ポイント：</label>
-                    <input type="text" style="width: 3.5rem; font-weight: bold;" id="point" name="point">
-                </div>
-                <div>
-                    <label for="comment"
-                        class="form_label">結果&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
-                    <input type="text" style="width: 3.5rem; font-weight: bold;" id="point" name="point">
-                </div>
-            </div>
-            <div class="block_bg">
-                <div class="min_space">
-                    <label for="" class="form_label">高度情報3年</label>
-                </div>
-                <div class="min_space">
-                    <label for="rank" style="font-weight: bold;"
-                        class="form_label">順位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
-                    <select id="rank" name="rank" style="font-weight: bold;">
-                        <option value="">選択</option>
-                        <option value="1">1位</option>
-                        <option value="2">2位</option>
-                        <option value="3">3位</option>
-                        <option value="4">4位</option>
-                    </select>
-                </div>
-                <div class="min_space">
-                    <label for="comment" class="form_label">ポイント：</label>
-                    <input type="text" style="width: 3.5rem; font-weight: bold;" id="point" name="point">
-                </div>
-                <div>
-                    <label for="comment"
-                        class="form_label">結果&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
-                    <input type="text" style="width: 3.5rem; font-weight: bold;" id="point" name="point">
-                </div>
-            </div>
-
-        </div>
-        <!-- ボタン -->
-        <div>
-            <div class="min_space">
-                <button type="submit" class="gazou btn block_btn">更新</button>
-            </div>
-            <div class="min_space">
-                <button type="button" class="return btn block_btn">戻る</button>
-            </div>
-        </div>
-        <div class="side_by_side">
-            <label for="situation" style="font-weight: bold; font-size: 1.5rem;" class="form_label">
-                ポイントを使う：
-            </label>
-            <select id="situation" name="situation" style="font-weight: bold; font-size: 1.5rem;">
-                <option value="">選択</option>
-                <option value="on">ON</option>
-                <option value="off">OFF</option>
-            </select>
-        </div>
-    </form>
-</main>
-
 <script>
     const rankPoints = JSON.parse('{{ tournament_points_json|safe }}');
 </script>
-<script src="/static/js/event-result/event-result.js"></script>
+<script src="{% static 'js/event-result/event-result.js' %}"></script>
 {% endblock content %}
