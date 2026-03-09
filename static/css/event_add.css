@@ -1,0 +1,337 @@
+@media screen and (min-width: 640px) {
+    body {
+        padding: 0 40px;
+    }
+}
+
+body {
+    padding: 0 20px;
+    padding-top: 100px;
+}
+
+.bg_deader {
+    /* ヘッダーを固定する */
+    position: fixed;
+    /* 画面の上部に固定 */
+    top: 0;
+    left: 0;
+    right: 0;
+    /* 画面の幅いっぱいに広げる */
+    /* width: 100%; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    height: 100px;
+}
+
+/* クリッピングマスク */
+.image_circle2 {
+    width: 4rem;
+    height: 4rem;
+    object-fit: none;
+    border-radius: 50%;
+}
+
+.form {
+    border: none;
+}
+
+.form_label {
+    font-weight: bold;
+    color: #fff;
+}
+
+.text_input {
+    display: block;
+    width: 100%;
+}
+
+.input_text {
+    flex-grow: 1;
+    /* 残りの幅をすべて埋める */
+    /* padding: 10px; */
+    height: 30px;
+    border: 1px solid #ccc;
+}
+
+/* プルダウン関係 */
+.pulldown {
+    outline: none;
+}
+
+/* 3. 【文字】背景の上に置く */
+.content_container {
+    width: 100%;
+}
+
+* 共通のスクリーン設定 */ .user_screen::after,
+.admin_screen::after {
+    height: 100vh;
+    z-index: -2;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    content: "";
+
+}
+
+
+
+.user_screen::after {
+    background: linear-gradient(to bottom, #4800CF 0%, #000000 100%);
+}
+
+.admin_screen::after {
+    background: linear-gradient(to bottom, #FF00EE 0%, #3C0038 100%);
+}
+
+/* 3. 【文字】背景の上に置く */
+.content_container {
+    width: 100%;
+}
+
+/*背景の画像*/
+.bg_overlay_image {
+    width: 100%;
+    opacity: 0.13;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.space {
+    display: grid;
+    row-gap: 0.5rem;
+}
+
+.min_space {
+    margin-bottom: 1rem;
+}
+
+/*スクロールバー関係*/
+.scroll_others {
+    max-height: 35rem;
+    overflow-y: scroll;
+    padding-right: 20px;
+}
+
+.scrollbar_others::-webkit-scrollbar,
+.list_admin::-webkit-scrollbar {
+    width: 16px;
+}
+
+.scrollbar_others::-webkit-scrollbar-track,
+.list_admin::-webkit-scrollbar-track {
+    background-color: #5D5D5D;
+}
+
+.scrollbar_others::-webkit-scrollbar-thumb,
+.list_admin::-webkit-scrollbar-thumb {
+    background-color: #fff;
+}
+
+.block_bg {
+    display: block;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* メニュー */
+.menu_link {
+    /* 中身を揃える */
+    display: block;
+    text-align: center;
+    /* 上下の中央揃え */
+    align-content: center;
+    color: #fff;
+    font-weight: bold;
+}
+
+.menu {
+    margin: 1rem 0;
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.item {
+    width: 100%;
+    padding: 1rem;
+}
+
+.item_user {
+    background: #16006C;
+}
+
+.item_admin {
+    background: #8B0482;
+}
+
+/* 画像の写真フレーム化 */
+.frame {
+    object-fit: contain;
+    width: 100%;
+    height: 55px;
+}
+
+/* 戻るボタン */
+.sub_return_bg {
+    display: flex;
+    /* サイズ設定: remを使用してルート基準にする */
+    width: 3rem;
+    /* 強制的に正方形を維持 */
+    aspect-ratio: 1 / 1;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 2px;
+}
+
+.sub_return {
+    /* 親要素（正方形）に対しての相対サイズ */
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.text_center {
+    text-align: center;
+    color: #fff;
+}
+
+.search-container {
+    display: flex;
+    /* 親要素の幅いっぱい */
+    width: 100%;
+    /* 要素間の隙間 */
+    gap: 1rem;
+    align-items: center;
+    /* box-sizing: border-box; */
+    /* paddingを含めた幅計算 */
+}
+
+.btn_margin {
+    /* 1. margin: auto を解除して右寄せを有効にする */
+    margin-right: 0 !important;
+    margin-left: auto !important;
+
+    /* 2. width: max-content を解除してパディングを効かせる */
+    width: auto !important;
+    min-width: 10rem;
+    /* 必要なら最小サイズを指定 */
+
+    /* 3. パディングを適用 */
+    padding-left: 0rem;
+    padding-right: 0rem;
+
+    display: inline-block;
+    text-align: center;
+}
+
+.update {
+    width: 100%;
+
+}
+
+.return {
+    border: 3px solid #FF00ED;
+    background: #B53DAD;
+}
+
+.return:hover {
+    color: #B53DAD;
+    background: #fff;
+}
+
+.block_btn {
+    display: block;
+    /* max-content を上書きして親要素いっぱいにする */
+    width: 100% !important;
+    /* margin: auto が邪魔をしないようにリセット */
+    margin: 0 !important;
+    box-sizing: border-box;
+}
+
+.pos_right {
+    text-align: right;
+}
+
+.side_by_side {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 1rem;
+    width: 100%;
+}
+
+/* 親のdivを均等に広げる */
+.side_by_side>div {
+    flex: 1;
+}
+
+/* 画像UI */
+.image_center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image_item {
+    /* 中身のセンタリング */
+    display: block;
+    /* 上下の中央揃え */
+    align-content: center;
+    justify-items: center;
+    width: 15%;
+    height: auto;
+    /* background: #D9D9D9; */
+}
+
+/* ボタン関係 */
+.btn {
+    text-decoration: none;
+    width: max-content;
+    margin: auto;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    color: #fff;
+    /* 角丸 */
+    border-radius: 10px;
+    transition: 0.5s;
+    /* ドロップジャドウ */
+    box-shadow: 0px 0px 3px 3px rgba(255, 255, 255, 0.3);
+}
+
+.gazou {
+    border: 3px solid #77FF00;
+    background: #52BC77;
+}
+
+.gazou:hover {
+    color: #52BC77;
+    background: #fff;
+}
+
+.delete {
+    border: 1.8px solid #FF0000;
+    background: #AC0000;
+}
+
+.delete_size {
+    /* height: 21.33px; */
+    border-radius: 7px;
+    display: flex;
+    align-self: center;
+}
+
+.delete:hover {
+    color: #AC0000;
+    background: #fff;
+}
+
+#class-teams-msg{
+    color: #fff;
+}
