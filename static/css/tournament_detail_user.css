@@ -1,0 +1,61 @@
+/* ユーザトップ(ユーザ大会詳細) */
+/* --- 横並びとスクロールの強制上書き --- */
+
+/* リスト全体のスクロール設定 */
+.list_admin,
+.ranking_others {
+    max-height: 200px !important;
+    /* 表示したい高さに合わせて調整 */
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    padding-right: 10px !important;
+}
+
+/* アイテム内を横並びにする（ここがボタン横並びの肝） */
+.list_item {
+    display: flex !important;
+    flex-direction: row !important;
+    /* 横並び */
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding: 10px !important;
+    flex-shrink: 0 !important;
+    /* 潰れないように */
+}
+
+/* 大会名を広げてボタンを右に寄せる */
+.item-name {
+    flex-grow: 1 !important;
+    margin-left: 15px !important;
+    color: #fff !important;
+    font-weight: bold !important;
+    text-align: left !important;
+}
+
+/* ボタン群を横に並べる */
+.item-actions {
+    display: flex !important;
+    flex-direction: row !important;
+    /* ボタン同士を横並びに */
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+}
+
+/* 既存の .btn クラスの干渉（margin: autoなど）を打ち消す */
+.item-actions .btn {
+    margin: 0 !important;
+    width: auto !important;
+    min-width: 60px !important;
+    display: inline-block !important;
+}
+
+/* サムネイル（グレーの四角） */
+.thumb-box {
+    width: 45px !important;
+    height: 45px !important;
+    background: #ccc;
+    flex-shrink: 0 !important;
+}
+
