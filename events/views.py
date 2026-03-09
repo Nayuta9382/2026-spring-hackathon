@@ -130,6 +130,7 @@ class EventEditView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+
         event = self.get_object()
 
         teams = get_teams_by_event(event)
@@ -142,7 +143,6 @@ class EventEditView(UpdateView):
         return context
 
     def form_valid(self, form):
-
         event = form.instance
         tournament = event.tournament
         teams = form.cleaned_data.get('teams')
