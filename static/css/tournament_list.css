@@ -11,18 +11,6 @@ main.container {
     overflow: hidden;
 }
 
-/* 3. リストを囲むダミーエリア（ヘッダー余白用）の調整 */
-.dummy {
-    margin-top: 60px;
-    /* ヘッダー(100px)との隙間 */
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    overflow: hidden;
-    /* 子要素のスクロールを有効にするため */
-}
-
 /* 4. リスト本体のスクロール設定（ここが最重要） */
 .list_admin {
     /* 既存の190px制限を解除し、画面の余り全部を高さにする */
@@ -54,22 +42,6 @@ main.container {
     flex-shrink: 0;
 }
 
-/* 6. スクロールバーのデザインをより明確にする（既存設定を強化） */
-.list_admin::-webkit-scrollbar {
-    width: 10px;
-}
-
-.list_admin::-webkit-scrollbar-track {
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-}
-
-.list_admin::-webkit-scrollbar-thumb {
-    background-color: #ffffff;
-    border-radius: 10px;
-    border: 2px solid #5D5D5D;
-    /* つまみを少し細く見せて洗練させる */
-}
 
 .thumb {
     width: 45px;
@@ -86,37 +58,31 @@ main.container {
     text-align: left;
 }
 
-/* 4. ボタンを囲むグループを横並びにする */
-.item-btns {
-    display: flex ;
-    flex-direction: row ;
-    /* 横並びを強制 */
-    gap: 10px ;
-    /* ボタン同士の隙間 */
-    flex-shrink: 0 ;
-    /* ボタンエリアが潰れないように */
-    margin-left: 10px ;
-    align-items: center ;
-    /* ボタンの高さがズレるのを防ぐ */
-}
-
-/* 5. 既存の .btn クラスの「中央寄せ」や「幅」をリセットする */
-.item-btns .btn {
-    margin: 0;
-    /* margin: auto を打ち消す */
-    display: inline-block;
-    width: auto;
-    /* 幅を自動（文字量）にする */
-    min-width: 80px;
-    /* 最低限の幅を確保 */
-    text-align: center;
-}
-
-.btn.return{
-    margin-top: 50px;
-}
 
 .h1{
     color:#fff;
 }
 
+/* 追加ボタン */
+a.add_btn {
+    display: inline-block;
+}
+
+div.add_btn {
+    text-align: right;
+
+}
+
+ul.list_admin {
+    list-style: none;
+    padding: 0;
+}
+/* リスト表示 */
+.list_admin a {
+    text-decoration: none;
+    color: #fff;
+    transition: 0.3s;
+}
+.list_admin a:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}
