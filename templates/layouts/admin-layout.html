@@ -39,19 +39,8 @@
         {% endblock content %}
     </main>
 
-    <section>
-    {% if tournament %}
-        <a href="{% url 'tournament_detail_operator' pk=tournament.id %}">home</a>
-    {% endif %}
-
-    {% if tournament.pdf_img_path %}
-        <p><a href="{{ tournament.pdf_img_path.url }}" target="_blank">現在の規約PDFを開く</a></p>
-    {% elif tournament %}
-        <p>規約PDFは登録されていません。</p>
-    {% else %}
-
-    {% endif %}
-    </section>
+    {% comment %} 運営者ならメニュー表示 {% endcomment %}
+    {% if not user.is_authenticated %}
     <footer class="menu">
         <!-- home -->
         <a href="{% if tournament %}{% url 'tournament_detail_operator' pk=tournament.id %}{% else %}#{% endif %}" class="menu item item_admin">
@@ -68,6 +57,7 @@
             </span>
         </a>
     </footer>
+    {% endif %}
     {% bootstrap_javascript %}
 </body>
 </html>
