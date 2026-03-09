@@ -2,7 +2,10 @@ from django.db import transaction,connection
 from .models import Tournament, TournamentPoint
 from teams.models import TeamGroup, Team
 from django.shortcuts import get_object_or_404
-from teams.service import delete_team_group,create_team_group,bulk_create_teams
+from teams.service import delete_team_group,create_team_group,bulk_create_teams,get_team_group_by_category
+from events.service import get_events_with_schedules_by_team_group,register_cloned_event
+from schedules.services import reassign_schedules_to_event
+from event_results.services import create_event_results
 
 # 大会作成機能のサービス関数
 def create_tournament_with_teams(tournament_data):
@@ -84,14 +87,38 @@ def get_tournament_rannkings(tournament_id):
 def update_tournament_after(tournament,teams,rank_points):
     with transaction.atomic():
         # クラスチームを更新する
+        # 現在のグループidを取得する
+        now_group = get_team_group_by_category(tournament)
+        now_group_id = now_group.id
+        # 現在の競技とスケージュールの一覧データを取得するしメモリ上に保存
+        events =  get_events_with_schedules_by_team_group(now_group_id)
+        events_list = list(events)
+
+        # # クラスチームを更新する
         delete_team_group(tournament)
         new_group = create_team_group(tournament,category=1)
-        bulk_create_teams(new_group,teams)
+        new_teams = bulk_create_teams(new_group,teams)
+
+        # 新しいチームグループに競技とスケージュールを登録する
+        for event in events_list:
+            # 競技に紐づいているスケージュールをリストとして取得
+            schedules_list = list(event.prefetched_schedules)
+
+            # 競技を再登録
+            new_event = register_cloned_event(event, new_team_group_id=new_group.id)
+
+            # その新しい競技に対して、コピーしておいたスケジュールを紐付け直す
+            reassign_schedules_to_event(new_event, schedules_list)
+
+             # 競技結果の初期データを作成する
+            create_event_results(event=new_event,teams=new_teams)
+
 
         # 基本順位ポイントを更新する
         delete_tournament_point(tournament)
         create_tournament_point(tournament,rank_points)
 
+       
 # 大会を削除
 def delete_tournament(pk):
     with transaction.atomic():
