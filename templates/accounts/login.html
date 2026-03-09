@@ -6,26 +6,26 @@
 <link rel="stylesheet" href="{% static 'css/login.css' %}">
 {% endblock extra_css %}
 {% block content %}
-<h1>ログイン</h1>
+<div class="login-container">
+    <h2 class="login-title">ログイン</h2>
 
-<form method="post">
-    {% csrf_token %}
+    <div class="login-card">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">ユーザー名</label>
+                <input type="text" id="username" name="username" placeholder="ユーザー名を入力" required>
+            </div>
 
-    {# ユーザー名 / ID #}
-    <div>
-        <label>ユーザー名</label>
-        <input type="text" name="username" required>
+            <div class="form-group">
+                <label for="password">パスワード</label>
+                <input type="password" id="password" name="password" placeholder="パスワードを入力" required>
+            </div>
+
+            <button type="submit" class="update btn gazou">ログイン</button>
+        </form>
     </div>
-
-    {# パスワード #}
-    <div>
-        <label>パスワード</label>
-        <input type="password" name="password" required>
-    </div>
-
-    {# 送信ボタン #}
-    <button type="submit">ログイン</button>
-</form>
+</div>
 
 {# エラーメッセージがある場合の表示 #}
 {% if form.errors %}
@@ -35,24 +35,6 @@
 {% endif %}
 
 
-<div class="login-container">
-    <h2 class="login-title">ログイン</h2>
 
-    <div class="login-card">
-        <form action="/login" method="POST">
-            <div class="form-group">
-                <label for="username">ユーザー名</label>
-                <input type="text" id="username" name="username" placeholder="ユーザー名を入力">
-            </div>
-
-            <div class="form-group">
-                <label for="password">パスワード</label>
-                <input type="password" id="password" name="password" placeholder="パスワードを入力">
-            </div>
-
-            <button type="submit" class="update btn gazou">ログイン</button>
-        </form>
-    </div>
-</div>
 
 {% endblock content %}
