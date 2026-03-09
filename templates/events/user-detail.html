@@ -1,7 +1,7 @@
 {% extends 'layouts/user-layout.html' %}
 
 {% block title %}{% endblock title %}
-
+{% load static %}
 {% comment %} 自作css読み込み {% endcomment %}
 {% block extra_css %} 
     <link rel="stylesheet" href="{% static 'css/event_user_detail.css' %}">
@@ -10,113 +10,141 @@
 
 {% block content %}
 <!-- 戻る -->
-<a href="#" class="sub_return_bg sub_return">
-    <img src="./static/img/icon/return.png" alt="戻る">
+<a href="#" class="sub_return_bg">
+    <img class="sub_return" src="{% static 'img/icon/return.png' %}" alt="戻る">
 </a>
-<div>
-    <h1>競技詳細(user)</h1>
-
+<div class="content">
     <section>
-        <h2>競技基本情報</h2>
-        <table border="1" cellpadding="5" cellspacing="0">
-            <tr>
-                <th>競技名</th>
-                <td>{{ event.name }}</td>
-            </tr>
-            <tr>
-                <th>競技区分</th>
-                <td>
-                    {% if event.category == 1 %}
-                        クラス対抗
-                    {% else %}
-                        一般
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <th>登録日時</th>
-                <td>{{ event.created_at|date:"Y/m/d H:i" }}</td>
-            </tr>
-        </table>
-    </section>
-
-    <br>
-
-    <section>
-        <h2>競技詳細説明</h2>
-        <div style="border: 1px solid #ccc; padding: 10px;">
-            {{ event.detail|linebreaksbr|default:"(説明文なし)" }}
-        </div>
-    </section>
-
-    <br>
-
-    <section>
-        <h2>画像資料</h2>
-        <div>
-            <h3>競技イメージ画像</h3>
-            {% if event.event_img %}
-                <img src="{{ event.event_img.url }}" alt="競技画像" width="400">
-            {% else %}
-                <p>画像はありません</p>
-            {% endif %}
-        </div>
+        <h1 class="h1 title ">{{ event.name }}</h1>
 
         <div>
-            <h3>トーナメント表画像</h3>
-            {% if event.tournament_img %}
-                <img src="{{ event.tournament_img.url }}" alt="トーナメント画像" width="400">
-            {% else %}
-                <p>画像はありません</p>
-            {% endif %}
+        <section>
+            <h2>順位</h2>
+            <ul id="ranking-list">
+                <li>読み込み中...</li>
+            </ul>
+        </section>
+            <ul class="ranking_user ranking-list">
+                <li class="ranking_one">
+                    <div class="crown"><img src="{% static 'img/crown/mark_oukan_crown1.png' %}" alt=""></div>
+                    <p class="winner_font quantico-regular">WINNER!!</p>
+                    <h1>総合、高度3,4年</h1>
+                    <h2>00pt</h2>
+                </li>
+                <li class="ranking_two">
+                    <div class="crown"><img src="{% static 'img/crown/mark_oukan_crown2.png' %}" alt=""></div>
+                    <h2>総合、高度3,4年</h2>
+                    <h3>00pt</h3>
+                </li>
+                <li class="ranking_three">
+                    <div class="crown"><img src="{% static 'img/crown/mark_oukan_crown3.png' %}" alt=""></div>
+                    <h3>総合、高度3,4年</h3>
+                    <h4>00pt</h4>
+                </li>
+    
+            </ul>
+            <ul class="ranking_user ranking_others">
+                <li class="ranking_item">
+                    <p>テキスト</p>
+                    <p>00pt</p>
+                </li>
+                <li class="ranking_item">
+                    <p>テキスト</p>
+                    <p>00pt</p>
+                </li>
+                <li class="ranking_item">
+                    <p>テキスト</p>
+                    <p>00pt</p>
+                </li>
+                <li class="ranking_item">
+                    <p>テキスト</p>
+                    <p>00pt</p>
+                </li>
+            </ul>
         </div>
-    </section>
 
-    <hr>
+        <div>
+            <h2 class="h2">Tournament</h2>
+            <div class="image_center">
+                {% if event.tournament_img %}
+                    <img src="{{ event.tournament_img.url }}" alt="トーナメント画像">
+                {% else %}
+                    <img src="{% static 'img/icon/noimg.png' %}" alt="画像がありません" width="300px">
+                {% endif %}
+            </div>
+        </div>
 
-    <section>
-        <h2>順位</h2>
-        <ul id="ranking-list">
-            <li>読み込み中...</li>
-        </ul>
-    </section>
+        <div>
+            <h2 class="h2">explanation</h2>
+            <div class="explanation">
+                <p class="p">{{ event.detail|linebreaksbr|default:"(説明文なし)" }}</p>
+            </div>
+        </div>
 
-    <hr>
+        <div>
+            <h2 class="h2">MatchSchedule</h2>
+            <div class="schedule">
+                <div class="next">
+                    <h2 class="h2">Next</h2>
+                    <ul>
+                        {% for schedule in next_schedules %}
+                            <li>
+                                <p class="p">{{ schedule.detail }}</p>
+                            </li>
+                            {% if schedule.result %}
+                                <li>
 
-    <div>
-        <h1>スケジュール</h1>
-        <p>{{ event.name }}</p>
+                                    <p class="p">{{ schedule.result }}</p>
+                                </li>
+                            {% endif %}
+                        {% empty %}
+                            <li>
 
-        <h2>now</h2>
-        {% for schedule in now_schedules %}
-            <p>{{ schedule.detail }}</p>
-            {% if schedule.result %}
-                <p>{{ schedule.result }}</p>
-            {% endif %}
-        {% empty %}
-            <p>なし</p>
-        {% endfor %}
+                                <p class="p">なし</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="now">
+                    <h2 class="h2">Now</h2>
+                    <ul>
+                        {% for schedule in now_schedules %}
+                            <li><p class="p">{{ schedule.detail }}</p></li>
+                            
+                            {% if schedule.result %}
+                                <li><p class="p">{{ schedule.result }}</p></li>
+                            {% endif %}
+                        {% empty %}
+                        <li>
+                            <p class="p">なし</p>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="previous">
+                    <h2 class="h2">Previous</h2>
 
-        <h2>next</h2>
-        {% for schedule in next_schedules %}
-            <p>{{ schedule.detail }}</p>
-            {% if schedule.result %}
-                <p>{{ schedule.result }}</p>
-            {% endif %}
-        {% empty %}
-            <p>なし</p>
-        {% endfor %}
+                    <ul>
+                        {% for schedule in previous_schedules %}
+                        <li>
+                            <p class="p">{{ schedule.detail }}</p>
+                        </li>
+                            {% if schedule.result %}
+                            <hr>
+                            <li>
+                                <p class="p">{{ schedule.result }}</p>
+                            </li>
+                            {% endif %}
+                        {% empty %}
+                            <li>
+                                <p class="p">なし</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
 
-        <h2>previous</h2>
-        {% for schedule in previous_schedules %}
-            <p>{{ schedule.detail }}</p>
-            {% if schedule.result %}
-                <p>{{ schedule.result }}</p>
-            {% endif %}
-        {% empty %}
-            <p>なし</p>
-        {% endfor %}
-    </div>
+            </div>
+        </div>
 </div>
 
 <script>
