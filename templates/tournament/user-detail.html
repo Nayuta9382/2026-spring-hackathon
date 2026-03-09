@@ -2,7 +2,7 @@
 
 {% block title %}index{% endblock title %}
 {% load static %}
-{% block extra_css %} 
+{% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/tournament_detail_user.css' %}">
 {% endblock extra_css %}
 {% block content %}
@@ -11,13 +11,13 @@
     <div>
         <section>
             <h2>大会基本情報</h2>
-            
+
             <div>
                 <p>大会画像:</p>
                 {% if tournament.img_path %}
-                    <img src="{{ tournament.img_path.url }}" alt="大会画像" width="300">
+                <img src="{{ tournament.img_path.url }}" alt="大会画像" width="300">
                 {% else %}
-                    <p>画像が設定されていません</p>
+                <p>画像が設定されていません</p>
                 {% endif %}
                 <br>
             </div>
@@ -30,9 +30,9 @@
         <section>
             <h2>大会規約 (PDF)</h2>
             {% if tournament.pdf_img_path %}
-                <p><a href="{{ tournament.pdf_img_path.url }}" target="_blank">現在の規約PDFを開く</a></p>
+            <p><a href="{{ tournament.pdf_img_path.url }}" target="_blank">現在の規約PDFを開く</a></p>
             {% else %}
-                <p>規約PDFは登録されていません。</p>
+            <p>規約PDFは登録されていません。</p>
             {% endif %}
         </section>
 
@@ -42,34 +42,34 @@
             <h2>競技一覧</h2>
             <ul>
                 {% for event in events %}
-                    <li>
-                        <a href="{% url 'event_detail_user' tournament_pk=tournament.pk pk=event.pk %}">
-                            {{ event.name }} 
-                            {% if event.category == 1 %}(クラス対抗){% else %}(一般){% endif %}
-                        </a>
-                    </li>
+                <li>
+                    <a href="{% url 'event_detail_user' tournament_pk=tournament.pk pk=event.pk %}">
+                        {{ event.name }}
+                        {% if event.category == 1 %}(クラス対抗){% else %}(一般){% endif %}
+                    </a>
+                </li>
                 {% empty %}
-                    <li>登録されている競技はありません。</li>
+                <li>登録されている競技はありません。</li>
                 {% endfor %}
             </ul>
-          
+
         </section>
 
         <hr>
 
         <section>
-        <h2>総合ランキング</h2>
-        {% if tournament.status == 0 %}
-        開催前です
-        {% else %}
-        <ol>
-            {% for team in rankings %}
-            <li>{{ team.rank }}位: {{ team.name }}（{{ team.total_point|default:0 }} pt）</li>
-            {% empty %}
-            <li>現在、集計データはありません。</li>
-            {% endfor %}
-        </ol>
-        {% endif %}
+            <h2>総合ランキング</h2>
+            {% if tournament.status == 0 %}
+            開催前です
+            {% else %}
+            <ol>
+                {% for team in rankings %}
+                <li>{{ team.rank }}位: {{ team.name }}（{{ team.total_point|default:0 }} pt）</li>
+                {% empty %}
+                <li>現在、集計データはありません。</li>
+                {% endfor %}
+            </ol>
+            {% endif %}
         </section>
     </div>
 </div>
@@ -81,18 +81,18 @@
 
         <div class="ranking_user">
             <div class="ranking_one">
-                <div class="crown"><img src="./img/crown/mark_oukan_crown1.png" alt=""></div>
+                <div class="crown"><img src="{% static '/img/crown/mark_oukan_crown1.png' %}" alt=""></div>
                 <p class="winner_font quantico-regular">WINNER!!</p>
                 <h1>総合、高度3,4年</h1>
                 <h2>00pt</h2>
             </div>
             <div class="ranking_two">
-                <div class="crown"><img src="./img/crown/mark_oukan_crown2.png" alt=""></div>
+                <div class="crown"><img src="{% static '/img/crown/mark_oukan_crown2.png' %}" alt=""></div>
                 <h2>総合、高度3,4年</h2>
                 <h3>00pt</h3>
             </div>
             <div class="ranking_three">
-                <div class="crown"><img src="./img/crown/mark_oukan_crown3.png" alt=""></div>
+                <div class="crown"><img src="{% static '/img/crown/mark_oukan_crown3.png' %}" alt=""></div>
                 <h3>総合、高度3,4年</h3>
                 <h4>00pt</h4>
             </div>
@@ -115,61 +115,52 @@
                 <p>テキスト</p>
                 <p>00pt</p>
             </div>
+            <div class="ranking_item">
+                <p>テキスト</p>
+                <p>00pt</p>
+            </div>
+            <div class="ranking_item">
+                <p>テキスト</p>
+                <p>00pt</p>
+            </div>
+            <div class="ranking_item">
+                <p>テキスト</p>
+                <p>00pt</p>
+            </div>
         </div>
 
-        <h2 class="h1" style="margin-top: 20px;">Competitions</h2>
+        <h2 class="h1" style="margin-top: 70px;">Competitions</h2>
 
         <div class="list_admin">
             <div class="list_item">
                 <div class="thumb-box" style="background-color: #fff;"></div>
                 <div class="item-name">あそび大全（トイボクシング）</div>
-                <div class="item-actions">
-                    <button class="btn gazou">編集</button>
-                    <button class="btn delete">削除</button>
-                </div>
+
             </div>
             <div class="list_item">
                 <div class="thumb-box"></div>
                 <div class="item-name">アルティメットチキンホース</div>
-                <div class="item-actions">
-                    <button class="btn gazou">編集</button>
-                    <button class="btn delete">削除</button>
-                </div>
+
             </div>
             <div class="list_item">
                 <div class="thumb-box"></div>
                 <div class="item-name">アルティメットチキンホース</div>
-                <div class="item-actions">
-                    <button class="btn gazou">編集</button>
-                    <button class="btn delete">削除</button>
-                </div>
+
             </div>
             <div class="list_item">
                 <div class="thumb-box"></div>
                 <div class="item-name">アルティメットチキンホース</div>
-                <div class="item-actions">
-                    <button class="btn gazou">編集</button>
-                    <button class="btn delete">削除</button>
-                </div>
             </div>
             <div class="list_item">
                 <div class="thumb-box"></div>
                 <div class="item-name">アルティメットチキンホース</div>
-                <div class="item-actions">
-                    <button class="btn gazou">編集</button>
-                    <button class="btn delete">削除</button>
-                </div>
             </div>
             <div class="list_item">
                 <div class="thumb-box"></div>
                 <div class="item-name">アルティメットチキンホース</div>
-                <div class="item-actions">
-                    <button class="btn gazou">編集</button>
-                    <button class="btn delete">削除</button>
-                </div>
             </div>
         </div>
     </div>
-</ｄ>
+</div>
 
 {% endblock %}
