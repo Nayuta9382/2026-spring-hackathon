@@ -136,8 +136,8 @@
 }
 
 .su-icon {
-    width: 2rem;
-    height: 2rem;
+    width: 59px;
+    height: 59px;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -145,7 +145,7 @@
 .su-title {
     color: #fff;
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 36px;
 }
 
 .su-status {
