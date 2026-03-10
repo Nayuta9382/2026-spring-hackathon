@@ -29,7 +29,7 @@ body {
 .image_circle2 {
     width: 4rem;
     height: 4rem;
-    object-fit: none;
+    object-fit: cover;
     border-radius: 50%;
 }
 
@@ -343,6 +343,7 @@ body {
     background: rgba(255, 255, 255, 0.3);
 }
 
+
 /* モバイルサイズ */
 @media screen and (max-width: 500px) {
     .image_items {
@@ -356,3 +357,4 @@ body {
         /* margin: 0 auto; */
     }
 }
+
