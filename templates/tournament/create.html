@@ -9,7 +9,7 @@
 
 {% block content %}
 
-    <a class="update return btn display_block top" href="{% url 'tournament_list' %}">大会一覧に戻る</a>
+    <a class="btn return" href="{% url 'tournament_list' %}">大会一覧に戻る</a>
 
     <form action="" method="POST" enctype="multipart/form-data" class="top">
         {% csrf_token %}
@@ -73,7 +73,7 @@
             </div>
 
             <div class="button_container">
-                <a class="return btn display_block" href="{% url 'tournament_list' %}">大会一覧に戻る</a>
+                <a class="btn return" href="{% url 'tournament_list' %}">大会一覧に戻る</a>
                 <button type="submit" class="gazou btn add_btn">保存</button>
             </div>
         </div>
