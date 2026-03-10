@@ -287,3 +287,20 @@
     display: flex;
     gap: 1rem;
 }
+.flex-link-layout .h2{
+    margin: 0;
+}
+.flex-link-layout{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+}
+.flex-link-layout a{
+    text-decoration: none;
+    display: block;
+    line-height: 1;
+    color: #fff;
+    width: fit-content;
+    margin: 0;
+}

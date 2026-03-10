@@ -20,7 +20,10 @@
                 <p id="user_message"></p>
             </div>
 
-            <h3 class="h2" style="margin-top: 20px;">競技一覧</h3>
+            <div class="flex-link-layout">
+                <h2 class="h2">競技一覧</h2>
+                <a href="{% url 'event_create' tournament_pk=tournament.pk %}" class="btn gazou">競技作成</a>
+            </div>
             <div class="list_admin">
             {% for event in events %}
                  <div class="list_item">
@@ -30,6 +33,8 @@
                         <a href="{% url 'event_edit' tournament_pk=event.tournament.pk pk=event.id %}" style="text-align: center;" class="btn gazou">編集</a>
                     </div>
                 </div>
+            {% empty %}
+            <p>競技が登録されていません</p>
             {% endfor %}
             </div>
 
@@ -42,6 +47,8 @@
                     <span class="team-name">{{rank.name}}</span>
                     <span class="points">{{rank.total_point}}pt</span>
                 </div>
+             {% empty %}
+            <p>集計対象の競技が登録されていません</p>
             {% endfor %}
               
             </div>
