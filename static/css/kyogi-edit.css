@@ -78,13 +78,6 @@
     color: #AC0000;
     background: #fff;
 }
-.text_input {
-    flex-grow: 1;
-    /* 残りの幅をすべて埋める */
-    /* padding: 10px; */
-    height: 30px;
-    border: 1px solid #ccc;
-}
 
 #class-teams-msg{
   color: #fff;

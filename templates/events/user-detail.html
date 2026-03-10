@@ -44,10 +44,11 @@
 
                 {# 4位以下エリア #}
                 <ul class="ranking_user ranking_others" id="ranking-others"></ul>
+                {% endif %}
 
+                 {# データ読み込み中表示 #}
                 {# データなし・エラー表示 #}
                 <p id="ranking-msg" style="display:none; color:#fff;"></p>
-                {% endif %}
             </section>
         </div>
 
@@ -72,10 +73,10 @@
         <div>
             <h2 class="h2">MatchSchedule</h2>
             <div class="schedule">
-                <div class="next">
-                    <h2 class="h2">Next</h2>
+                <div class="now">
+                    <h2 class="h2">Now</h2>
                     <ul>
-                        {% for schedule in next_schedules %}
+                        {% for schedule in now_schedules %}
                             <li><p class="p">{{ schedule.detail }}</p></li>
                             {% if schedule.result %}
                                 <li><p class="p">{{ schedule.result }}</p></li>
@@ -85,10 +86,10 @@
                         {% endfor %}
                     </ul>
                 </div>
-                <div class="now">
-                    <h2 class="h2">Now</h2>
+                <div class="next">
+                    <h2 class="h2">Next</h2>
                     <ul>
-                        {% for schedule in now_schedules %}
+                        {% for schedule in next_schedules %}
                             <li><p class="p">{{ schedule.detail }}</p></li>
                             {% if schedule.result %}
                                 <li><p class="p">{{ schedule.result }}</p></li>

@@ -4,24 +4,18 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-   
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}デフォルトタイトル{% endblock title %}</title>
-    <!-- リセットcss -->
     <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
-    <!-- 自作css -->
     <link rel="stylesheet" href="{% static 'css/all_style.css' %}">
     <link rel="stylesheet" href="{% static 'css/layout.css' %}">
-    <!-- googleFont -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quantico:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     {% block extra_css %}{% endblock extra_css %}
-    
-
 </head>
-<body class="user_screen">
+<body class="user_screen" style="display:flex; flex-direction:column; min-height:100vh;">
     <img src="/static/texture.png" class="bg_overlay_image">
     <header class="bg_deader">
         {% if tournament %}
@@ -30,28 +24,28 @@
         {% endif %}
     </header>
 
-    <main>
+    <main style="flex: 1;">
         {% block content %}
         {% endblock content %}
     </main>
 
     <footer class="menu">
         <!-- home -->
-        <a  href="{% if tournament %}{% url 'tournament_detail_user' pk=tournament.id %}{% else %}#{% endif %}" class="menu item item_user">
+        <a href="{% if tournament %}{% url 'tournament_detail_user' pk=tournament.id %}{% else %}#{% endif %}" class="item item_user">
             <span class="menu_link">
                 <img src="{% static 'img/icon/Home.webp' %}" alt="home" class="frame">
                 home
             </span>
         </a>
         <!-- schedule -->
-        <a href="{% if tournament.pdf_img_path %}{{ tournament.pdf_img_path.url }}{% else %}#{% endif %}" class="menu item item_user">
+        <a href="{% if tournament.pdf_img_path %}{{ tournament.pdf_img_path.url }}{% else %}#{% endif %}" class="item item_user">
             <span class="menu_link">
                 <img src="{% static 'img/icon/Calendar.webp' %}" alt="home" class="frame">
                 schedule
             </span>
         </a>
-
     </footer>
     {% bootstrap_javascript %}
 </body>
 </html>
+

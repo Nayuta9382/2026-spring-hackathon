@@ -32,11 +32,11 @@
             {% for item in now_schedules %}
             <div class="schedule-item block_bg" data-pk="{{ item.pk }}">
                 <div class="min_space">
-                    <label class="form_label">コメント1</label>
+                    <label class="form_label">スケジュール</label>
                     <input class="text_input" type="text" name="detail_{{ item.pk }}" value="{{ item.detail }}">
                 </div>
                 <div class="min_space">
-                    <label class="form_label">コメント2</label>
+                    <label class="form_label">結果</label>
                     <input class="text_input" type="text" name="result_{{ item.pk }}" value="{{ item.result }}">
                 </div>
                 <div class="min_space flex_container">
@@ -72,11 +72,11 @@
             {% for item in next_schedules %}
             <div class="schedule-item block_bg" data-pk="{{ item.pk }}">
                 <div class="min_space">
-                    <label class="form_label">コメント1</label>
+                    <label class="form_label">スケジュール</label>
                     <input class="text_input" type="text" name="detail_{{ item.pk }}" value="{{ item.detail }}">
                 </div>
                 <div class="min_space">
-                    <label class="form_label">コメント2</label>
+                    <label class="form_label">結果</label>
                     <input class="text_input" type="text" name="result_{{ item.pk }}" value="{{ item.result }}">
                 </div>
                 <div class="min_space flex_container">
@@ -112,11 +112,11 @@
             {% for item in previous_schedules %}
             <div class="schedule-item block_bg" data-pk="{{ item.pk }}">
                 <div class="min_space">
-                    <label class="form_label">コメント1</label>
+                    <label class="form_label">スケジュール</label>
                     <input class="text_input" type="text" name="detail_{{ item.pk }}" value="{{ item.detail }}">
                 </div>
                 <div class="min_space">
-                    <label class="form_label">コメント2</label>
+                    <label class="form_label">結果</label>
                     <input class="text_input" type="text" name="result_{{ item.pk }}" value="{{ item.result }}">
                 </div>
                 <div class="min_space flex_container">
@@ -228,11 +228,11 @@
         div.className = 'new-item block_bg';
         div.innerHTML = `
             <div class="min_space">
-                <label class="form_label">コメント1</label>
+                <label class="form_label">スケジュール</label>
                 <input class="text_input" type="text" name="new_detail" required>
             </div>
             <div class="min_space">
-                <label class="form_label">コメント2</label>
+                <label class="form_label">結果</label>
                 <input class="text_input" type="text" name="new_result">
             </div>
             <div class="min_space flex_container">
@@ -262,3 +262,4 @@
     });
 </script>
 {% endblock content %}
+

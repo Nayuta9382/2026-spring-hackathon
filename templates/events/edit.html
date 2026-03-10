@@ -50,11 +50,11 @@
     <div>  
         <label style="font-weight: bold;" class="form_label">トーナメント画像</label>
         <div class="image_center">
-            <div class="image_item">
+            <div class="image_item min_space">
                 {% if event.tournament_img %}
                 <img id="tournament_preview" src="{{ event.tournament_img.url }}" alt="イメージ" style="max-width: 200px; display: block; margin: 0 auto;">
                 {% else %}
-                <img id="tournament_preview" src="{% static 'img/icon/イメージファイルアイコン.webp' %}" alt="イメージ" style="max-width: 200px; display: block; margin: 0 auto;">
+                <img id="tournament_preview" src="{% static 'img/icon/イメージファイルアイコン.webp' %}" alt="イメージ">
                 {% endif %}
             </div>
         </div>
@@ -72,11 +72,11 @@
     <div>  
         <label style="font-weight: bold;" class="form_label">競技画像</label>
         <div class="image_center">
-            <div class="image_item">
+            <div class="image_item min_space">
                 {% if event.event_img %}
                 <img id="event_preview" src="{{ event.event_img.url }}" alt="イメージ" style="max-width: 200px; display: block; margin: 0 auto;">
                 {% else %}
-                <img id="event_preview" src="{% static 'img/icon/イメージファイルアイコン.webp' %}" alt="イメージ" style="max-width: 200px; display: block; margin: 0 auto;">
+                <img id="event_preview" src="{% static 'img/icon/イメージファイルアイコン.webp' %}" alt="イメージ">
                 {% endif %}
             </div>
         </div>
@@ -118,7 +118,7 @@
 
     <div class="side_by_side">
         <div>
-            <button type="button" class="return btn block_btn">戻る</button>
+            <a style="text-align: center;" href="{% url 'tournament_detail_operator' event.tournament.id %}"class="return btn block_btn">戻る</a>
         </div>
         <div>
             <button type="submit" class="gazou btn block_btn">編集</button>
