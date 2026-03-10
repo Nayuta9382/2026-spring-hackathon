@@ -1,7 +1,7 @@
 {% extends 'layouts/admin-layout.html' %}
 {% block title %}競技追加{% endblock title %}
 {% load static %}
-{% block extra_css %} 
+{% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/event_add.css' %}">
 {% endblock extra_css %}
 {% block content %}
@@ -57,8 +57,6 @@
             </div>
         </div>
 
-
-
         {# クラスチーム #}
         <div>
             <label class="form_label">クラスチーム</label>
@@ -80,7 +78,7 @@
 
         <div class="side_by_side">
             <div>
-                <button type="button" class="return btn block_btn">戻る</button>
+                <button type="button" class="return btn block_btn" onclick="history.back()">戻る</button>
             </div>
             <div>
                 <button type="submit" class="gazou btn block_btn">作成</button>

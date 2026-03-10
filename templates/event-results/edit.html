@@ -21,11 +21,11 @@
 
     {# クラス順位ポイント使用の有無 #}
     {% if team_group.category == 1 %}
-    <div class="side_by_side min_space">
-        <label for="class-team-flg" style="font-weight: bold; font-size: 1.5rem;" class="form_label">
+    <div class="side_by_side min_space class-flg-wrapper">
+        <label for="class-team-flg" class="form_label class-flg-label">
             クラス順位ポイント使用の有無：
         </label>
-        <select id="class-team-flg" name="class-team-flg" style="font-weight: bold; font-size: 1.5rem;">
+        <select id="class-team-flg" name="class-team-flg" class="class-flg-select">
             <option {% if event.is_class_point == True %}selected{% endif %} value="1">Yes (有効)</option>
             <option {% if event.is_class_point == False %}selected{% endif %} value="0">No (無効)</option>
         </select>
@@ -46,8 +46,8 @@
             <input type="hidden" name="{{ form.prefix }}-id" value="{{ form.instance.id }}">
 
             {# 順位入力 #}
-            <div class="min_space">
-                <label for="id_{{ form.prefix }}-rank" style="font-weight: bold;" class="form_label">順位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
+            <div class="min_space" style="display:flex; align-items:center;">
+                <label for="id_{{ form.prefix }}-rank" style="font-weight:bold; white-space:nowrap; width:6rem; flex-shrink:0;" class="form_label">順位：</label>
                 <select name="{{ form.prefix }}-rank"
                         id="id_{{ form.prefix }}-rank"
                         class="rank-select"
@@ -62,8 +62,8 @@
             </div>
 
             {# ポイント入力 #}
-            <div class="min_space point-area">
-                <label for="id_{{ form.prefix }}-point" class="form_label">ポイント：</label>
+            <div class="min_space point-area" style="display:flex; align-items:center;">
+                <label for="id_{{ form.prefix }}-point" class="form_label" style="white-space:nowrap; width:6rem; flex-shrink:0;">ポイント：</label>
                 <input type="number"
                        name="{{ form.prefix }}-point"
                        id="id_{{ form.prefix }}-point"
@@ -74,12 +74,13 @@
             </div>
 
             {# 詳細結果入力 #}
-            <div>
-                <label for="id_{{ form.prefix }}-detail" class="form_label">結果&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
+            <div style="display:flex; align-items:center;">
+                <label for="id_{{ form.prefix }}-detail" class="form_label" style="white-space:nowrap; width:6rem; flex-shrink:0;">結果：</label>
                 <input type="text"
                        name="{{ form.prefix }}-detail"
                        id="id_{{ form.prefix }}-detail"
-                       style="width: 3.5rem; font-weight: bold;"
+                       class="text_input"
+                       style="font-weight: bold;"
                        value="{{ form.detail.value|default:'' }}">
             </div>
 
