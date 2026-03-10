@@ -1,10 +1,5 @@
 @charset "utf-8";
 
-body {
-    padding: 0 200px;
-    padding-top: 100px;
-}
-
 /*スクロールバー関係*/
 .scroll_others {
     max-height: 35rem;
@@ -25,4 +20,28 @@ body {
 .scrollbar_others::-webkit-scrollbar-thumb,
 .list_admin::-webkit-scrollbar-thumb {
     background-color: #fff;
+}
+
+/* クラス順位ポイント使用の有無 */
+.class-flg-label,
+.class-flg-select {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.class-flg-wrapper {
+    justify-content: center !important;
+    gap: 1rem !important;
+}
+
+/* スマホ */
+@media screen and (max-width: 400px) {
+    .class-flg-label,
+    .class-flg-select {
+        font-size: 13px !important;
+    }
+
+    .class-flg-label {
+        white-space: nowrap;
+    }
 }
