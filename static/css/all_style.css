@@ -12,7 +12,7 @@ body {
     height: 100vh;
 }
 main{
-    padding-bottom: 24px;
+    padding-top: 24px;
 }
 
 h1,
@@ -444,7 +444,6 @@ body {
 /* このクラスは、ダミー（ヘッダーに隠れるため、上部、左右に余白を追加） */
 /* 削除クラス */
 .dummy {
-    padding-top: 20px;
     margin-left: 20px;
     margin-right: 20px;
 }
