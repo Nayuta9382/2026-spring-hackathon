@@ -17,6 +17,8 @@
     <div class="su-header">
         {% if tournament.img_path %}
             <img src="{{ tournament.img_path.url }}" alt="大会画像" class="su-icon">
+            {% else %}
+            <img src="{% static 'img/icon/noimg.png' %}" alt="大会画像" class="su-icon">
         {% endif %}
         <span class="su-title">{{ tournament.name }}</span>
     </div>
