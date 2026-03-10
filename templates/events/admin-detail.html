@@ -105,11 +105,11 @@
                     action="{% url 'event_delete' tournament_pk=event.tournament.url_uuid pk=event.id %}"
                     onsubmit="return confirm('この競技を削除します。本当によろしいですか？');">
                 {% csrf_token %}
-                <button type="submit" class="delete btn block_btn">この競技を削除する</button>
+                <button type="submit" class="delete btn block_btn">競技削除</button>
             </form>
         </div>
         <div>
-            <a href="{% url 'event_edit' tournament_pk=event.tournament.url_uuid pk=event.id %}" class="gazou btn block_btn" style="text-align:center;">競技を編集する</a>
+            <a href="{% url 'event_edit' tournament_pk=event.tournament.url_uuid pk=event.id %}" class="gazou btn block_btn" style="text-align:center;">競技編集</a>
         </div>
     </div>
 </div>
