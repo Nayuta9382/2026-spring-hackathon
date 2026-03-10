@@ -1,12 +1,12 @@
 @charset "utf-8";
 
-/* body調整 */
-body{
-    padding: 100px 129px;
-}
 
 .display_block{
     display: block
+}
+
+.display_inline{
+    display: inline-block;
 }
 
 .top {
