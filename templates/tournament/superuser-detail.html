@@ -71,7 +71,7 @@
 
     {# クラスチーム一覧 #}
     <div class="su-section-label">クラスチーム一覧</div>
-    <div class="su-scroll-box">
+    <div class="su-scroll-box" style="background: none;">
         {% for team in teams %}
             <div class="su-team-row">{{ team.name }}</div>
         {% empty %}
@@ -91,7 +91,7 @@
                 <span class="su-rank-point">{{ p.point }}pt</span>
             </div>
         {% empty %}
-            <p>ポイント設定が登録されていません。</p>
+            <p style="background: none;">ポイント設定が登録されていません。</p>
         {% endfor %}
     </div>
     <div class="su-right">
@@ -100,21 +100,19 @@
 
     {# ランキング #}
     <div class="su-section-label">ランキング</div>
-    <div class="su-scroll-box lsit_admin">
-        {% if tournament.status == 0 %}
-            <p style="color:#fff;">開催前です</p>
-        {% else %}
-            {% for team in rankings %}
+    {% if tournament.status == 0 %}
+    <p style="color:#fff;">開催前です</p>
+    {% else %}
+    {% for team in rankings %}
             <div class="ranking_item_row">
                 <span class="rank-badge">{{ team.rank }}位</span>
                 <span class="team-name">{{ team.name }}</span>
                 <span class="points">{{ team.total_point|default:0 }}pt</span>
             </div>
             {% empty %}
-            <p style="color:#fff;">現在、集計データはありません。</p>
+            <p  style="color:#fff;">現在、集計データはありません。</p>
             {% endfor %}
         {% endif %}
-    </div>
 
     {# 削除・編集ボタン #}
     <div class="side_by_side" style="margin-top:0.5rem;">
