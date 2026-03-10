@@ -7,6 +7,7 @@
 {% endblock extra_css %}
 
 {% block content %}
+<a class="btn return display_inline" href="{% url 'tournament_detail_superuser' pk=tournament.pk %}">大会詳細に戻る</a>
 {# ファイルを扱うので enctype は必須 #}
 <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
@@ -85,7 +86,7 @@
 
         <div class="button_container">
             <a class="return btn display_block" href="{% url 'tournament_detail_superuser' pk=tournament.pk %}">大会詳細に戻る</a>
-            <button type="submit" class="gazou btn add_btn">保存</button>
+            <button type="submit" class="gazou btn add_btn">編集</button>
         </div>
     </div>
 </form>
