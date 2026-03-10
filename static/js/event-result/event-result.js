@@ -1,13 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
     // プルダウン要素を取得
     const teamSelect = document.querySelector('select[name="class-team-flg"]');
+    console.log("cc");
     
     function updateDisplay() {
         let isYes;
         if (!teamSelect) {
-            isYes = "0"
+            isYes = false;
         }else{
             isYes = teamSelect.value === "1";
+            
         }
         // すべてのスコア入力エリアを取得
         const pointAreas = document.querySelectorAll('.point-area');
