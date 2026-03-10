@@ -9,6 +9,9 @@
 <div class="container">
     <div class="dummy">
         <h2 class="h1" style="text-align: center;">Result</h2>
+        {% if tournament.status == 0 %}
+        <p class="tournament-status-0">大会開催前です。</p>
+        {% else %}
 
         {# 1位 #}
         <div class="ranking_user" id="ranking-top3">
@@ -33,8 +36,9 @@
         {# 4位以下 #}
         <div class="ranking_user ranking_others" id="ranking-others">
         </div>
+        {% endif %}
 
-        <h2 class="h1" style="margin-top: 70px;">Competitions</h2>
+        <h2 class="h1" style="margin-top: 20px;">Competitions</h2>
 
         <div class="list_admin">
             {% for event in events %}
@@ -42,6 +46,8 @@
                 <img src="{% if event.event_img %}{{ event.event_img.url }}{% else %}{% static 'img/icon/no-img.png' %}{% endif %}" class="thumb-box">
                 <a style="text-decoration: none;" href="{% url 'event_detail_user' tournament_pk=event.tournament.pk pk=event.id %}" class="item-name">{{ event.name }}</a>
             </div>
+            {% empty %}
+            <p class="empty-p">競技が登録されていません。</p>
             {% endfor %}
 
             </div>
