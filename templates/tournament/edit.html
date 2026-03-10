@@ -15,11 +15,11 @@
             <div class="form">
                 <h2 class="h2">大会画像</h2>
                 <div class="preview_img">
-                    <img id="img_preview" src="" alt="">
-                    <label class="gazou btn">
+                    <img id="img_preview" alt="" src="{{ form.instance.img_path.url | default:'' }}"/>
+                    <label for="id_img_path" class="gazou btn">
                         画像選択
-                        {{ form.img_path }}
                     </label>
+                    <input type="file" name="img_path" id="id_img_path">
                 </div>
             </div>
             <div class="form name">
@@ -33,12 +33,10 @@
             <h2 class="h2">しおり</h2>
             <div class="preview_pdf">
                 <div id="preview_pdf">
-                    <p class="p">選択されていません</p>
+                    <p class="p">{{ form.instance.pdf_img_path | default:'' }}</p>
                 </div>
-                <label class="gazou btn">
-                    PDF選択
-                    {{ form.pdf_img_path }}
-                </label>
+                <label for="id_pdf_img_path" class="gazou btn">PDF選択</label>
+                <input type="file" name="pdf_img_path" id="id_pdf_img_path">
             </div>
         </div>
         
