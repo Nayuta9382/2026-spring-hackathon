@@ -16,6 +16,9 @@
         {% for item in object_list %}
         <a href="{% url 'tournament_detail_superuser' item.id %}"><li class="list_item">
             <p class="item-text">{{ item.name }}</p>
+            <div>
+                {{ item.img_path.url|default:"No Image" }}
+            </div>
         </li></a>
         {% endfor %}
     </ul>
