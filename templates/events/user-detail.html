@@ -2,8 +2,7 @@
 
 {% block title %}{% endblock title %}
 {% load static %}
-{% comment %} 自作css読み込み {% endcomment %}
-{% block extra_css %} 
+{% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/event_user_detail.css' %}">
     <style> .special-button { background-color: gold; } </style>
 {% endblock extra_css %}
@@ -15,52 +14,38 @@
 </a>
 <div class="content">
     <section>
-        <h1 class="h1 title ">{{ event.name }}</h1>
+        <h1 class="h1 title">{{ event.name }}</h1>
 
         <div>
-        <section>
-            <h2>順位</h2>
-            <ul id="ranking-list">
-                <li>読み込み中...</li>
-            </ul>
-        </section>
-            <ul class="ranking_user ranking-list">
-                <li class="ranking_one">
-                    <div class="crown"><img src="{% static 'img/crown/mark_oukan_crown1.png' %}" alt=""></div>
-                    <p class="winner_font quantico-regular">WINNER!!</p>
-                    <h1>総合、高度3,4年</h1>
-                    <h2>00pt</h2>
-                </li>
-                <li class="ranking_two">
-                    <div class="crown"><img src="{% static 'img/crown/mark_oukan_crown2.png' %}" alt=""></div>
-                    <h2>総合、高度3,4年</h2>
-                    <h3>00pt</h3>
-                </li>
-                <li class="ranking_three">
-                    <div class="crown"><img src="{% static 'img/crown/mark_oukan_crown3.png' %}" alt=""></div>
-                    <h3>総合、高度3,4年</h3>
-                    <h4>00pt</h4>
-                </li>
-    
-            </ul>
-            <ul class="ranking_user ranking_others">
-                <li class="ranking_item">
-                    <p>テキスト</p>
-                    <p>00pt</p>
-                </li>
-                <li class="ranking_item">
-                    <p>テキスト</p>
-                    <p>00pt</p>
-                </li>
-                <li class="ranking_item">
-                    <p>テキスト</p>
-                    <p>00pt</p>
-                </li>
-                <li class="ranking_item">
-                    <p>テキスト</p>
-                    <p>00pt</p>
-                </li>
-            </ul>
+            <section>
+                <h2>順位</h2>
+
+                {# 1〜3位エリア #}
+                <ul class="ranking_user" id="ranking-top">
+                    <li class="ranking_one" id="rank-1" style="display:none;">
+                        <div class="crown"><img src="{% static 'img/crown/mark_oukan_crown1.png' %}" alt=""></div>
+                        <p class="winner_font quantico-regular">WINNER!!</p>
+                        <h1 id="rank-1-name">-</h1>
+                        <h2 id="rank-1-point">0pt</h2>
+                    </li>
+                    <li class="ranking_two" id="rank-2" style="display:none;">
+                        <div class="crown"><img src="{% static 'img/crown/mark_oukan_crown2.png' %}" alt=""></div>
+                        <h2 id="rank-2-name">-</h2>
+                        <h3 id="rank-2-point">0pt</h3>
+                    </li>
+                    <li class="ranking_three" id="rank-3" style="display:none;">
+                        <div class="crown"><img src="{% static 'img/crown/mark_oukan_crown3.png' %}" alt=""></div>
+                        <h3 id="rank-3-name">-</h3>
+                        <h4 id="rank-3-point">0pt</h4>
+                    </li>
+                </ul>
+
+                {# 4位以下エリア #}
+                <ul class="ranking_user ranking_others" id="ranking-others"></ul>
+
+                {# データなし・エラー表示 #}
+                <p id="ranking-msg" style="display:none; color:#fff;"></p>
+            </section>
         </div>
 
         <div>
@@ -88,20 +73,12 @@
                     <h2 class="h2">Next</h2>
                     <ul>
                         {% for schedule in next_schedules %}
-                            <li>
-                                <p class="p">{{ schedule.detail }}</p>
-                            </li>
+                            <li><p class="p">{{ schedule.detail }}</p></li>
                             {% if schedule.result %}
-                                <li>
-
-                                    <p class="p">{{ schedule.result }}</p>
-                                </li>
+                                <li><p class="p">{{ schedule.result }}</p></li>
                             {% endif %}
                         {% empty %}
-                            <li>
-
-                                <p class="p">なし</p>
-                            </li>
+                            <li><p class="p">なし</p></li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -110,41 +87,31 @@
                     <ul>
                         {% for schedule in now_schedules %}
                             <li><p class="p">{{ schedule.detail }}</p></li>
-                            
                             {% if schedule.result %}
                                 <li><p class="p">{{ schedule.result }}</p></li>
                             {% endif %}
                         {% empty %}
-                        <li>
-                            <p class="p">なし</p>
-                        </li>
+                            <li><p class="p">なし</p></li>
                         {% endfor %}
                     </ul>
                 </div>
                 <div class="previous">
                     <h2 class="h2">Previous</h2>
-
                     <ul>
                         {% for schedule in previous_schedules %}
-                        <li>
-                            <p class="p">{{ schedule.detail }}</p>
-                        </li>
+                            <li><p class="p">{{ schedule.detail }}</p></li>
                             {% if schedule.result %}
-                            <hr>
-                            <li>
-                                <p class="p">{{ schedule.result }}</p>
-                            </li>
+                                <hr>
+                                <li><p class="p">{{ schedule.result }}</p></li>
                             {% endif %}
                         {% empty %}
-                            <li>
-                                <p class="p">なし</p>
-                            </li>
+                            <li><p class="p">なし</p></li>
                         {% endfor %}
                     </ul>
                 </div>
-
             </div>
         </div>
+    </section>
 </div>
 
 <script>
@@ -154,20 +121,40 @@ function fetchRanking() {
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
-            const list = document.getElementById('ranking-list');
-            list.innerHTML = '';
+            const msg = document.getElementById('ranking-msg');
+            const others = document.getElementById('ranking-others');
+
             if (data.results.length === 0) {
-                list.innerHTML = '<li>順位が登録されていません。</li>';
+                msg.textContent = '順位が登録されていません。';
+                msg.style.display = 'block';
+                [1,2,3].forEach(i => document.getElementById('rank-'+i).style.display = 'none');
+                others.innerHTML = '';
                 return;
             }
+
+            msg.style.display = 'none';
+            others.innerHTML = '';
+
             data.results.forEach(r => {
-                const li = document.createElement('li');
-                li.textContent = `${r.teams}: ${r.rank}位: ${r.point}`;
-                list.appendChild(li);
+                if (r.rank <= 3) {
+                    const el = document.getElementById('rank-' + r.rank);
+                    if (el) {
+                        el.style.display = '';
+                        el.querySelector('[id$="-name"]').textContent = r.teams;
+                        el.querySelector('[id$="-point"]').textContent = r.point + 'pt';
+                    }
+                } else {
+                    const li = document.createElement('li');
+                    li.className = 'ranking_item';
+                    li.innerHTML = `<p>${r.rank}位　${r.teams}</p><p>${r.point}pt</p>`;
+                    others.appendChild(li);
+                }
             });
         })
         .catch(() => {
-            document.getElementById('ranking-list').innerHTML = '<li>取得に失敗しました。</li>';
+            const msg = document.getElementById('ranking-msg');
+            msg.textContent = '取得に失敗しました。';
+            msg.style.display = 'block';
         });
 }
 

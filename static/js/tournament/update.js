@@ -1,4 +1,3 @@
-
 // 大会作成の順位のinput要素を増減する
 function rankAddInput() {
     const container = document.getElementById('rank-container');
@@ -10,7 +9,7 @@ function rankAddInput() {
 
     // Labelを作成
     const label = document.createElement('label');
-    label.innerText = `${currentCount}位: `;
+    label.innerHTML = `<h2>${currentCount}位</h2>`;
 
     // 入力欄を作成
     const input = document.createElement('input');
@@ -31,7 +30,7 @@ function updateRankLabels() {
         const rank = index + 1;
         // ラベルを更新
         const label = row.querySelector('label');
-        if (label) label.innerText = `${rank}位: `;
+        if (label) label.innerHTML = `<h2>${currentCount}位</h2>`;
         // プレースホルダーも更新
         const input = row.querySelector('input');
         if (input) input.placeholder = `${rank}位のポイント`;
@@ -52,13 +51,15 @@ function teamAddInput() {
     const input = document.createElement('input');
     input.type = 'text';
     input.name = 'teams';
+    input.className = 'class_team_input';
     input.placeholder = `クラスチーム名を入力`;
 
     // 削除ボタンを作成
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
-    removeBtn.innerText = '×';
-    removeBtn.style.marginLeft = '5px';
+    removeBtn.innerText = '削除';
+    removeBtn.style.marginLeft = '1rem';
+    removeBtn.className = 'delete_btn';
     removeBtn.onclick = function() { removeBtnEvent(this); };
     row.appendChild(input);
     row.appendChild(removeBtn);

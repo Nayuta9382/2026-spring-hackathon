@@ -1,526 +1,108 @@
 {% extends 'layouts/admin-layout.html' %}
 {% load static %}
-
+{% block extra_css %} 
+    <link rel="stylesheet" href="{% static 'css/event_add.css' %}">
+{% endblock extra_css %}
 {% block content %}
-<h1>競技作成</h1>
+    <h1 class="text_center">競技追加</h1>
+    <form action="" class="form space" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {# 1. 競技名 #}
+        <div>
+            <label class="form_label">競技名</label>
+            <input class="text_input" type="text" name="name">
+        </div>
+        <div>
+            <label class="form_label">競技説明</label>
+            <textarea class="text_input" name="detail" id="description" cols="150"rows="8"></textarea>
+        </div>
+        <div>
+            <!-- プルダウン + ラベル -->
+            <label for="id_category" style="font-weight: bold;" class="form_label">競技カテゴリ</label>
+            <select name="category" id="id_category" onchange="toggleTeamsDisplay()" style="width: 100%; height: 30px; font-size: 1rem;">
+                <option value="0" {% if event.category == 0 %}selected{% endif %}>一般 (独自チーム)</option>
+                <option value="1" {% if event.category == 1 %}selected{% endif %}>クラス対抗</option>
+            </select>
+        </div>
+        <div>
+            <div>
+                <label style="font-weight: bold;" class="form_label">トーナメント画像</label>
+            </div>
+            <div class="image_center">
+                <img id="tournament_preview" class="image_item" src="{% static 'img/icon/イメージファイルアイコン.webp' %}" alt="イメージ" style="max-width: 200px; display: block; margin: 0 auto;">
+            </div>
 
-<form action="" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
+            <div class="pos_right">
+                <button type="button" id="tournament_btn" class="gazou btn btn_margin">
+                    画像を選択
+                </button>
+                <input type="file" id="tournament_input" name="tournament_img" style="display: none;" accept="image/*" />
+            </div>
+        </div>
 
-    {# 1. 競技名 #}
-    <div>
-        <label>競技名</label>
-        <input type="text" name="name" value="{{ event.name }}">
-    </div>
+        <div>
+            <div>
+                <label style="font-weight: bold;" class="form_label">競技画像</label>
+            </div>
+            <div class="image_center">
+                <img id="event_preview" class="image_item" src="{% static 'img/icon/イメージファイルアイコン.webp' %}" alt="イメージ" style="max-width: 200px; display: block; margin: 0 auto;">
+            </div>
 
-    {# 2. 競技カテゴリー (セレクトボックス) #}
-    <div>
-        <label>競技カテゴリー</label>
-        <select name="category" id="id_category" onchange="toggleTeamsDisplay()">
-            <option value="0" {% if event.category == 0 %}selected{% endif %}>一般 (独自チーム)</option>
-            <option value="1" {% if event.category == 1 %}selected{% endif %}>クラス対抗</option>
-        </select>
-    </div>
+            <div class="pos_right">
+                <button type="button" id="event_btn" class="gazou btn btn_margin">
+                    画像を選択
+                </button>
+                <input type="file" id="event_input" name="event_img" style="display: none;" accept="image/*" />
+            </div>
+        </div>
 
-    {# 3. 競技詳細 #}
-    <div>
-        <label>競技詳細・ルール</label>
-        <textarea name="detail" rows="5">{{ event.detail }}</textarea>
-    </div>
 
-    <hr>
 
-    {# 4. トーナメント画像 #}
-    <div>
-        <label>トーナメント画像</label>
-        {% if event.tournament_img %}
-            <p>現在: <img src="{{ event.tournament_img.url }}" width="150"></p>
-        {% endif %}
-        <input type="file" name="tournament_img">
-    </div>
-
-    {# 5. 競技イメージ画像 #}
-    <div>
-        <label>競技イメージ画像</label>
-        {% if event.event_img %}
-            <p>現在: <img src="{{ event.event_img.url }}" width="150"></p>
-        {% endif %}
-        <input type="file" name="event_img">
-    </div>
-
-    <hr>
-
-    {# 6. チーム設定エリア #}
-    <div id="teams-section">
-        <h3>チーム設定</h3>
-
+        {# クラスチーム #}
+        <div>
+            <label class="form_label">クラスチーム</label>
+        </div>
         {# カテゴリーが「一般(0)」の時に表示する入力エリア #}
         <div id="custom-teams-area">
             <div id="teams-container">
-                {% for team in teams %}
-                    <div class="input-row">
-                        <input type="text" name="teams" value="{{ team.name }}" placeholder="チーム名を入力">
-                        {# 最初の行以外には削除ボタンを表示 #}
-                        {% if not forloop.first %}
-                            <input type="button" value="x" onclick="removeBtnEvent(this)">
-                        {% endif %}
-                    </div>
-                {% empty %}
-                    {# チームが存在しない場合の初期行 #}
-                    <div class="input-row">
-                        <input type="text" name="teams" placeholder="チーム名を入力">
-                    </div>
-                {% endfor %}
-            </div>
-            <button type="button" onclick="teamAddInput()">チームを追加</button>
-        </div>
-
-        {# カテゴリーが「クラス対抗(1)」の時に表示するメッセージ #}
-        <div id="class-teams-msg" style="display: none;">
-            <p><strong>クラス対抗モード適用中:</strong> 大会共通のクラスチーム設定が適用されます。</p>
-        </div>
-    </div>
-
-    <hr>
-
-    {# 7. アクションボタン #}
-    <div>
-        <button type="submit">更新保存</button>
-    </div>
-</form>
-
-
-<style>
-        @media screen and (min-width: 640px) {
-            body {
-                padding: 0 40px;
-            }
-        }
-
-        body {
-            padding: 0 20px;
-            padding-top: 100px;
-        }
-
-        .bg_deader {
-            /* ヘッダーを固定する */
-            position: fixed;
-            /* 画面の上部に固定 */
-            top: 0;
-            left: 0;
-            right: 0;
-            /* 画面の幅いっぱいに広げる */
-            /* width: 100%; */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #000;
-            height: 100px;
-        }
-
-        /* クリッピングマスク */
-        .image_circle2 {
-            width: 4rem;
-            height: 4rem;
-            object-fit: none;
-            border-radius: 50%;
-        }
-
-        .form {
-            border: none;
-        }
-
-        .form_label {
-            font-weight: bold;
-            color: #fff;
-        }
-
-        .text_input {
-            display: block;
-            width: 100%;
-        }
-
-        .input_text {
-            flex-grow: 1;
-            /* 残りの幅をすべて埋める */
-            /* padding: 10px; */
-            border: 1px solid #ccc;
-        }
-
-        /* プルダウン関係 */
-        .pulldown {
-            outline: none;
-        }
-
-        /* 3. 【文字】背景の上に置く */
-        .content_container {
-            width: 100%;
-        }
-
-        * 共通のスクリーン設定 */ .user_screen::after,
-        .admin_screen::after {
-            height: 100vh;
-            z-index: -2;
-            width: 100vw;
-            position: fixed;
-            top: 0;
-            left: 0;
-            content: "";
-
-        }
-
-
-
-        .user_screen::after {
-            background: linear-gradient(to bottom, #4800CF 0%, #000000 100%);
-        }
-
-        .admin_screen::after {
-            background: linear-gradient(to bottom, #FF00EE 0%, #3C0038 100%);
-        }
-
-        /* 3. 【文字】背景の上に置く */
-        .content_container {
-            width: 100%;
-        }
-
-        /*背景の画像*/
-        .bg_overlay_image {
-            width: 100%;
-            opacity: 0.13;
-            position: fixed;
-            top: 0px;
-            left: 0px;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .space {
-            display: grid;
-            row-gap: 2rem;
-        }
-
-        .min_space {
-            margin-bottom: 1rem;
-        }
-
-        /*スクロールバー関係*/
-        .scroll_others {
-            max-height: 35rem;
-            overflow-y: scroll;
-            padding-right: 20px;
-        }
-
-        .scrollbar_others::-webkit-scrollbar,
-        .list_admin::-webkit-scrollbar {
-            width: 16px;
-        }
-
-        .scrollbar_others::-webkit-scrollbar-track,
-        .list_admin::-webkit-scrollbar-track {
-            background-color: #5D5D5D;
-        }
-
-        .scrollbar_others::-webkit-scrollbar-thumb,
-        .list_admin::-webkit-scrollbar-thumb {
-            background-color: #fff;
-        }
-
-        .block_bg {
-            display: block;
-            background-color: rgba(255, 255, 255, 0.2);
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        /* メニュー */
-        .menu_link {
-            /* 中身を揃える */
-            display: block;
-            text-align: center;
-            /* 上下の中央揃え */
-            align-content: center;
-            color: #fff;
-            font-weight: bold;
-        }
-
-        .menu {
-            margin: 1rem 0;
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-            text-decoration: none;
-        }
-
-        .item {
-            width: 100%;
-            padding: 1rem;
-        }
-
-        .item_user {
-            background: #16006C;
-        }
-
-        .item_admin {
-            background: #8B0482;
-        }
-
-        /* 画像の写真フレーム化 */
-        .frame {
-            object-fit: contain;
-            width: 100%;
-            height: 55px;
-        }
-
-        /* 戻るボタン */
-        .sub_return_bg {
-            display: flex;
-            /* サイズ設定: remを使用してルート基準にする */
-            width: 3rem;
-            /* 強制的に正方形を維持 */
-            aspect-ratio: 1 / 1;
-            background-color: rgba(255, 255, 255, 0.5);
-            border-radius: 2px;
-        }
-
-        .sub_return {
-            /* 親要素（正方形）に対しての相対サイズ */
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .text_center {
-            text-align: center;
-            color: #fff;
-        }
-
-        .search-container {
-            display: flex;
-            /* 親要素の幅いっぱい */
-            width: 100%;
-            /* 要素間の隙間 */
-            gap: 1rem;
-            /* box-sizing: border-box; */
-            /* paddingを含めた幅計算 */
-        }
-
-        /* ボタン関係 */
-        .btn {
-            text-decoration: none;
-            width: max-content;
-            margin: auto;
-            padding: 0.5rem;
-            font-weight: bold;
-            color: #fff;
-            /* 角丸 */
-            border-radius: 10px;
-            transition: 0.5s;
-            /* ドロップジャドウ */
-            box-shadow: 0px 0px 3px 3px rgba(255, 255, 255, 0.3);
-        }
-
-        /* ボタンの余白 */
-        .btn_margin {
-            padding-left: 3rem;
-            padding-right: 3rem;
-            text-align: right;
-        }
-
-        .gazou {
-            border: 3px solid #77FF00;
-            background: #52BC77;
-        }
-
-        .gazou:hover {
-            color: #52BC77;
-            background: #fff;
-        }
-
-        .update {
-            width: 100%;
-
-        }
-
-        .return {
-            border: 3px solid #FF00ED;
-            background: #B53DAD;
-        }
-
-        .return:hover {
-            color: #B53DAD;
-            background: #fff;
-        }
-
-        .block_btn {
-            width: 100%;
-            /* ボタンをブロック要素化して幅を有効にする */
-            display: block;
-        }
-
-        .pos_right {
-            text-align: right;
-        }
-
-        .side_by_side {
-            display: flex;
-            margin-left: 0;
-            gap: 1rem;
-            width: 100%;
-            /* 親コンテナ自体も横いっぱいに */
-        }
-
-        /* 画像UI */
-        .image_center {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .image_item {
-            /* 中身のセンタリング */
-            display: block;
-            /* 上下の中央揃え */
-            align-content: center;
-            justify-items: center;
-            width: 15%;
-            height: auto;
-            /* background: #D9D9D9; */
-        }
-
-        /* ボタン関係 */
-        .btn {
-            text-decoration: none;
-            width: max-content;
-            margin: auto;
-            padding: 0.5rem;
-            font-weight: bold;
-            color: #fff;
-            /* 角丸 */
-            border-radius: 10px;
-            transition: 0.5s;
-            /* ドロップジャドウ */
-            box-shadow: 0px 0px 3px 3px rgba(255, 255, 255, 0.3);
-        }
-
-        .gazou {
-            border: 3px solid #77FF00;
-            background: #52BC77;
-        }
-
-        .gazou:hover {
-            color: #52BC77;
-            background: #fff;
-        }
-
-        .delete {
-            border: 3px solid #FF0000;
-            background: #AC0000;
-        }
-
-        .delete:hover {
-            color: #AC0000;
-            background: #fff;
-        }
-    </style>
-</head>
-
-<body style="background-color: #FF00EE;">
-    <img src="/static/texture.png" class="bg_overlay_image">
-    <header class="bg_deader">
-        <img src="{% static 'img/icon/ダミー.png' %}" alt="大会の画像" class="image_circle2">
-        <h1 style="color: white; padding-left: 1rem;">大会名</h1>
-    </header>
-    <main>
-        <h1 class="text_center">競技追加</h1>
-        <form action="#" class="space">
-            <div>
-                <label class="form_label">競技名</label>
-                <input class="text_input" type="text" name="name" value="">
-            </div>
-            <div>
-                <label class="form_label">競技名説明</label>
-                <input class="text_input" type="text" name="description" value="">
-            </div>
-            <div>
-                <!-- プルダウン + ラベル -->
-                <label for="prefecture" style="font-weight: bold;" class="form_label">競技カテゴリ</label>
-                <select id="prefecture" name="prefecture" style="width: 100%; font-size: 1rem;">
-                    <option value="">選択してください</option>
-                    <option value="private">個人戦</option>
-                    <option value="team">団体戦</option>
-                </select>
-            </div>
-            <div>
-                <div>
-                    <label for="prefecture" style="font-weight: bold;" class="form_label">トーナメント画像</label>
-                </div>
-                <div class="image_center">
-                    <img class="image_item" src="static/img/icon/イメージファイルアイコン.webp" alt="イメージ">
-                </div>
-            </div>
-            <div>
-                <div>
-                    <label for="prefecture" style="font-weight: bold;" class="form_label">競技画像</label>
-                </div>
-                <div class="image_center">
-                    <img class="image_item" src="static/img/icon/イメージファイルアイコン.webp" alt="イメージ">
-                </div>
-            </div>
-            <div>
-                <label class="form_label">クラスチーム</label>
-                <input class="text_input" type="text" name="name" value="">
-            </div>
-            <div>
                 <div class="search-container min_space">
-                    <input class="input_text" type="text" id="comment" name="comment">
-                    <button type="submit" class="delete btn">削除</button>
-                </div>
-                <div class="pos_right">
-                    <button type="submit" class="gazou btn btn_margin">追加</button>
+                    <input class="text_input" type="text" name="teams"  placeholder="クラスチーム名を入力">
                 </div>
             </div>
-
-            <div class="side_by_side">
-                <div>
-                    <button type="submit" class="gazou btn block_btn">更新</button>
-                </div>
-                <div>
-                    <button type="button" class="return btn block_btn">戻る</button>
-                </div>
+            <div class="pos_right">
+                <button type="button" onclick="teamAddInput()"  class="gazou btn btn_margin">追加</button>
             </div>
-        </form>
-    </main>
+        </div>
+        <div id="class-teams-msg" style="display: none;">
+            <p>大会共通のクラスチームが使用されます。</p>
+        </div>
 
-</body>
-
-<script>
-    /**
-     * セレクトボックスの値によってチーム入力欄の表示/非表示を切り替える
-     */
-    function toggleTeamsDisplay() {
-        const categorySelect = document.getElementById('id_category');
-        const customArea = document.getElementById('custom-teams-area');
-        const classMsg = document.getElementById('class-teams-msg');
-        
-        if (categorySelect.value === "0") {
-            // 一般(0)の場合は入力欄を表示、メッセージを隠す
-            customArea.style.display = 'block';
-            classMsg.style.display = 'none';
-        } else {
-            // クラス対抗(1)の場合は入力欄を隠し、メッセージを表示
-            customArea.style.display = 'none';
-            classMsg.style.display = 'block';
-        }
-    }
-
-    // ページ読み込み時に実行して現在の設定を反映
-    document.addEventListener('DOMContentLoaded', function() {
-        toggleTeamsDisplay();
-    });
-</script>
+        <div class="side_by_side">
+            <div>
+                <button type="button" class="return btn block_btn">戻る</button>
+            </div>
+            <div>
+                <button type="submit" class="gazou btn block_btn">作成</button>
+            </div>
+        </div>
+    </form>
+{% if form.errors %}
+      <div class="alert alert-danger" style="color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+        <strong>入力内容に不備があります。以下の項目を確認してください：</strong>
+        <ul>
+          {% for field in form %}
+            {% if field.errors %}
+              <li>{{ field.label }}</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+{% endif %}
 
 {# チーム追加・削除の関数が含まれる外部JS #}
-<script src="{% static 'js/events/edit.js' %}"></script>
+<script>
+    const defaultSrc = "{% static 'img/icon/イメージファイルアイコン.webp' %}";
+</script>
+<script src="{% static 'js/events/create.js' %}"></script>
 
 {% endblock content %}

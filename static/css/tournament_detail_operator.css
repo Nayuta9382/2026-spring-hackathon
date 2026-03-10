@@ -3,6 +3,7 @@
 .tournament-header {
     position: relative;
     padding-left: 50px;
+    z-index: -1;
 }
 
 .return-btn {
@@ -117,4 +118,150 @@
     width: 50px;
     height: 50px;
     flex-shrink: 0;
+}
+
+/* 追記*/
+
+.su-page {
+    padding: 1rem;
+    display: grid;
+    row-gap: 0.5rem;
+}
+
+.su-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.su-icon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.su-title {
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.su-status {
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.su-section-label {
+    color: #fff;
+    font-weight: bold;
+    margin-top: 0.8rem;
+    font-size: 0.95rem;
+}
+
+.su-info-box {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    padding: 0.5rem 0.8rem;
+    color: #fff;
+    font-size: 0.9rem;
+    word-break: break-all;
+}
+
+.su-scroll-box {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    max-height: 12rem;
+    overflow-y: auto;
+}
+
+.su-team-row {
+    padding: 0.4rem 0.8rem;
+    background: rgba(255, 255, 255, 0.15);
+    margin-bottom: 4px;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+.su-right {
+    text-align: right;
+}
+
+.su-rank-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+}
+
+.su-rank-item {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    padding: 0.3rem 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+.su-rank-label {
+    font-weight: bold;
+}
+
+.su-rank-point {
+    font-style: italic;
+}
+
+.su-password-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.su-pw-hidden {
+    letter-spacing: 0.2rem;
+    color: #fff;
+}
+
+.su-pw-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0;
+    margin-left: 0.5rem;
+}
+
+.su-page select {
+    background: #fff;
+    color: #000;
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: none;
+    font-size: 1rem;
+}
+.url-info{
+    display: flex;   
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.flex-link-layout .h2{
+    margin: 0;
+}
+.flex-link-layout{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+}
+.flex-link-layout a{
+    text-decoration: none;
+    display: block;
+    line-height: 1;
+    color: #fff;
+    width: fit-content;
+    margin: 0;
 }

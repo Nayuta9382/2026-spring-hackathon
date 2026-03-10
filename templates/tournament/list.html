@@ -7,86 +7,18 @@
 {% endblock extra_css %}
 {% block content %}
 
-<div>
-    <h1>大会一覧</h1>
-    <a href="{% url 'tournament_create'%}">大会作成</a>
-    {% for item in object_list %}
-    <li><a href="{% url 'tournament_detail_superuser' item.id %}">{{ item.name }}</a></li>
-    {% endfor %}
-</div>
-
-
-<div class="item-btns">
-   <a href="#" class="btn return">戻る</a>
-</div>
 <div class="container">
-    <div class="dummy">
-        <h2 class="h1">大会一覧</h2>
-
-        <div class="list_admin">
-            <div class="list_item">
-                <div class="thumb"></div>
-                <div class="item-text">あそび大全（トイボクシング）</div>
-                <div class="item-btns">
-                    <a href="#" class="btn gazou">編集</a>
-                    <a href="#" class="btn delete">削除</a>
-                </div>
-            </div>
-
-            <div class="list_item">
-                <div class="thumb"></div>
-                <div class="item-text">あそび大全（トイボクシング）</div>
-                <div class="item-btns">
-                    <a href="#" class="btn gazou">編集</a>
-                    <a href="#" class="btn delete">削除</a>
-                </div>
-            </div>
-
-            <div class="list_item">
-                <div class="thumb"></div>
-                <div class="item-text">あそび大全（トイボクシング）</div>
-                <div class="item-btns">
-                    <a href="#" class="btn gazou">編集</a>
-                    <a href="#" class="btn delete">削除</a>
-                </div>
-            </div>
-
-            <div class="list_item">
-                <div class="thumb"></div>
-                <div class="item-text">あそび大全（トイボクシング）</div>
-                <div class="item-btns">
-                    <a href="#" class="btn gazou">編集</a>
-                    <a href="#" class="btn delete">削除</a>
-                </div>
-            </div>
-
-            <div class="list_item">
-                <div class="thumb"></div>
-                <div class="item-text">あそび大全（トイボクシング）</div>
-                <div class="item-btns">
-                    <a href="#" class="btn gazou">編集</a>
-                    <a href="#" class="btn delete">削除</a>
-                </div>
-            </div>
-
-            <div class="list_item">
-                <div class="thumb"></div>
-                <div class="item-text">あそび大全（トイボクシング）</div>
-                <div class="item-btns">
-                    <a href="#" class="btn gazou">編集</a>
-                    <a href="#" class="btn delete">削除</a>
-                </div>
-            </div>
-            <div class="list_item">
-                <div class="thumb"></div>
-                <div class="item-text">あそび大全（トイボクシング）</div>
-                <div class="item-btns">
-                    <a href="#" class="btn gazou">編集</a>
-                    <a href="#" class="btn delete">削除</a>
-                </div>
-            </div>
-            
-        </div>
+    <h1>大会一覧</h1>
+    <div class="add_btn">
+        <a class="gazou btn add_btn" href="{% url 'tournament_create'%}">大会作成</a>
     </div>
+    <ul class="list_admin">
+        {% for item in object_list %}
+        <a href="{% url 'tournament_detail_superuser' item.id %}"><li class="list_item">
+            <p class="item-text">{{ item.name }}</p>
+        </li></a>
+        {% endfor %}
+    </ul>
 </div>
+
 {% endblock content %}

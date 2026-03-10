@@ -63,7 +63,7 @@ class EventCreateView(CreateView):
 
     def get_success_url(self):
         return reverse_lazy(
-            'tournament_detail_superuser',
+            'tournament_detail_operator-detail',
             kwargs={'pk': self.object.tournament.id}
         )
 
