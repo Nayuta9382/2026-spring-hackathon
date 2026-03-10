@@ -29,7 +29,7 @@ body {
 .image_circle2 {
     width: 4rem;
     height: 4rem;
-    object-fit: none;
+    object-fit: cover;
     border-radius: 50%;
 }
 
@@ -285,7 +285,10 @@ body {
     /* 上下の中央揃え */
     align-content: center;
     justify-items: center;
-    width: 100%;
+    max-width: 100%;
+    max-width: 50%;
+    padding: 5%;
+    /* height: 100%; */
     /* margin: 0 auto; */
 }
 
@@ -339,3 +342,19 @@ body {
     /* padding: 20%; */
     background: rgba(255, 255, 255, 0.3);
 }
+
+
+/* モバイルサイズ */
+@media screen and (max-width: 500px) {
+    .image_items {
+        /* 中身のセンタリング */
+        display: block;
+        /* 上下の中央揃え */
+        align-content: center;
+        justify-items: center;
+        width: 100%;
+        /* height: 100%; */
+        /* margin: 0 auto; */
+    }
+}
+
