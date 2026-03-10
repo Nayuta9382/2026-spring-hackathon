@@ -311,7 +311,7 @@ body {
 .image_circle2 {
     width: 4rem;
     height: 4rem;
-    object-fit: none;
+    object-fit: cover;
     border-radius: 50%;
 }
 
