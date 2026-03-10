@@ -31,6 +31,8 @@
                         <a href="{% url 'event_edit' tournament_pk=event.tournament.pk pk=event.id %}" style="text-align: center;" class="btn gazou">編集</a>
                     </div>
                 </div>
+            {% empty %}
+            <p>競技が登録されていません</p>
             {% endfor %}
             </div>
 
@@ -43,6 +45,8 @@
                     <span class="team-name">{{rank.name}}</span>
                     <span class="points">{{rank.total_point}}pt</span>
                 </div>
+             {% empty %}
+            <p>集計対象の競技が登録されていません</p>
             {% endfor %}
               
             </div>
