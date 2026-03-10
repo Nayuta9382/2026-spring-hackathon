@@ -15,10 +15,10 @@
     <ul class="list_admin">
         {% for item in object_list %}
         <a href="{% url 'tournament_detail_superuser' item.id %}"><li class="list_item">
-            <p class="item-text">{{ item.name }}</p>
-            <div>
-                {{ item.img_path.url|default:"No Image" }}
+            <div class="thumb">
+                <img src="{% if item.img_path %}{{ item.img_path.url }}{% else %}{% static 'img/icon/noimg.png' %}{% endif %}" alt="{{ item.name }}">
             </div>
+            <p class="item-text">{{ item.name }}</p>
         </li></a>
         {% endfor %}
     </ul>
