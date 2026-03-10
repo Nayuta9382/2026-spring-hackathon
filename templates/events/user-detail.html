@@ -19,7 +19,9 @@
         <div>
             <section>
                 <h2>順位</h2>
-
+                {% if tournament.status == 0 %}
+                <p style="color:#fff;">大会開催前です。</p>
+                {% else %}
                 {# 1〜3位エリア #}
                 <ul class="ranking_user" id="ranking-top">
                     <li class="ranking_one" id="rank-1" style="display:none;">
@@ -45,6 +47,7 @@
 
                 {# データなし・エラー表示 #}
                 <p id="ranking-msg" style="display:none; color:#fff;"></p>
+                {% endif %}
             </section>
         </div>
 

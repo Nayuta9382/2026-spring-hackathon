@@ -1,7 +1,7 @@
 {% extends 'layouts/admin-layout.html' %}
 {% load static %}
 {% comment %} 自作css読み込み {% endcomment %}
-{% block extra_css %} 
+{% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/tournament-edit.css' %}">
     <style> .special-button { background-color: gold; } </style>
 {% endblock extra_css %}
@@ -15,7 +15,7 @@
             <div class="form">
                 <h2 class="h2">大会画像</h2>
                 <div class="preview_img">
-                    <img id="img_preview" alt="" src="{{ form.instance.img_path.url | default:'' }}"/>
+                    <img id="img_preview" alt="" src="{% if form.instance.img_path  %}{{ form.instance.img_path.url | default:'' }}{% else %}{% endif %}"/>
                     <label for="id_img_path" class="gazou btn">
                         画像選択
                     </label>
@@ -26,9 +26,9 @@
                 <h2 class="h2">大会名</h2>
                 {{ form.name }}
             </div>
-    
+
         </div>
-        
+
         <div class="form">
             <h2 class="h2">しおり</h2>
             <div class="preview_pdf">
@@ -39,7 +39,7 @@
                 <input type="file" name="pdf_img_path" id="id_pdf_img_path">
             </div>
         </div>
-        
+
         <div class="form">
             <h2 class="h2">大会パスワード</h2>
             {{ form.password }}
@@ -82,9 +82,9 @@
                 {% endfor %}
             </div>
         </div>
-    
+
         <div class="button_container">
-            <a class="return btn display_block" href="{% url 'tournament_list' %}">大会一覧に戻る</a>
+            <a class="return btn display_block" href="{% url 'tournament_detail_superuser' pk=tournament.pk %}">大会詳細に戻る</a>
             <button type="submit" class="gazou btn add_btn">保存</button>
         </div>
     </div>
