@@ -57,10 +57,10 @@
     <div style="display:flex; flex-direction:column; align-items:stretch;">
         <h2 class="h2">MatchSchedule</h2>
         <div class="schedule">
-            <div class="next">
-                <h2 class="h2">Next</h2>
+            <div class="now">
+                <h2 class="h2">Now</h2>
                 <ul>
-                    {% for schedule in next_schedules %}
+                    {% for schedule in now_schedules %}
                     <li>
                         <p class="p">{{ schedule.detail }}</p>
                     </li>
@@ -76,10 +76,10 @@
                     {% endfor %}
                 </ul>
             </div>
-            <div class="now">
-                <h2 class="h2">Now</h2>
+            <div class="next">
+                <h2 class="h2">Next</h2>
                 <ul>
-                    {% for schedule in now_schedules %}
+                    {% for schedule in next_schedules %}
                     <li>
                         <p class="p">{{ schedule.detail }}</p>
                     </li>

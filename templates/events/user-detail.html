@@ -19,9 +19,7 @@
         <div>
             <section>
                 <h2>順位</h2>
-                {% if tournament.status == 0 %}
-                <p style="color:#fff;">大会開催前です。</p>
-                {% else %}
+
                 {# 1〜3位エリア #}
                 <ul class="ranking_user" id="ranking-top">
                     <li class="ranking_one" id="rank-1" style="display:none;">
@@ -47,7 +45,6 @@
 
                 {# データなし・エラー表示 #}
                 <p id="ranking-msg" style="display:none; color:#fff;"></p>
-                {% endif %}
             </section>
         </div>
 
@@ -72,10 +69,10 @@
         <div>
             <h2 class="h2">MatchSchedule</h2>
             <div class="schedule">
-                <div class="next">
-                    <h2 class="h2">Next</h2>
+                <div class="now">
+                    <h2 class="h2">Now</h2>
                     <ul>
-                        {% for schedule in next_schedules %}
+                        {% for schedule in now_schedules %}
                             <li><p class="p">{{ schedule.detail }}</p></li>
                             {% if schedule.result %}
                                 <li><p class="p">{{ schedule.result }}</p></li>
@@ -85,10 +82,10 @@
                         {% endfor %}
                     </ul>
                 </div>
-                <div class="now">
-                    <h2 class="h2">Now</h2>
+                <div class="next">
+                    <h2 class="h2">Next</h2>
                     <ul>
-                        {% for schedule in now_schedules %}
+                        {% for schedule in next_schedules %}
                             <li><p class="p">{{ schedule.detail }}</p></li>
                             {% if schedule.result %}
                                 <li><p class="p">{{ schedule.result }}</p></li>
