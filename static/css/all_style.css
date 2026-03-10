@@ -152,7 +152,7 @@ ul.list_admin {
 /*その他ランキング*/
 .ranking_others {
     max-height: 200px;
-    overflow-y: scroll;
+    overflow-y: auto;
     padding-right: 20px;
 }
 
@@ -173,7 +173,7 @@ ul.list_admin {
     flex-flow: column;
     gap: 10px;
     max-height: 190px;
-    overflow-y: scroll;
+    overflow-y: auto;
     padding-right: 20px;
 }
 
