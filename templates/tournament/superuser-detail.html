@@ -78,9 +78,6 @@
             <li class="su-team-row">クラスチームが登録されていません</li>
         {% endfor %}
     </ul>
-    <div class="su-right">
-        <a href="{% url 'tournament_update' tournament.id %}" class="gazou btn">編集</a>
-    </div>
 
     {# ランクポイント #}
     <div class="su-section-label">ランクポイント</div>
@@ -93,9 +90,6 @@
         {% empty %}
             <p style="background: none;">ポイント設定が登録されていません。</p>
         {% endfor %}
-    </div>
-    <div class="su-right">
-        <a href="{% url 'tournament_update' tournament.id %}" class="gazou btn">編集</a>
     </div>
 
     {# ランキング #}
@@ -140,11 +134,6 @@
             <button type="submit" class="gazou btn">確定</button>
         </div>
     </form>
-
-    {% comment %} {# 競技作成リンク #}
-    <div style="margin: 1rem 0;">
-        <a href="{% url 'event_create' tournament_pk=tournament.pk %}" class="su-btn su-btn-green">競技作成</a>
-    </div> {% endcomment %}
 
     {# 戻るボタン（下） #}
     <a href="{% url 'tournament_list' %}" class="return btn block_btn" style="text-align:center;">戻る</a>
