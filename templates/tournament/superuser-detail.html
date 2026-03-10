@@ -30,33 +30,48 @@
         {% if tournament.pdf_img_path %}
             <a href="{{ tournament.pdf_img_path.url }}" target="_blank" style="color:#fff;">{{ tournament.pdf_img_path.name }}</a>
         {% else %}
-            規約PDFは登録されていません。
+            大会PDFは登録されていません。
         {% endif %}
     </div>
 
     {# 大会パスワード #}
-    <div class="su-section-label">大会パスワード</div>
-    <div class="su-info-box su-password-box">
-        <span id="pw-text" class="su-pw-hidden">••••••••</span>
-        <span id="pw-real" style="display:none;">{{ tournament.password }}</span>
-        <button type="button" class="su-pw-toggle" onclick="togglePassword()">👁</button>
+    <div class="pass_content">
+        <div class="su-section-label">大会パスワード</div>
+        <div class="su-info-box su-password-box">
+            <span id="pw-text" class="su-pw-hidden">••••••••</span>
+            <span id="pw-real" style="display:none;">{{ tournament.password }}</span>
+            <div class="copy_display_btn">
+                <button onclick="copyPass()" class="pass_copy_btn"> <img src="{% static 'img/icon/copy.png' %}" alt="コピー" class="copy_img"> </button>
+                <button type="button" class="su-pw-toggle" onclick="togglePassword()"> <img src="{% static 'img/icon/eye.png' %}" alt="表示/非表示" class="eye_img"> </button>
+            </div>
+        </div>
+        <p id="pass_message"></p>
     </div>
 
     {# 大会URL（運営者） #}
-    <div class="su-section-label">大会URL（運営者）</div>
-    <div class="su-info-box">
-        <a href="{{ admin_url }}" target="_blank" style="color:#fff;">{{ admin_url }}</a>
+    <div class="url_content">
+        <div class="su-section-label">大会URL（運営者）</div>
+        <div class="su-info-box">
+            <a href="{{ admin_url }}" target="_blank" style="color:#fff;" id="admin_url">{{ admin_url }}</a>
+            <button onclick="copyAdminUrl()" class="user_url_copy_btn"> <img src="{% static 'img/icon/copy.png' %}" alt="コピー" class="copy_img"> </button>
+        </div>
+        <p id="admin_message"></p>
     </div>
 
     {# 大会URL（一般） #}
-    <div class="su-section-label">大会URL（一般）</div>
-    <div class="su-info-box">
-        <a href="{{ user_url }}" target="_blank" style="color:#fff;">{{ user_url }}</a>
+    <div class="url_content">
+
+        <div class="su-section-label">大会URL（一般）</div>
+        <div class="su-info-box">
+            <a href="{{ user_url }}" target="_blank" style="color:#fff;" id="user_url">{{ user_url }}</a>
+            <button onclick="copyUserUrl()" class="user_url_copy_btn"> <img src="{% static 'img/icon/copy.png' %}" alt="コピー" class="copy_img"> </button>
+        </div>
+        <p id="user_message"></p>
     </div>
 
     {# クラスチーム一覧 #}
     <div class="su-section-label">クラスチーム一覧</div>
-    <div class="su-scroll-box">
+    <div class="su-scroll-box" style="background: none;">
         {% for team in teams %}
             <div class="su-team-row">{{ team.name }}</div>
         {% empty %}
@@ -76,7 +91,7 @@
                 <span class="su-rank-point">{{ p.point }}pt</span>
             </div>
         {% empty %}
-            <p>ポイント設定が登録されていません。</p>
+            <p style="background: none;">ポイント設定が登録されていません。</p>
         {% endfor %}
     </div>
     <div class="su-right">
@@ -85,21 +100,19 @@
 
     {# ランキング #}
     <div class="su-section-label">ランキング</div>
-    <div class="su-scroll-box">
-        {% if tournament.status == 0 %}
-            <p style="color:#fff;">開催前です</p>
-        {% else %}
-            {% for team in rankings %}
+    {% if tournament.status == 0 %}
+    <p style="color:#fff;">開催前です</p>
+    {% else %}
+    {% for team in rankings %}
             <div class="ranking_item_row">
                 <span class="rank-badge">{{ team.rank }}位</span>
                 <span class="team-name">{{ team.name }}</span>
                 <span class="points">{{ team.total_point|default:0 }}pt</span>
             </div>
             {% empty %}
-            <p style="color:#fff;">現在、集計データはありません。</p>
+            <p  style="color:#fff;">現在、集計データはありません。</p>
             {% endfor %}
         {% endif %}
-    </div>
 
     {# 削除・編集ボタン #}
     <div class="side_by_side" style="margin-top:0.5rem;">
@@ -142,6 +155,40 @@ function togglePassword() {
     pwVisible = !pwVisible;
     document.getElementById('pw-text').style.display = pwVisible ? 'none' : 'inline';
     document.getElementById('pw-real').style.display = pwVisible ? 'inline' : 'none';
+}
+
+{% comment %} コピー {% endcomment %}
+function copyUserUrl(){
+  const user_url = document.getElementById("user_url").innerText;
+  navigator.clipboard.writeText(user_url);
+  const msg = document.getElementById("user_message");
+  msg.textContent = "コピーしました";
+
+  setTimeout(() => {
+    msg.textContent = "";
+  },2000);
+}
+
+function copyAdminUrl(){
+  const admin_url = document.getElementById("admin_url").innerText;
+  navigator.clipboard.writeText(admin_url);
+  const msg = document.getElementById("admin_message");
+  msg.textContent = "コピーしました";
+
+  setTimeout(() => {
+    msg.textContent = "";
+  },2000);
+}
+
+function copyPass(){
+  const pw_real = document.getElementById("pw-real").innerText;
+  navigator.clipboard.writeText(pw_real);
+  const msg = document.getElementById("pass_message");
+  msg.textContent = "コピーしました";
+
+  setTimeout(() => {
+    msg.textContent = "";
+  },2000);
 }
 </script>
 

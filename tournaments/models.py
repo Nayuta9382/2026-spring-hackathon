@@ -6,7 +6,7 @@ import uuid
 class Tournament(models.Model):
     name = models.CharField(max_length=255)
     url_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    img_path = models.ImageField(upload_to='uploads/tournament-img/', validators=[FileExtensionValidator(['png','jpg'])],null=True,blank=True)
+    img_path = models.ImageField(upload_to='uploads/tournament-img/', validators=[FileExtensionValidator(['png','jpg','jpeg'])],null=True,blank=True)
     password = models.CharField(max_length=255)
     status = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)

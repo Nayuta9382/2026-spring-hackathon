@@ -1,4 +1,5 @@
 {% extends 'layouts/admin-layout.html' %}
+{% block title %}競技追加{% endblock title %}
 {% load static %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/event_add.css' %}">
@@ -28,15 +29,15 @@
             <div>
                 <label style="font-weight: bold;" class="form_label">トーナメント画像</label>
             </div>
-            <div class="image_center">
-                <img id="tournament_preview" class="image_item" src="{% static 'img/icon/イメージファイルアイコン.webp' %}" alt="イメージ" style="max-width: 200px; display: block; margin: 0 auto;">
+            <div class="image_center bg_img min_space">
+                <img id="tournament_preview" class="image_items" src="{% static 'img/icon/イメージファイルアイコン.webp' %}" alt="イメージ">
             </div>
 
             <div class="pos_right">
                 <button type="button" id="tournament_btn" class="gazou btn btn_margin">
                     画像を選択
                 </button>
-                <input type="file" id="tournament_input" name="tournament_img" style="display: none;" accept="image/*" />
+                <input type="file" id="tournament_input" name="tournament_img" style="display: none;" accept=".png, .jpg, .jpeg, image/png, image/jpeg"/>
             </div>
         </div>
 
@@ -44,15 +45,15 @@
             <div>
                 <label style="font-weight: bold;" class="form_label">競技画像</label>
             </div>
-            <div class="image_center">
-                <img id="event_preview" class="image_item" src="{% static 'img/icon/イメージファイルアイコン.webp' %}" alt="イメージ" style="max-width: 200px; display: block; margin: 0 auto;">
+            <div class="image_center bg_img min_space">
+                <img id="event_preview" class="image_items" src="{% static 'img/icon/イメージファイルアイコン.webp' %}" alt="イメージ">
             </div>
 
             <div class="pos_right">
                 <button type="button" id="event_btn" class="gazou btn btn_margin">
                     画像を選択
                 </button>
-                <input type="file" id="event_input" name="event_img" style="display: none;" accept="image/*" />
+                <input type="file" id="event_input" name="event_img" style="display: none;" accept=".png, .jpg, .jpeg, image/png, image/jpeg" />
             </div>
         </div>
 
