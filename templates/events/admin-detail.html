@@ -61,18 +61,12 @@
                 <h2 class="h2">Now</h2>
                 <ul>
                     {% for schedule in now_schedules %}
-                    <li>
+                    <li class="list_item">
                         <p class="p">{{ schedule.detail }}</p>
+                        {% if schedule.result %}<p class="p">{{ schedule.result }}</p>{% endif %}
                     </li>
-                    {% if schedule.result %}
-                    <li>
-                        <p class="p">{{ schedule.result }}</p>
-                    </li>
-                    {% endif %}
                     {% empty %}
-                    <li>
-                        <p class="p">なし</p>
-                    </li>
+                    <li><p class="p">なし</p></li>
                     {% endfor %}
                 </ul>
             </div>
@@ -80,18 +74,12 @@
                 <h2 class="h2">Next</h2>
                 <ul>
                     {% for schedule in next_schedules %}
-                    <li>
+                    <li class="list_item">
                         <p class="p">{{ schedule.detail }}</p>
+                        {% if schedule.result %}<p class="p">{{ schedule.result }}</p>{% endif %}
                     </li>
-                    {% if schedule.result %}
-                    <li>
-                        <p class="p">{{ schedule.result }}</p>
-                    </li>
-                    {% endif %}
                     {% empty %}
-                    <li>
-                        <p class="p">なし</p>
-                    </li>
+                    <li><p class="p">なし</p></li>
                     {% endfor %}
                 </ul>
             </div>
@@ -99,19 +87,12 @@
                 <h2 class="h2">Previous</h2>
                 <ul>
                     {% for schedule in previous_schedules %}
-                    <li>
+                    <li class="list_item">
                         <p class="p">{{ schedule.detail }}</p>
+                        {% if schedule.result %}<p class="p">{{ schedule.result }}</p>{% endif %}
                     </li>
-                    {% if schedule.result %}
-                    <hr>
-                    <li>
-                        <p class="p">{{ schedule.result }}</p>
-                    </li>
-                    {% endif %}
                     {% empty %}
-                    <li>
-                        <p class="p">なし</p>
-                    </li>
+                    <li><p class="p">なし</p></li>
                     {% endfor %}
                 </ul>
             </div>
