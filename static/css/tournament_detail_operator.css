@@ -304,3 +304,7 @@
     width: fit-content;
     margin: 0;
 }
+.h1{ 
+    transform: translateX(-50px); 
+} /* 右に50px移動 */
+
