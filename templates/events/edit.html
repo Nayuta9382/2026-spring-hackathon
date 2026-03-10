@@ -50,11 +50,11 @@
     <div>  
         <label style="font-weight: bold;" class="form_label">トーナメント画像</label>
         <div class="image_center">
-            <div class="image_item">
+            <div class="image_item min_space">
                 {% if event.tournament_img %}
                 <img id="tournament_preview" src="{{ event.tournament_img.url }}" alt="イメージ" style="max-width: 200px; display: block; margin: 0 auto;">
                 {% else %}
-                <img id="tournament_preview" src="{% static 'img/icon/イメージファイルアイコン.webp' %}" alt="イメージ" style="max-width: 200px; display: block; margin: 0 auto;">
+                <img id="tournament_preview" src="{% static 'img/icon/イメージファイルアイコン.webp' %}" alt="イメージ">
                 {% endif %}
             </div>
         </div>
@@ -72,11 +72,11 @@
     <div>  
         <label style="font-weight: bold;" class="form_label">競技画像</label>
         <div class="image_center">
-            <div class="image_item">
+            <div class="image_item min_space">
                 {% if event.event_img %}
                 <img id="event_preview" src="{{ event.event_img.url }}" alt="イメージ" style="max-width: 200px; display: block; margin: 0 auto;">
                 {% else %}
-                <img id="event_preview" src="{% static 'img/icon/イメージファイルアイコン.webp' %}" alt="イメージ" style="max-width: 200px; display: block; margin: 0 auto;">
+                <img id="event_preview" src="{% static 'img/icon/イメージファイルアイコン.webp' %}" alt="イメージ">
                 {% endif %}
             </div>
         </div>
