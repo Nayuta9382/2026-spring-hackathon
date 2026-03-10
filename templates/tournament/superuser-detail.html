@@ -71,13 +71,13 @@
 
     {# クラスチーム一覧 #}
     <div class="su-section-label">クラスチーム一覧</div>
-    <div class="su-scroll-box" style="background: none;">
+    <ul class="su-scroll-box list_admin" style="background: none;">
         {% for team in teams %}
-            <div class="su-team-row">{{ team.name }}</div>
+            <li class="su-team-row"><p class="p">{{ team.name }}</p></li>
         {% empty %}
-            <div class="su-team-row">クラスチームが登録されていません</div>
+            <li class="su-team-row">クラスチームが登録されていません</li>
         {% endfor %}
-    </div>
+    </ul>
     <div class="su-right">
         <a href="{% url 'tournament_update' tournament.id %}" class="gazou btn">編集</a>
     </div>
@@ -103,16 +103,18 @@
     {% if tournament.status == 0 %}
     <p style="color:#fff;">開催前です</p>
     {% else %}
-    {% for team in rankings %}
-            <div class="ranking_item_row">
-                <span class="rank-badge">{{ team.rank }}位</span>
-                <span class="team-name">{{ team.name }}</span>
-                <span class="points">{{ team.total_point|default:0 }}pt</span>
-            </div>
-            {% empty %}
-            <p  style="color:#fff;">現在、集計データはありません。</p>
-            {% endfor %}
-        {% endif %}
+    <ul class="su-scroll-box list_admin" style="background: none;">
+        {% for team in rankings %}
+                <li class="ranking_item_row">
+                    <span class="rank-badge">{{ team.rank }}位</span>
+                    <span class="team-name">{{ team.name }}</span>
+                    <span class="points">{{ team.total_point|default:0 }}pt</span>
+                </li>
+                {% empty %}
+                <p  style="color:#fff;">現在、集計データはありません。</p>
+                {% endfor %}
+            {% endif %}
+    </ul>
 
     {# 削除・編集ボタン #}
     <div class="side_by_side" style="margin-top:0.5rem;">
