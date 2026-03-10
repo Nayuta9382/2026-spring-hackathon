@@ -4,58 +4,81 @@
 /* リスト全体のスクロール設定 */
 .list_admin,
 .ranking_others {
-    max-height: 200px !important;
+    max-height: 200px;
     /* 表示したい高さに合わせて調整 */
-    overflow-y: auto !important;
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 8px !important;
-    padding-right: 10px !important;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px ;
+    padding-right: 10px ;
+    margin-top: 20px;
 }
 
 /* アイテム内を横並びにする（ここがボタン横並びの肝） */
 .list_item {
-    display: flex !important;
-    flex-direction: row !important;
+    display: flex;
+    flex-direction: row;
     /* 横並び */
-    align-items: center !important;
-    justify-content: flex-start !important;
-    padding: 10px !important;
-    flex-shrink: 0 !important;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px;
+    flex-shrink: 0;
     /* 潰れないように */
 }
 
 /* 大会名を広げてボタンを右に寄せる */
 .item-name {
-    flex-grow: 1 !important;
-    margin-left: 15px !important;
-    color: #fff !important;
-    font-weight: bold !important;
-    text-align: left !important;
+    flex-grow: 1;
+    margin-left: 15px ;
+    color: #fff ;
+    font-weight: bold;
+    text-align: left;
 }
 
 /* ボタン群を横に並べる */
 .item-actions {
-    display: flex !important;
-    flex-direction: row !important;
+    display: flex;
+    flex-direction: row;
     /* ボタン同士を横並びに */
-    gap: 8px !important;
-    flex-shrink: 0 !important;
+    gap: 8px;
+    flex-shrink: 0;
 }
 
 /* 既存の .btn クラスの干渉（margin: autoなど）を打ち消す */
 .item-actions .btn {
-    margin: 0 !important;
-    width: auto !important;
-    min-width: 60px !important;
-    display: inline-block !important;
+    margin: 0 ;
+    width: auto;
+    min-width: 60px;
+    display: inline-block;
 }
 
 /* サムネイル（グレーの四角） */
 .thumb-box {
-    width: 45px !important;
-    height: 45px !important;
+    width: 45px ;
+    height: 45px;
     background: #ccc;
-    flex-shrink: 0 !important;
+    flex-shrink: 0;
 }
 
+.ranking_user{
+    gap: 30px;
+}
+
+.ranking_others{
+    gap: 20px;
+    display: flex;
+    margin-bottom: 5px;
+    min-height: auto;
+}
+
+.h1{
+    margin-top: 10px;
+    font-family: 'Quantico';
+    font-weight: bold;
+    color:#fff
+}
+
+.tournament-status-0{
+    text-align: center;
+    color: #fff;
+}

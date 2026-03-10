@@ -11,6 +11,9 @@ body {
     padding: 0 20px;
     height: 100vh;
 }
+main{
+    padding-top: 24px;
+}
 
 h1,
 h2,
@@ -192,17 +195,21 @@ article+article {
 
 .ranking_others::-webkit-scrollbar,
 .list_admin::-webkit-scrollbar {
-    width: 16px;
+    width: 10px;
 }
 
 .ranking_others::-webkit-scrollbar-track,
 .list_admin::-webkit-scrollbar-track {
-    background-color: #5D5D5D;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
 }
 
 .ranking_others::-webkit-scrollbar-thumb,
 .list_admin::-webkit-scrollbar-thumb {
-    background-color: #fff;
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 2px solid #5D5D5D;
+    /* つまみを少し細く見せて洗練させる */
 }
 
 /* 戻るボタン */
@@ -286,6 +293,7 @@ body {
 .bg_deader {
     /* ヘッダーを固定する */
     position: fixed;
+    z-index: 100;
     /* 画面の上部に固定 */
     top: 0;
     left: 0;
@@ -370,6 +378,15 @@ body {
     background: #fff;
 }
 
+
+.delete_size {
+    /* height: 21.33px; */
+    border-radius: 7px;
+    display: flex;
+    align-self: center;
+}
+
+
 .update {
     width: 100%;
 
@@ -428,7 +445,6 @@ body {
 /* このクラスは、ダミー（ヘッダーに隠れるため、上部、左右に余白を追加） */
 /* 削除クラス */
 .dummy {
-    margin-top: 150px;
     margin-left: 20px;
     margin-right: 20px;
 }
@@ -477,7 +493,7 @@ body {
 .h2,
 .p {
     font-weight: bold;
-    color: #ffccff;
+    color: #fff;
     /* 背景が暗い想定の明るい色 */
     margin-bottom: 20px;
 }

@@ -5,6 +5,9 @@
     align-items: center;
     justify-content: center;
     padding-top: 50px;
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 .login-title {
@@ -17,19 +20,16 @@
 
 /* 中央の半透明カード */
 .login-card {
-    background: rgba(255, 255, 255, 0.1);
-    /* 非常に薄い白 */
-    backdrop-filter: blur(5px);
-    /* 背景を少しぼかすとおしゃれになります */
+    background: rgba(255, 255, 255, 0.2);
     padding: 40px;
     border-radius: 4px;
     width: 100%;
-    max-width: 500px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    margin-bottom: 2rem;
 }
 
 .form-group {
-    margin-bottom: 25px;
+    margin-bottom: 10px;
 }
 
 .form-group label {
@@ -56,27 +56,16 @@
     color: #aaa;
 }
 
-/* ログインボタン（緑） */
-.btn-login {
-    width: 100%;
-    padding: 12px;
-    background-color: #5cb874;
-    /* スクリーンショットの緑色に近い色 */
-    border: 2px solid #8be0a0;
-    /* 明るい縁取り */
-    border-radius: 8px;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-    margin-top: 10px;
+label {
+    color: #fff;
 }
 
-.btn-login:hover {
-    filter: brightness(1.1);
+.h2 {
+    text-align: center;
+    margin-bottom: 50px;
+    font-size: 30px;
 }
 
-.btn-login:active {
-    transform: scale(0.98);
+.update.btn.gazou{
+    margin-top: 40px;
 }

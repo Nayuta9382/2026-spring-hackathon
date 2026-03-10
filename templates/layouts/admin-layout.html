@@ -22,15 +22,11 @@
 
 <body class="admin_screen">
     <img src="/static/texture.png" class="bg_overlay_image">
-
-    <!-- <header>
-        <div class="bg_deader">
-            <img src="img/icon/ダミー.png" alt="大会の画像" class="image_circle2">
-            <h1 style="color: white; padding-left: 1rem;">大会名</h1>
-        </div> -->
     <header class="bg_deader">
-        <img src="{% static 'img/icon/ダミー.png' %}" alt="大会の画像" class="image_circle2">
-        <h1 style="color: white; padding-left: 1rem;">大会名</h1>
+        {% if tournament %}
+        <img src="{% if tournament.img_path%}{{ tournament.img_path.url }}{% else %}{% static 'img/icon/noimg.png' %}{% endif %}" alt="大会の画像" class="image_circle2">
+        <h1 style="color: white; padding-left: 1rem;">{{ tournament.name }}</h1>
+        {% endif %}
 
     </header>
 
@@ -39,35 +35,25 @@
         {% endblock content %}
     </main>
 
-    <section>
-    {% if tournament %}
-        <a href="{% url 'tournament_detail_operator' pk=tournament.id %}">home</a>
-    {% endif %}
-
-    {% if tournament.pdf_img_path %}
-        <p><a href="{{ tournament.pdf_img_path.url }}" target="_blank">現在の規約PDFを開く</a></p>
-    {% elif tournament %}
-        <p>規約PDFは登録されていません。</p>
-    {% else %}
-
-    {% endif %}
-    </section>
+    {% comment %} 運営者ならメニュー表示 {% endcomment %}
+    {% if not user.is_authenticated %}
     <footer class="menu">
         <!-- home -->
-        <a href="#" class="menu item item_admin">
+        <a href="{% if tournament %}{% url 'tournament_detail_operator' pk=tournament.id %}{% else %}#{% endif %}" class="menu item item_admin">
             <span class="menu_link">
                 <img src="{% static 'img/icon/Home.webp' %}" alt="home" class="frame">
                 home
             </span>
         </a>
         <!-- schedule -->
-        <a href="#" class="menu item item_admin">
+        <a href="{% if tournament.pdf_img_path %}{{ tournament.pdf_img_path.url }}{% else %}#{% endif %}" class="menu item item_admin">
             <span class="menu_link">
                 <img src="{% static 'img/icon/Calendar.webp' %}" alt="home" class="frame">
                 schedule
             </span>
         </a>
     </footer>
+    {% endif %}
     {% bootstrap_javascript %}
 </body>
 </html>

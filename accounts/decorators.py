@@ -9,11 +9,6 @@ from django.utils.http import urlencode
 def admin_required(view_func):
     @wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
-        return view_func(request, *args, **kwargs)
-
-
-
-
         # スーパユーザとしてログインしているかを認証
         if is_superuser_authenticated(request):
             # 認証されていれば、そのままビューを実行
@@ -38,9 +33,6 @@ def admin_required(view_func):
 def super_user_required(view_func):
     @wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
-        return view_func(request, *args, **kwargs)
-
-    
         # スーパユーザとしてログインしているかを認証
         if is_superuser_authenticated(request):
             # 認証されていれば、そのままビューを実行
@@ -53,9 +45,6 @@ def super_user_required(view_func):
 def operator_required(view_func):
     @wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
-        return view_func(request, *args, **kwargs)
-
-
         # 運営者とログインしているかを認証
         if is_operator_authenticated(request):
             return view_func(request, *args, **kwargs)

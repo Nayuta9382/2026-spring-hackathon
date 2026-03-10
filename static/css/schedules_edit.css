@@ -17,23 +17,20 @@
 
 .flex_container {
     display: flex;
-    align-items: flex-end;
-    /* 両端に寄せる */
+    flex-direction: column;
     width: 100%;
+    gap: 0.5rem;
 }
 
 .delete_wrapper {
-    flex-grow: 1;
-    /* 余ったスペースをすべて埋める */
     display: flex;
+    margin-top: -20px;
 }
 
 .align-right {
-    /* 左側のマージンだけを自動（最大）にすることで右に押し出す */
     margin-left: auto !important;
     margin-right: 0 !important;
     display: block;
-    /* block要素にすることでmarginによる押し出しを有効にする */
 }
 
 .pos_right {
