@@ -279,15 +279,14 @@ body {
     align-items: center;
 }
 
-.image_item {
+.image_items {
     /* 中身のセンタリング */
     display: block;
     /* 上下の中央揃え */
     align-content: center;
     justify-items: center;
-    width: 15%;
-    height: auto;
-    /* background: #D9D9D9; */
+    width: 100%;
+    /* margin: 0 auto; */
 }
 
 /* ボタン関係 */
@@ -332,6 +331,11 @@ body {
     background: #fff;
 }
 
-#class-teams-msg{
+#class-teams-msg {
     color: #fff;
+}
+
+.bg_img {
+    /* padding: 20%; */
+    background: rgba(255, 255, 255, 0.3);
 }

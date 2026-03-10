@@ -293,6 +293,7 @@ body {
 .bg_deader {
     /* ヘッダーを固定する */
     position: fixed;
+    z-index: 100;
     /* 画面の上部に固定 */
     top: 0;
     left: 0;
