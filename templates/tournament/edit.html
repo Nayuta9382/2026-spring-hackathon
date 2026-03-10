@@ -19,7 +19,7 @@
                     <label for="id_img_path" class="gazou btn">
                         画像選択
                     </label>
-                    <input type="file" name="img_path" id="id_img_path">
+                    <input type="file" name="img_path" id="id_img_path" accept=".png, .jpg, .jpeg, image/png, image/jpeg">
                 </div>
             </div>
             <div class="form name">
@@ -36,7 +36,7 @@
                     <p class="p">{{ form.instance.pdf_img_path | default:'' }}</p>
                 </div>
                 <label for="id_pdf_img_path" class="gazou btn">PDF選択</label>
-                <input type="file" name="pdf_img_path" id="id_pdf_img_path">
+                <input type="file" name="pdf_img_path" id="id_pdf_img_path" accept=".pdf, application/pdf">
             </div>
         </div>
 

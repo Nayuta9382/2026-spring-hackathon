@@ -1,7 +1,7 @@
 {% extends 'layouts/admin-layout.html' %}
 {% block title %}競技追加{% endblock title %}
 {% load static %}
-{% block extra_css %} 
+{% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/event_add.css' %}">
 {% endblock extra_css %}
 {% block content %}
@@ -37,7 +37,7 @@
                 <button type="button" id="tournament_btn" class="gazou btn btn_margin">
                     画像を選択
                 </button>
-                <input type="file" id="tournament_input" name="tournament_img" style="display: none;" accept="image/*" />
+                <input type="file" id="tournament_input" name="tournament_img" style="display: none;" accept=".png, .jpg, .jpeg, image/png, image/jpeg"/>
             </div>
         </div>
 
@@ -53,11 +53,9 @@
                 <button type="button" id="event_btn" class="gazou btn btn_margin">
                     画像を選択
                 </button>
-                <input type="file" id="event_input" name="event_img" style="display: none;" accept="image/*" />
+                <input type="file" id="event_input" name="event_img" style="display: none;" accept=".png, .jpg, .jpeg, image/png, image/jpeg" />
             </div>
         </div>
-
-
 
         {# クラスチーム #}
         <div>
@@ -80,7 +78,7 @@
 
         <div class="side_by_side">
             <div>
-                <button type="button" class="return btn block_btn">戻る</button>
+                <button type="button" class="return btn block_btn" onclick="history.back()">戻る</button>
             </div>
             <div>
                 <button type="submit" class="gazou btn block_btn">作成</button>

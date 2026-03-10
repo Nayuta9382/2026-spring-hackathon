@@ -6,7 +6,14 @@ class CreateForm(forms.ModelForm):
     class Meta:
         model = Tournament
         fields = ['name', 'img_path', 'password', 'pdf_img_path']
-
+        widgets = {
+            'img_path': forms.FileInput(attrs={
+                'accept': 'image/png, image/jpeg, image/jpg', 
+            }),
+            'pdf_img_path': forms.FileInput(attrs={
+                'accept': '.pdf, application/pdf', 
+            }),
+        }
     # 順位とポイントのバリデーション
     def clean(self):
         cleaned_data = super().clean()

@@ -8,14 +8,15 @@
 <div class="container">
         <div class="dummy">
             <div class="tournament-header">
-                <a href="#" class="return-btn">＜</a>
                 <h2 class="h1">{{ tournament.name }} </h2>
             </div>
-            <div class="url-info">    
+            <div class="url-info url_content">
                 <div class="su-section-label">一般URL</div>
                 <div class="su-info-box">
-                    <a target="_blank" rel="noopener noreferrer" href="{{ user_url }}" style="color:#fff;">{{ user_url }}</a>          
+                    <a id="user_url" target="_blank" rel="noopener noreferrer" href="{{ user_url }}" style="color:#fff;">{{ user_url }}</a>       
+                    <button onclick="copyUserUrl()" class="user_url_copy_btn"> <img src="{% static 'img/icon/copy.png' %}" alt="コピー" class="copy_img"> </button>   
                 </div>
+                <p id="user_message"></p>
             </div>
 
             <div class="flex-link-layout">
@@ -56,4 +57,18 @@
         </div>
     </div>
 </div>
+
+<script>
+{% comment %} コピー {% endcomment %}
+function copyUserUrl(){
+  const user_url = document.getElementById("user_url").innerText;
+  navigator.clipboard.writeText(user_url);
+  const msg = document.getElementById("user_message");
+  msg.textContent = "コピーしました";
+
+  setTimeout(() => {
+    msg.textContent = "";
+  },2000);
+}
+</script>
 {% endblock %}
